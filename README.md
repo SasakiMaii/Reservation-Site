@@ -1,6 +1,7 @@
-# Getting Started with Create React App
+# Prince 'VuewHotel・・・架空のホテル予約サイト
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+このプロジェクトは [Create React App](https://github.com/facebook/create-react-app)、 [TypeScript](https://www.typescriptlang.org/)、 [Sass](https://sass-lang.com/) で構成されています
+
 
 ## Available Scripts
 
