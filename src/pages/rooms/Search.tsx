@@ -34,9 +34,13 @@ export const Checkin = () => {
   );
 };
 
+// {(()=>{
+
+// })}
 
 //こだわり条件
 export const ObsessionSearch = () => {
+  
   return(
     <>
     {/* mapでデータとってくる？ */}
