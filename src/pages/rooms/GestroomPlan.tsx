@@ -1,4 +1,5 @@
-import { Pageing, RoomSearchSoart } from "./SearchResults";
+import Pageing from "../../components/rooms/Pageing";
+import RoomSearchSoart from "../../components/rooms/RoomSearchSoart";
 import  RoomStyle  from "../../styles/rooms/GestroomPlan.module.scss"
 
 const GestroomPlan = () => {
@@ -12,6 +13,7 @@ const GestroomPlan = () => {
   );
 };
 
+//部屋の詳細＆プランの詳細
 export const RoomCard = () => {
   return (
     <div className={RoomStyle.roomCard}>
