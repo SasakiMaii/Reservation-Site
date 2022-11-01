@@ -8,17 +8,16 @@ import GestroomPlan from './pages/rooms/GestroomPlan';
 function App() {
   return (
 <>
+<Router >
+<Routes>
+<Route path='/' element={<SearchResults/>}></Route>
+<Route path='/RoomSearch' element={<RoomSearch/>}></Route>
+<Route path='/GestroomPlan' element={<GestroomPlan/>}></Route>
+</Routes>
+</Router>
 </>
   );
 }
 
 export default App;
 
-
-{/* <Router >
-<Routes>
-<Route path='/' element={<SearchResults/>}></Route>
-<Route path='/RoomSearch' element={<RoomSearch/>}></Route>
-<Route path='/GestroomPlan' element={<GestroomPlan/>}></Route>
-</Routes>
-</Router> */}
