@@ -1,20 +1,28 @@
 import Pageing from "../../components/rooms/Pageing";
 import RoomSearchSoart from "../../components/rooms/RoomSearchSoart";
-import  RoomStyle  from "../../styles/rooms/GestroomPlan.module.scss"
+import  RoomStyle  from "../../styles/rooms/_GestroomPlan.module.scss"
+import PrimaryButton from "../../components/button/PrimaryButton";
+import Header from "../../components/layout/Header";
+import Footer from "../../components/layout/footer";
 
 const GestroomPlan = () => {
   return (
     <>
-      <p className={RoomStyle.pageTitle}>~全ての客室＆プラン~</p>
+      <Header/>
+      <p className={RoomStyle.pageTitle}>全ての客室＆プラン</p>
       <RoomSearchSoart />
       <RoomCard />
       <Pageing />
+      <Footer/>
     </>
   );
 };
 
 //部屋の詳細＆プランの詳細
 export const RoomCard = () => {
+  const onResarve=()=>{
+
+  }
   return (
     <div className={RoomStyle.roomCard}>
       <ul>
@@ -44,7 +52,7 @@ export const RoomCard = () => {
           <div className={RoomStyle.planDetails}>
             <img className={RoomStyle.planpic} src="hotel-4.jpg" alt="planpicture" />
             <p className={RoomStyle.plantitle}>プラン名</p>
-            <button className={RoomStyle.planReserveBtn}>このプランで予約</button>
+            <PrimaryButton onClick={onResarve}>このプランで予約</PrimaryButton>
           </div>
         </li>
       </ul>

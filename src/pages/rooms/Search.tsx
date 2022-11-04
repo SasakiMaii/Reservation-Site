@@ -1,7 +1,7 @@
 import { Children, MouseEvent } from "react";
 import { Link } from "react-router-dom";
-import SearchStyle from "../../styles/rooms/Search.module.scss";
-import PrimaryButton from "../../components/PrimaryButton";
+import SearchStyle from "../../styles/rooms/_Search.module.scss";
+import PrimaryButton from "../../components/button/PrimaryButton";
 import SearchInputLayout from "../../components/rooms/SearchInputLayout";
 
 //React icon
@@ -11,16 +11,18 @@ import {
   IoAccessibilityOutline,
   IoSearchOutline,
 } from "react-icons/io5";
+import Header from "../../components/layout/Header";
 
 const RoomSearch = () => {
   return (
     <>
+      <Header />
       <Link to={"/"} className={SearchStyle.reservedCheck}>
-        ご予約内容の確認・変更・取り消しはこちらから
+        ご予約内容の確認・変更・取り消しはこちら
       </Link>
       <div className={SearchStyle.container}>
         <Checkin />
-        <ObsessionSearch  />
+        <ObsessionSearch />
       </div>
     </>
   );
@@ -32,7 +34,7 @@ export const Checkin = () => {
   return (
     <div className={SearchStyle.checkContainer}>
       <div className="checkinDate">
-        <p className="checkinDatep">
+        <p style={{fontSize:"18px",marginBottom:"20px"}}>
           <IoCalendarOutline />
           チェックイン日
         </p>
@@ -60,10 +62,8 @@ export const Checkin = () => {
 
 //ループ使う際 {(()=>{})}
 
-
-
 //こだわり条件
-export const ObsessionSearch = ({dateChoice}:any) => {
+export const ObsessionSearch = ({ dateChoice }: any) => {
   const obroop = () => {
     const price = [];
     for (let i = 10000; i <= 100000; i = i + 5000) {

@@ -1,4 +1,4 @@
-import SearchStyle from "../styles/rooms/Search.module.scss";
+import SearchStyle from "../../styles/rooms/_Search.module.scss";
 
 type Props = {
   children: string;

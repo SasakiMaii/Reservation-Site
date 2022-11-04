@@ -1,12 +1,12 @@
 import React from "react";
+import  PagingStyle  from "../../styles/rooms/_Paging.module.scss"
 
 const Pageing = () => {
   return(
-    <div>
+    <div className={PagingStyle.pagingWrapper}>
     <button>1</button>
     <button>2</button>
-    <button>3</button>
-    <p>全3ページ</p>
+    <p className={PagingStyle.pagingdetail}>全2ページ</p>
     </div>
   )
 };

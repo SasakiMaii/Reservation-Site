@@ -1,0 +1,24 @@
+.footerWrapper{
+  background-color: rgb(194, 192, 192);
+  padding-bottom: 20px;
+}
+.footerFlex{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 30px 0 30px 0;
+  p{
+    font-size: 20px;
+  }
+}
+
+.footerList{
+  display: flex;
+  li{
+    padding-right: 20px;
+  }
+}
+
+.creator{
+  text-align: center;
+}
