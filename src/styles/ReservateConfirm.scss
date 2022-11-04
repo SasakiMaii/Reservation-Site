@@ -1,0 +1,30 @@
+.register-complete {
+    width: 500px;
+    height: 400px;
+    background-color: #C0C0C0;
+    margin: 30px auto;
+}
+
+.register-incomplete {
+    width: 500px;
+    height: 400px;
+    background-color: beige;
+    margin: 30px auto;
+}
+
+.reservate-login {
+    display: flex;
+}
+
+.reservateconfirm-title {
+    text-align: center;
+    margin: 50px 0;
+}
+
+.reservate-guide {
+    text-align: center;
+}
+
+.reservate-guide button {
+    color: crimson;
+}

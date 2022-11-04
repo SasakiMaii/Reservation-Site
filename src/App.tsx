@@ -1,24 +1,21 @@
 import './App.scss';
-import { Link, Route,BrowserRouter as Router, Routes } from 'react-router-dom';
-import RoomSearch from './pages/rooms/Search';
-import SearchResults from './pages/rooms/SearchResults';
-import GestroomPlan from './pages/rooms/GestroomPlan';
+import { Route,BrowserRouter as Router, Routes,Link } from 'react-router-dom';
+import ReservateConfirm from './pages/books/ReservateConfirm';
+import ReservateComplete from './pages/books/ReservateComplete';
+import ReservateHistory from './pages/books/ReservateHistory';
 
 
 function App() {
   return (
-<>
-</>
+{/* <Router >
+<Routes>
+<Route path='/books/ReservateConfirm' element={<ReservateConfirm/>}></Route>
+<Route path='/books/ReservateComplete' element={<ReservateComplete/>}></Route>
+<Route path='/books/ReservateHistory' element={<ReservateHistory/>}></Route>
+</Routes>
+</Router> */}
+
   );
 }
 
 export default App;
-
-
-{/* <Router >
-<Routes>
-<Route path='/' element={<SearchResults/>}></Route>
-<Route path='/RoomSearch' element={<RoomSearch/>}></Route>
-<Route path='/GestroomPlan' element={<GestroomPlan/>}></Route>
-</Routes>
-</Router> */}
