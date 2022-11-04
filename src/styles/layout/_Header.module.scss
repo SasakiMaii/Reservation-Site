@@ -1,0 +1,25 @@
+
+.headerFlex{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2%;
+  background-color: rgb(194, 192, 192);
+  h1{
+    margin-right: 60px;
+  }
+}
+
+.headerNav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  ul{
+    font-size: 15px;
+    display: flex;
+    li{
+      margin-right: 20px;
+    }
+  }
+}
+
