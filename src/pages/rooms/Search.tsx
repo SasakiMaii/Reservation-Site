@@ -11,7 +11,7 @@ import {
   IoAccessibilityOutline,
   IoSearchOutline,
 } from "react-icons/io5";
-import Footer from "../../components/layout/Footer";
+import Footer from "../../components/layout/footer";
 
 
 const RoomSearch = () => {

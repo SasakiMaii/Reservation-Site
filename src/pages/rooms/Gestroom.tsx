@@ -3,7 +3,7 @@ import RoomSearchSoart from "../../components/rooms/RoomSearchSoart";
 import RoomStyle from "../../styles/rooms/_GestroomPlan.module.scss";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import Header from "../../components/layout/Header";
-import Footer from "../../components/layout/Footer";
+import Footer from "../../components/layout/footer";
 // import "firebase";
 import { useEffect, useState } from "react";
 import db from "../../Firebase";

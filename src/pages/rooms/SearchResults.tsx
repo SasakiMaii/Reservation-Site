@@ -13,6 +13,7 @@ import "../../Firebase"
 import React, { useEffect, useState } from 'react'
 import db from "../../Firebase";
 import { collection, doc, setDoc, getDocs } from "firebase/firestore";
+import Footer from "../../components/layout/footer";
 
 
 const SearchResults = () => {
@@ -57,6 +58,7 @@ const SearchResults = () => {
 
       <Pageing />
       <Link to={`/`}>ホームに戻る</Link>
+      <Footer/>
     </>
   );
 };
