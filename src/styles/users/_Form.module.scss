@@ -1,0 +1,56 @@
+// 共通
+.formMain {
+  margin:20px 0 20px 20px;
+}
+
+.labelGroup {
+  margin-bottom: 8px;
+}
+
+.mark{
+  font-size: 10px;
+  padding: 5px;
+  border-radius: 6px;
+  background-color: rgb(220 38 38);
+  color: white;
+  transform: translateY(-2px) translateX(8px);
+  position: absolute;
+}
+
+.error {
+  position: absolute;
+  color: rgb(220 38 38);
+  font-size: 10px;
+  transform: translateY(2px) translateX(55px);
+}
+// text-red-500  ml-3 text-sm
+
+.input {
+  border: solid 2px #C0C0C0;;
+  border-radius: 6px;
+  padding: 10px 8px;
+}
+
+.input:hover {
+  border: solid 2px rgb(101, 109, 183);
+}
+
+.NavigationIcons {
+  margin: 10px 10px;
+}
+
+// 名前のコンポーネント用
+.familyName {
+  margin-right: 20px;
+}
+
+// input部品が1つのコンポーネント用
+.widthInput {
+  width: 430px;
+  margin-right: 20px;
+}
+
+.widthInputSmall {
+  width: 230px;
+  margin-right: 20px;
+}
