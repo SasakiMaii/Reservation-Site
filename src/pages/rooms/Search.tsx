@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import SearchStyle from "../../styles/rooms/_Search.module.scss";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import SearchInputLayout from "../../components/rooms/SearchInputLayout";
-
+import Header from "../../components/layout/Header";
 //React icon
 import {
   IoCalendarOutline,
@@ -11,7 +11,8 @@ import {
   IoAccessibilityOutline,
   IoSearchOutline,
 } from "react-icons/io5";
-import Header from "../../components/layout/Header";
+import Footer from "../../components/layout/footer";
+
 
 const RoomSearch = () => {
   return (
@@ -24,6 +25,7 @@ const RoomSearch = () => {
         <Checkin />
         <ObsessionSearch />
       </div>
+      <Footer/>
     </>
   );
 };
