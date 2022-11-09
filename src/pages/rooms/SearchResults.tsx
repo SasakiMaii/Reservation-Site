@@ -5,10 +5,7 @@ import Header from "../../components/layout/Header";
 import SearchResultsStyle from "../../styles/rooms/_SearchResult.module.scss";
 
 
-import firebase from 'firebase/app';
 import 'firebase/auth';
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore"
 import "../../Firebase"
 // import "firebase";
 
