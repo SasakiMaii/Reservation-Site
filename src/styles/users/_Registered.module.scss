@@ -1,0 +1,46 @@
+.clearBtn {
+  color: RGB(26, 89, 136);
+  border-radius: 10px;
+  background-color: #fff;
+  width: 100px;
+  height: 45px;
+  font-weight: bold;
+  font-size: 18px;
+  border: solid 1px RGB(26, 89, 136);
+  margin: 20px;
+}
+
+.clearBtn:hover {
+  opacity: 0.8;
+}
+
+.registerButton {
+  width: 100px;
+  height: 45px;
+}
+
+ .main{
+  // display: flex;
+  // text-align: center;
+  // justify-content: center;
+
+  position: relative;
+  margin: 30px 0;
+  padding: 0;
+  // justify-content: center;
+  flex-wrap: wrap;
+  background-color:#C0C0C0;;
+ }
+
+ .form {
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translateX(-50%);
+  // background-color: red;
+ }
+
+
+ .buttonGroup {
+  float: right;
+ }
