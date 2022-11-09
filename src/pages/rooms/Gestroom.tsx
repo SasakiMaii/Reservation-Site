@@ -1,20 +1,36 @@
 import Pageing from "../../components/rooms/Pageing";
 import RoomSearchSoart from "../../components/rooms/RoomSearchSoart";
-import RoomStyle from "../../styles/rooms/_GestroomPlan.module.scss";
+import RoomStyle from "../../styles/rooms/_Gestroom.module.scss";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
 // import "firebase";
 import { useEffect, useState } from "react";
 import db from "../../Firebase";
-import { collection, doc, setDoc, getDocs } from "firebase/firestore";
+import { collection, doc, setDoc, getDocs, query, orderBy, limit } from "firebase/firestore";
+import { Link } from "react-router-dom";
+
+
 
 const GestroomPlan = () => {
+  const [descSoarts, SetDescSoart] = useState<any>([]);
+  const [ascSoarts, SetAscSoart] = useState<any>([]);
+  const soartData = collection(db, "gestRoomType");
+  const onDescSoart = () => {
+    const priceDesc = query(soartData, orderBy("price", "desc"), limit(4));
+    getDocs(priceDesc).then((snapShot) => {
+      SetDescSoart(snapShot.docs.map((doc) => ({ ...doc.data() })));
+    });
+  };
   return (
     <>
       <Header />
       <p className={RoomStyle.pageTitle}>全ての客室＆プラン</p>
-      <RoomSearchSoart />
+      <div className={RoomStyle.roomLinkWrapper}>
+      <Link to={"#"} className={RoomStyle.roomLink}> 客室 </Link>
+      <Link to={"/Plan"}> プラン </Link>
+      </div>
+      <RoomSearchSoart onClick={onDescSoart}/>
       <RoomCard />
       <Pageing />
       <Footer />
@@ -25,6 +41,7 @@ const GestroomPlan = () => {
 //部屋の詳細＆プランの詳細
 export const RoomCard = () => {
   const [rooms, SetRoom] = useState<any>([]);
+  const [descStetus,setDescStatus]=useState("");
 
   useEffect(() => {
     const roomDate = collection(db, "gestRoomType");
@@ -41,11 +58,11 @@ export const RoomCard = () => {
   }
 
   return (
-    <div className={RoomStyle.roomContainer}>
+    <div className={RoomStyle.roomPlanContainer}>
       <ul>
         {rooms.map((room: any) => {
           return (
-            <li key={room.are}  className={RoomStyle.roomCard}>
+            <li key={room.area}  className={RoomStyle.roomPlanCard}>
               <div className={RoomStyle.cardTitle}>
                 <h1 className={RoomStyle.roomName}>{room.area}</h1>
                 <p className={RoomStyle.roomArea}>{room.capacityArea}</p>
@@ -74,43 +91,13 @@ export const RoomCard = () => {
                 </div>
               </div>
               <div className={RoomStyle.ResarvedRoomBtn}>
-              <PrimaryButton onClick={handleResarvedRoom}>この部屋で予約する</PrimaryButton>
+             <PrimaryButton onClick={handleResarvedRoom}>空室を探す</PrimaryButton>
               </div>
             </li>
           );
         })}
       </ul>
     </div>
-  );
-};
-
-const PranCard = () => {
-  const [plans, SetPlans] = useState<any>([]);
-  useEffect(() => {
-    const planData = collection(db, "Plan");
-    getDocs(planData).then((snapShot) => {
-      return SetPlans(snapShot.docs.map((doc) => ({ ...doc.data() })));
-    });
-  }, []);
-  const onResarve = () => {};
-  return (
-    <>
-      {plans.map((plan:any) => {
-        <div key={plan.id}>
-          <h2 className={RoomStyle.sectionTitle}>プラン</h2>
-          <hr />
-          <div className={RoomStyle.planDetails}>
-            <img
-              className={RoomStyle.planpic}
-              src="hotel-4.jpg"
-              alt="planpicture"
-            />
-            <p className={RoomStyle.plantitle}>{plan.name}</p>
-            <PrimaryButton onClick={onResarve}>このプランで予約</PrimaryButton>
-          </div>
-        </div>;
-      })}
-    </>
   );
 };
 

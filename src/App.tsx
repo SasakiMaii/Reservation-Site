@@ -3,9 +3,10 @@ import { Route,BrowserRouter as Router, Routes,Link } from 'react-router-dom';
 // import ReservateConfirm from './pages/books/ReservateConfirm';
 // import ReservateComplete from './pages/books/ReservateComplete';
 // import ReservateHistory from './pages/books/ReservateHistory';
-import GestroomPlan from './pages/rooms/Gestroom';
+import Gestroom from './pages/rooms/Gestroom';
 import SearchResults from './pages/rooms/SearchResults';
 import RoomSearch from './pages/rooms/Search';
+import Plan from './pages/rooms/Plan';
 
 
 function App() {
@@ -24,7 +25,8 @@ function App() {
 <Routes>
 <Route path='/' element={<SearchResults/>}></Route>
 <Route path='/RoomSearch' element={<RoomSearch/>}></Route>
-<Route path='/GestroomPlan' element={<GestroomPlan/>}></Route>
+<Route path='/Gestroom' element={<Gestroom/>}></Route>
+<Route path='/Plan' element={<Plan/>}></Route>
 </Routes>
 </Router>
 </>

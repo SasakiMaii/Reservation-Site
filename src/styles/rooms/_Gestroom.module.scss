@@ -9,6 +9,10 @@ li {
   list-style: none;
 }
 
+a {
+  text-decoration: none;
+}
+
 //レスポンシブ
 $breakpoints: (
   pc: "screen and (min-width:1200px)",
@@ -25,11 +29,12 @@ $breakpoints: (
 
 // ページタイトル
 
-.soartStyle{
+.soartStyle {
   padding: 20px 20px 50px 20px;
   text-align: right;
-  button{
+  button {
     margin-right: 10px;
+    border-radius: 5px;
     background-color: rgb(130, 130, 130);
     width: 120px;
     height: 35px;
@@ -40,7 +45,7 @@ $breakpoints: (
       padding: 5px;
       font-size: 10px;
       margin: 5px;
-      }
+    }
   }
   @include mq(sp) {
     padding: 10px;
@@ -59,10 +64,21 @@ $breakpoints: (
     text-align: center;
   }
 }
+//roomLink
+.roomLinkWrapper {
+  font-size: 18px;
+  padding-left: 4%;
+}
+.roomLink {
+  padding-bottom: 2px;
+  font-weight: bold;
+  display: inline-block;
+  border-bottom: solid 5px rgb(26, 89, 136);
+}
 
 //roomcard
 
-.roomCard {
+.roomPlanCard {
   padding: 20px;
   max-width: 800px;
   margin: 0 auto;
@@ -76,7 +92,7 @@ $breakpoints: (
 }
 
 .cardTitle {
-    display: flex;
+  display: flex;
   justify-content: start;
   align-items: center;
   padding: 10px;
@@ -114,7 +130,7 @@ $breakpoints: (
   }
 }
 
-.ResarvedRoomBtn{
+.ResarvedRoomBtn {
   text-align: right;
   margin-right: 50px;
   @include mq(tab) {
@@ -162,26 +178,59 @@ $breakpoints: (
   }
 }
 
-.sectionTitle {
-  margin-top: 20px;
-  font-size: 25px;
-  margin-bottom: 10px;
-}
-
-.planDetails {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
+.planReserveBtn {
+  border: 1px solid;
+  background-color: rgb(101, 109, 183);
+  border-radius: 10px;
+  color: #fff;
+  width: 150px;
+  height: 80px;
   @include mq(tab) {
-    flex-direction: column;
-    text-align: center;
+    height: 50px;
   }
   @include mq(sp) {
-    flex-direction: column;
-    text-align: center;
+    height: 50px;
   }
+}
+
+//Plan
+
+.planLinkWrapper {
+  font-size: 18px;
+  padding-left: 4%;
+}
+.planLink {
+  display: inline-block;
+  margin-left: 10px;
+  padding-bottom: 2px;
+  font-weight: bold;
+  border-bottom: solid 5px rgb(26, 89, 136);
+}
+
+.planName {
+  margin-top: 30px;
+  font-size: 28px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.planWrapper {
+  p {
+    font-size: 15px;
+    padding: 3px;
+  }
+}
+
+.sectionTitle {
+  margin-top: 30px;
+  font-size: 25px;
+  margin-bottom: 20px;
+}
+
+.planDetail {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 20px;
 }
 
 .plantitle {
@@ -194,22 +243,17 @@ $breakpoints: (
   }
 }
 
-.planReserveBtn {
-  border: 1px solid;
-  background-color: rgb(101, 109, 183);
-  border-radius: 10px;
-  color: #fff;
-  width: 150px;
-  height: 80px;
-  @include mq(tab) {
-    height: 50px;
-    }
-  @include mq(sp) {
-  height: 50px;
-  }
+.planpic {
+  width: 450px;
+  height: 300px;
+  display: block;
+  margin: 0 auto;
 }
 
-.planpic {
-  width: 200px;
-  height: 150px;
+//btn
+
+.ResarvedPlanBtn{
+  margin-top: 30px;
+  margin-bottom: 20px;
+  text-align: center;
 }
