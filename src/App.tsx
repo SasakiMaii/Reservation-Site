@@ -6,7 +6,7 @@ import { Route, BrowserRouter as Router, Routes, Link } from 'react-router-dom';
 import ReservateConfirm from './pages/books/ReservateConfirm';
 import ReservateComplete from './pages/books/ReservateComplete';
 import ReservateHistory from './pages/books/ReservateHistory';
-import GestroomPlan from './pages/rooms/GestroomPlan';
+import GestroomPlan from './pages/rooms/Gestroom';
 import SearchResults from './pages/rooms/SearchResults';
 import RoomSearch from './pages/rooms/Search';
 import { Registered } from './pages/users/Registered';
