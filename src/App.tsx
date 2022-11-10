@@ -6,7 +6,7 @@ import { Route, BrowserRouter as Router, Routes, Link } from 'react-router-dom';
 import ReservateConfirm from './pages/books/ReservateConfirm';
 import ReservateComplete from './pages/books/ReservateComplete';
 import ReservateHistory from './pages/books/ReservateHistory';
-import GestroomPlan from './pages/rooms/GestroomPlan';
+import GestroomPlan from './pages/rooms/Gestroom';
 import SearchResults from './pages/rooms/SearchResults';
 import RoomSearch from './pages/rooms/Search';
 import { Registered } from './pages/users/Registered';
@@ -18,7 +18,6 @@ function App() {
     <>
 
 
-
       <Router >
         <Routes>
           <Route path='/books/ReservateConfirm' element={<ReservateConfirm />}></Route>
@@ -26,7 +25,7 @@ function App() {
           <Route path='/books/ReservateHistory' element={<ReservateHistory />}></Route>
           <Route path='/' element={<SearchResults />}></Route>
           <Route path='/RoomSearch' element={<RoomSearch />}></Route>
-          <Route path='/GestroomPlan' element={<Gestroom />}></Route>
+          <Route path='/Gestroom' element={<Gestroom />}></Route>
           <Route path='/users/Login' element={<Login />}></Route>
           <Route path='/Plan' element={<Plan/>}></Route>
           <Route path='/users/Registered' element={<Registered />}></Route>
