@@ -40,10 +40,7 @@ const GestroomPlan = () => {
 //部屋の詳細＆プランの詳細
 export const RoomCard = () => {
   const [rooms, SetRoom] = useState<any>([]);
-  const [descSorts, SetDescSort] = useState<any>([]);
-  const [ascSorts, SetAscSort] = useState<any>([]);
   const soartData = collection(db, "gestRoomType");
-  const [soart,setSoart]=useState(false);
 
   useEffect(() => {
     const roomDate = collection(db, "gestRoomType");
