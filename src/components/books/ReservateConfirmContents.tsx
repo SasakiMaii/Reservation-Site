@@ -1,13 +1,29 @@
 import React, { useEffect, useState } from "react";
-import ReservateConfirmContentsStyles from "../styles/books/ReservateConfirmContents.module.scss";
+import ReservateConfirmContentsStyles from "../../styles/books/ReservateConfirmContents.module.scss";
 import { useNavigate } from "react-router-dom";
-import db from "../Firebase.js";
+import db from "../../Firebase.js";
 import { collection, doc, setDoc, getDocs, addDoc } from "firebase/firestore";
 // import PrimaryButton from "./PrimaryButton";
 
 export const ReservateConfirmContents = () => {
+
+　const radioItem = [
+  {
+    id: "localpay",
+    title: "現地にて精算",
+    value: "cash"
+  },
+  {
+    id: "creditpay",
+    title: "クレジット精算",
+    value: "credit"
+  }
+]
+
   const navigate = useNavigate();
   const [val, setVal] = useState(["check"]);
+  const [radioVal,setRadioVal] = useState("cash");
+  const [selectItem, setSelectItem] = useState();
   //(firebase)データベースを格納するための箱
   const [reserves, setReserves] = useState<any>([]);
 
@@ -18,7 +34,13 @@ export const ReservateConfirmContents = () => {
   const [tel, setTel] = useState<string>("");
   const [mail, setMail] = useState<string>("");
   const [contact, setContact] = useState<string>("");
-  // const [mapReservate,setMapReservate] = useState("");
+  const [totalPrice,setTotalPrice] = useState("");
+  const [select,setSelect] = useState();
+  
+  //firebaseから予約データ取得、予約確定時にfirebaseへ送信するためのデータ
+  const roomType = reserves.map((reserveItems:any) => reserveItems.roomType)
+  const adultsNum = reserves.map((reserveItems:any) => reserveItems.adultsNum)
+  const childernNum = reserves.map((reserveItems:any) => reserveItems.childrenNum)
 
   const onChangeContact = (e: any) => {
     setContact(e.target.value);
@@ -38,6 +60,7 @@ export const ReservateConfirmContents = () => {
     getDocs(reserveData).then((reserveItem) => {
       setReserves(reserveItem.docs.map((doc) => ({ ...doc.data() })));
       // console.log(reserveItem);
+      // reserves.map((reserveItems:any) => reserveItems);
     });
   }, []);
 
@@ -49,8 +72,17 @@ export const ReservateConfirmContents = () => {
     }
   };
 
+  const valueChange = (e:any) => {
+    setRadioVal(e.target.value);
+  }
+
+  const selectValueChange = (e:any) => {
+    setSelectItem(e.target.velue)
+  }
+
   const clickReservate = async () => {
     await addDoc(collection(db, "reserved"), {
+      //ログイン情報も送る？
       reserveFirstName: reserveFirstName,
       reserveLastName: reserveLastName,
       lodgeFirstName: lodgeFirstName,
@@ -58,6 +90,10 @@ export const ReservateConfirmContents = () => {
       tel: tel,
       mail: mail,
       contact: contact,
+      roomType: roomType,
+      adultsNum: adultsNum,
+      childernNum: childernNum,
+      payment: radioVal
     });
     navigate("/books/ReservateComplete");
   };
@@ -184,14 +220,17 @@ export const ReservateConfirmContents = () => {
         <p>
           お支払い方法<span>※必須</span>
         </p>
-        <input type="radio" id="localpay" name="payment" value="cash"/>
-        <label htmlFor="localpay">現地にて精算</label>
-        <input type="radio" id="creditpay" name="payment" value="credit"/>
-        <label htmlFor="creditpay">クレジット精算</label>
+        {radioItem.map((radioItems) => (
+          <React.Fragment key={radioItems.title}>
+        <input type="radio" id={radioItems.id} name="payment" value={radioItems.value} onChange={valueChange} />
+        <label htmlFor={radioItems.id}>{radioItems.title}</label>
+        {/* <input type="radio" id="creditpay" name="payment" value={radioItems.value}/>
+        <label htmlFor="creditpay">{radioItems.title}</label> */}
+        </React.Fragment>
+        ))}
       </div>
       <div className={ReservateConfirmContentsStyles.reservateButton}>
         <button onClick={clickReservate}>予約する</button>
-        {/* <PrimaryButton onClick={clickReservate}>予約する</PrimaryButton> */}
       </div>
     </div>
   );
@@ -294,7 +333,7 @@ export const LodgerName = (props:any) => {
   );
 };
 
-export const ArrivalTime = () => {
+export const ArrivalTime = ({selectValueChange}:any) => {
   return (
     <div className={ReservateConfirmContentsStyles.checkTime}>
       <label htmlFor="arrivalTime">到着時間：</label>
@@ -306,6 +345,7 @@ export const ArrivalTime = () => {
         return (
           <select
             id="arrivalTime"
+            onChange={selectValueChange}
             className={ReservateConfirmContentsStyles.input}
           >
             <option>---</option>
