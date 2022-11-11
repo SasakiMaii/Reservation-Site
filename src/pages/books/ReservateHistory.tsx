@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ReservateHistoryStyles from "../../styles/books/ReservateHistory.module.scss";
-import { ArrivalTime, cancel } from "../../components/ReservateConfirmContents";
+import { ArrivalTime, cancel } from "../../components/books/ReservateConfirmContents";
 import db from "../../Firebase.js";
 import { collection, doc, setDoc, getDocs, addDoc } from "firebase/firestore";
 // import PrimaryButton from "../../components/PrimaryButton";
@@ -78,6 +78,13 @@ const ReservateHistory = () => {
           <h3>宿泊待ち予約</h3>
           <div className={ReservateHistoryStyles.unLodgerContents}>
             <p>プラン内容：</p>
+            <ul>
+              {reserves.map((reserveItem:any) => {
+                return (
+                  <li>客室：{reserveItem.payment}</li>
+                )
+              })}
+            </ul>
             <button onClick={clickChange}>変更</button>
             {change ? (
               <ChangeReservate reservateChange={reservateChange} />
