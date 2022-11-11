@@ -8,17 +8,25 @@ import { AddressInput } from '../../components/form/addressInput'
 import { PasswordInput } from '../../components/form/passwordInput'
 import { NameInput } from '../../components/form/nameInput'
 import { ConfirmPasswordInput } from '../../components/form/confirmPassword'
-import PrimaryButton from '../../components/PrimaryButton'
+import { GenderInput } from '../../components/form/genderInput'
+import PrimaryButton from '../../components/button/PrimaryButton'
 // import { useRouter } from 'next/router'
 import SearchStyle from "../../styles/rooms/_Search.module.scss";
 import RegisterStyle from "../../styles/users/_Registered.module.scss"
-
+// firebase import
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../../Firebase'
+import db from '../../Firebase'
+import { setDoc, doc, collection, addDoc } from 'firebase/firestore'
+import {  useNavigate } from 'react-router-dom';
+import { useAuthState } from "react-firebase-hooks/auth"
 
 
 
 
 export const Registered = () => {
-
+  const [user] = useAuthState(auth);
+  // console.log(user)
   // const router = useRouter();
 
   const [lastNameValue, SetLastNameValue] = useState("");
@@ -45,8 +53,14 @@ export const Registered = () => {
 
   const [confirmPasswordValue, SetConfirmPasswordValue] = useState("");
   const [confirmPasswordErrorState, SetConfirmPasswordErrorState] = useState("init");
+  
+  // デフォルトが男性のため（ラジオボタン）
+  const [genderValue, SetGenderValue] = useState("男性");
+
 
   const [errorFlag, SetErrorFlag] = useState("false");
+
+  const navigate = useNavigate();
 
   const clear = () => {
     SetLastNameErrorState("init")
@@ -66,6 +80,7 @@ export const Registered = () => {
     SetAddressValue("")
     SetPasswordValue("")
     SetConfirmPasswordValue("")
+    SetGenderValue("")
 
 
     SetErrorFlag("false");
@@ -82,33 +97,32 @@ export const Registered = () => {
       zipErrorState === "ok" &&
       addressErrorState === "ok" &&
       passwordErrorState === "ok" &&
-      confirmPasswordErrorState === "ok"
+      confirmPasswordErrorState === "ok" 
     ) {
 
-
-      // const data = {
-      //   name: `${lastNameValue} ${firstNameValue}`,
-      //   mail: mailValue,
-      //   zip: zipValue,
-      //   address: addressValue,
-      //   tel: telValue,
-      //   password: passwordValue,
-      //   confirmPassword: confirmPasswordValue
-      // };
-
-      // fetch(`http://localhost:8000/users`, {
-      //   method: "POST",
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(data)
-      // }).then((response) => {
-      //   return response.json();
-      // }).then((data) => {
-      //   alert("登録が完了いたしました。");
-      // }).then(() => {
-      //   router.push("/users/login");
-      // })
+      // Authentication 新規登録
+      createUserWithEmailAndPassword(auth, mailValue, passwordValue)
+        .then((user) => {
+          // Cloud Firestore user新規登録
+          const colRef = collection(db, "user");
+          const data = {
+            firstname: firstNameValue,
+            lastname: lastNameValue,
+            mail: mailValue,
+            zip: zipValue,
+            address: addressValue,
+            gender: genderValue,
+            tel: telValue,
+            password: passwordValue,
+          };
+          // collection　usersにデータを追加
+          addDoc(colRef, data);
+        }).then(() => {
+          alert("登録しました!")
+        }).then(() => {
+          navigate('/');
+        })
+        .catch(error => alert("既に登録されています"));
 
     } else {
       SetErrorFlag("true");
@@ -119,11 +133,6 @@ export const Registered = () => {
 
   return (
     <>
-      {/* <div className=" flex flex-wrap justify-center items-center mt-7">
-        <h1 className="text-bold" style={{ 
-          color: "#75ad9d",
-           fontSize: "30px" }}>会員登録</h1>
-      </div> */}
 
       <div className={`${RegisterStyle.main} container`}>
 
@@ -143,6 +152,9 @@ export const Registered = () => {
           />
           <hr />
 
+          <GenderInput SetGenderValue={SetGenderValue} />
+
+          <hr />
 
           <MailInput
             mailValue={mailValue}
@@ -177,7 +189,7 @@ export const Registered = () => {
             passwordErrorState={passwordErrorState} SetPasswordErrorState={SetPasswordErrorState}
             errorFlag={errorFlag}
             displayFlag={true}
-
+            page="register"
             confirmPasswordValue={confirmPasswordValue}
             SetConfirmPasswordErrorState={SetConfirmPasswordErrorState}
           />
@@ -194,17 +206,12 @@ export const Registered = () => {
 
           <div className={`items-center justify-center flex flex-wrap my-4 ${RegisterStyle.buttonGroup}`}>
 
-            {/* <button type="button" className="text-white px-6 py-2 rounded-md text-sm mr-3 mt-5" style={{ backgroundColor: "#75ad9d", border: "solid 1px #75ad9d" }}
-              onClick={register}
-            >登録</button> */}
-            {/* <PrimaryButton children='登録' onClick={()=>{return <></>}}/> */}
-
             {/* Primary Button */}
-            <button 
-              type="button" 
+            <button
+              type="button"
               className={`${SearchStyle.searchbtn}  ${RegisterStyle.registerButton}`}
               onClick={register}
-              >登録</button>
+            >登録</button>
 
 
             <button type="reset" className={`text-gray-900 px-4 py-2 rounded-md text-sm mt-5 ${RegisterStyle.clearBtn}`} onClick={clear}>クリア</button>

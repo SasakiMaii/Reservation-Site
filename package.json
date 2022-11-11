@@ -18,7 +18,9 @@
     "npm": "^8.19.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-firebase-hooks": "^5.1.0",
     "react-icons": "^4.6.0",
+    "react-id-swiper": "^4.0.0",
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
@@ -26,6 +28,7 @@
     "ress": "^5.0.2",
     "sass": "^1.55.0",
     "styled-components": "^5.3.6",
+    "swiper": "^8.4.4",
     "typescript": "^4.8.4",
     "web-vitals": "^2.1.4"
   },
