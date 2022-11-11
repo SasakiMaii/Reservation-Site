@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import db from "../../Firebase";
-import { collection, doc, setDoc, getDocs } from "firebase/firestore";
+import { collection, doc, setDoc, getDocs, limit, orderBy, query } from "firebase/firestore";
 import PlanStyle from "../../styles/rooms/_Gestroom.module.scss";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import { Link } from "react-router-dom";
@@ -8,8 +8,6 @@ import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
 import RoomSearchSoart from "../../components/rooms/RoomSearchSoart";
 import Pageing from "../../components/rooms/Pageing";
-
-
 
 //プラン
 const Plan = () => {
@@ -21,7 +19,6 @@ const Plan = () => {
         <Link to={"/GestRoom"}>客室</Link>
         <Link to={"#"} className={PlanStyle.planLink}>プラン</Link>
       </div>
-      <RoomSearchSoart />
       <PlanCard />
       <Pageing />
       <Footer />
@@ -31,16 +28,41 @@ const Plan = () => {
 
 export const PlanCard = () => {
   const [plans, SetPlans] = useState<any>([]);
+  const soartData = collection(db, "Plan");
 
+  //降順
+  const onAscSort = async () => {
+    const priceAsc = query(soartData, orderBy("price"),limit(3));
+    const data = await getDocs(priceAsc);
+    const newAscData = data.docs.map((doc) => ({
+      ...doc.data(),id:doc.id
+    }));
+    SetPlans(newAscData);
+  };
+
+  //昇順
+  const onDescSort = async () => {
+    const priceDesc = query(soartData, orderBy("price", "desc"), limit(3));
+    const data = await getDocs(priceDesc);
+    const newDescData = data.docs.map((doc) => ({
+      ...doc.data(),id:doc.id
+    }));
+    SetPlans(newDescData);
+  };
+
+  //firebaseのID順
   useEffect(() => {
     const planData = collection(db, "Plan");
     getDocs(planData).then((snapShot) => {
       SetPlans(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
   }, []);
+
   const handleResarvedEmptyRoom = () => {};
 
   return (
+    <>
+    <RoomSearchSoart onAscClick={onAscSort} onDescClick={onDescSort}/>
     <div className={PlanStyle.roomPlanContainer}>
       <ul>
         {plans.map((plan: any) => {
@@ -51,7 +73,7 @@ export const PlanCard = () => {
                 className={PlanStyle.planpic}
                 src="hotel-4.jpg"
                 alt="roompicture"
-              />
+                />
               <p className={PlanStyle.planDetail}>{plan.planDetail}</p>
               <p className={PlanStyle.roomCapacity}>
                 チェックイン：{plan.checkIn}
@@ -75,6 +97,7 @@ export const PlanCard = () => {
         })}
       </ul>
     </div>
+        </>
   );
 };
 
