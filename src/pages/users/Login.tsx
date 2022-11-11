@@ -16,6 +16,7 @@ import { auth } from '../../Firebase'
 import { useAuthState } from "react-firebase-hooks/auth"
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import {  useNavigate } from 'react-router-dom';
+import { doc } from 'firebase/firestore'
 
 export const Login = () => {
   // ログインのstatus管理
@@ -53,7 +54,7 @@ export const Login = () => {
     ) {
 
       // ログインしているか判定
-      if(!user){
+      // if(!user){
         // react-hook ログイン関数 
         signInWithEmailAndPassword(auth,mailValue,passwordValue)
         .then(user =>{
@@ -63,9 +64,13 @@ export const Login = () => {
           alert("メールアドレスかパスワードが違います")
         })
         
-      }else{
-        alert("既にログインしています")
-      }
+      // }
+      // else{
+      //   alert("既にログインしています")
+      //   console.log(user.email)
+      // }
+
+
       } else {
       SetErrorFlag("true");
     }
