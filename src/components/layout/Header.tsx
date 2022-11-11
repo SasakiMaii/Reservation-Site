@@ -17,7 +17,7 @@ const Header = () => {
               <Link to={"/"}>アクセス</Link>
             </li>
             <li>
-              <Link to={"/"}>客室・プラン</Link>
+              <Link to={"/rooms/Gestroom"}>客室・プラン</Link>
             </li>
             <li>
               <Link to={"/"}>お問い合わせ</Link>
