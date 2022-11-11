@@ -11,6 +11,7 @@ import SearchResults from './pages/rooms/SearchResults';
 import RoomSearch from './pages/rooms/Search';
 import { Registered } from './pages/users/Registered';
 import { Login } from './pages/users/Login';
+import Top from './pages/Top';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path='/users/Login' element={<Login />}></Route>
           <Route path='/Plan' element={<Plan/>}></Route>
           <Route path='/users/Registered' element={<Registered />}></Route>
+          <Route path='/Top' element={<Top />}></Route>
         </Routes>
       </Router>
     </>

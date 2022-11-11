@@ -26,7 +26,7 @@ const Navigation = (props: any) => {
                 return (
                   <>
                     <span className={`${FormStyle.NavigationIcons}`}>
-                      <IconContext.Provider value={{ size: '20px'}}>
+                      <IconContext.Provider value={{ size: '20px' }}>
                         <ImCheckmark2 />
                       </IconContext.Provider>
                     </span>
@@ -80,7 +80,8 @@ export const PasswordInput = (props: {
   passwordErrorState: any,
   passwordValue: any,
   errorFlag: any,
-  displayFlag: boolean
+  displayFlag: boolean,
+  page:string
 }) => {
 
   const onChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
@@ -96,7 +97,10 @@ export const PasswordInput = (props: {
 
     if (props.displayFlag == true) {
       if (ev.target.value !== props.confirmPasswordValue) {
-        props.SetConfirmPasswordErrorState("mismatch")
+        if (props.page === "register") {
+          props.SetConfirmPasswordErrorState("mismatch")
+        } 
+      
       } else if (ev.target.value === props.confirmPasswordValue) {
         props.SetConfirmPasswordErrorState("ok")
       }
@@ -127,16 +131,16 @@ export const PasswordInput = (props: {
             confirmPasswordValue={props.confirmPasswordValue}
             SetPasswordErrorState={props.SetPasswordErrorState}
             errorFlag={props.errorFlag}
-          
+
           />
         </div>
         <div>
-          <input type="password" 
-          className={`${FormStyle.input}  ${FormStyle.widthInput}`} id="new-password" 
-         
-          onChange={onChangeHandler}
-          placeholder="例）Password123"
-          autoComplete="new-password"
+          <input type="password"
+            className={`${FormStyle.input}  ${FormStyle.widthInput}`} id="new-password"
+
+            onChange={onChangeHandler}
+            placeholder="例）Password123"
+            autoComplete="new-password"
           />
         </div>
 

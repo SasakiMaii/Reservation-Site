@@ -11,10 +11,15 @@ import { ConfirmPasswordInput } from '../../components/form/confirmPassword'
 import PrimaryButton from '../../components/button/PrimaryButton'
 // import { useRouter } from 'next/router'
 import SearchStyle from "../../styles/rooms/_Search.module.scss";
-import RegisterStyle from "../../styles/users/_Registered.module.scss"
-
+import LoginStyle from "../../styles/users/_Registered.module.scss"
+import { auth } from '../../Firebase'
+import { useAuthState } from "react-firebase-hooks/auth"
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import {  useNavigate } from 'react-router-dom';
 
 export const Login = () => {
+  // ログインのstatus管理
+  const [user] = useAuthState(auth);
 
   // const router = useRouter();
 
@@ -25,6 +30,9 @@ export const Login = () => {
   const [passwordErrorState, SetPasswordErrorState] = useState("init");
 
   const [errorFlag, SetErrorFlag] = useState("false");
+
+  // 画面遷移関数
+  const navigate = useNavigate();
 
   const clear = () => {
     SetMailErrorState("init")
@@ -37,49 +45,39 @@ export const Login = () => {
   }
 
 
-  const register = () => {
+  // yarn add react-firebase-hooks/authしてください
+  const login = () => {
     if (
       mailErrorState === "ok" &&
       passwordErrorState === "ok" 
     ) {
 
-      // const data = {
-      //   name: `${lastNameValue} ${firstNameValue}`,
-      //   mail: mailValue,
-      //   zip: zipValue,
-      //   address: addressValue,
-      //   tel: telValue,
-      //   password: passwordValue,
-      //   confirmPassword: confirmPasswordValue
-      // };
-
-      // fetch(`http://localhost:8000/users`, {
-      //   method: "POST",
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(data)
-      // }).then((response) => {
-      //   return response.json();
-      // }).then((data) => {
-      //   alert("登録が完了いたしました。");
-      // }).then(() => {
-      //   router.push("/users/login");
-      // })
-
-    } else {
+      // ログインしているか判定
+      if(!user){
+        // react-hook ログイン関数 
+        signInWithEmailAndPassword(auth,mailValue,passwordValue)
+        .then(user =>{
+          alert("ログイン成功")    
+          navigate('/');  //  画面遷移
+        }, err =>{
+          alert("メールアドレスかパスワードが違います")
+        })
+        
+      }else{
+        alert("既にログインしています")
+      }
+      } else {
       SetErrorFlag("true");
     }
-
   }
 
 
   return (
     <>
 
-      <div className={`${RegisterStyle.main} container`}>
+      <div className={`${LoginStyle.main} container`}>
 
-        <form className={` ${RegisterStyle.form}`}>
+        <form className={` ${LoginStyle.form}`}>
           <h2 className="my-5 ml-5 ">ログイン</h2>
           <hr className="border border-1 border-gray-300 bg-gray-300" />
 
@@ -97,24 +95,24 @@ export const Login = () => {
             passwordErrorState={passwordErrorState} SetPasswordErrorState={SetPasswordErrorState}
             errorFlag={errorFlag}
             displayFlag={true}
-
+            page="login"
             confirmPasswordValue={passwordValue}
             SetConfirmPasswordErrorState={SetPasswordErrorState}
           />
           <hr />
 
 
-          <div className={`items-center justify-center flex flex-wrap my-4 ${RegisterStyle.buttonGroup}`}>
+          <div className={`items-center justify-center flex flex-wrap my-4 ${LoginStyle.buttonGroup}`}>
 
             {/* Primary Button */}
             <button 
               type="button" 
-              className={`${SearchStyle.searchbtn}  ${RegisterStyle.registerButton}`}
-              onClick={register}
+              className={`${SearchStyle.searchbtn}  ${LoginStyle.LoginButton}`}
+              onClick={login}
               >ログイン</button>
 
 
-            <button type="reset" className={`text-gray-900 px-4 py-2 rounded-md text-sm mt-5 ${RegisterStyle.clearBtn}`} onClick={clear}>クリア</button>
+            <button type="reset" className={`text-gray-900 px-4 py-2 rounded-md text-sm mt-5 ${LoginStyle.clearBtn}`} onClick={clear}>クリア</button>
           </div>
         </form>
       </div>
