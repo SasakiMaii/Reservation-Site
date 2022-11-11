@@ -1,10 +1,6 @@
 import RoomStyle from "../../styles/rooms/_Gestroom.module.scss";
-import { query, collection, getDocs, orderBy, limit } from "firebase/firestore";
-import db from "../../Firebase";
-import { useEffect, useState } from "react";
 
 //料金が安い順高い順並び替え
-
 const RoomSearchSoart = ({ onDescClick, onAscClick }: any) => {
 
   return (

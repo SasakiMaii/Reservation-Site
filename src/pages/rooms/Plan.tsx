@@ -32,7 +32,7 @@ export const PlanCard = () => {
 
   //降順
   const onAscSort = async () => {
-    const priceAsc = query(soartData, orderBy("price"),limit(100));
+    const priceAsc = query(soartData, orderBy("price"),limit(3));
     const data = await getDocs(priceAsc);
     const newAscData = data.docs.map((doc) => ({
       ...doc.data(),id:doc.id
@@ -42,7 +42,7 @@ export const PlanCard = () => {
 
   //昇順
   const onDescSort = async () => {
-    const priceDesc = query(soartData, orderBy("price", "desc"), limit(100));
+    const priceDesc = query(soartData, orderBy("price", "desc"), limit(3));
     const data = await getDocs(priceDesc);
     const newDescData = data.docs.map((doc) => ({
       ...doc.data(),id:doc.id
@@ -100,5 +100,6 @@ export const PlanCard = () => {
         </>
   );
 };
+
 
 export default Plan;

@@ -5,6 +5,7 @@ import PrimaryButton from "../../components/button/PrimaryButton";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
 import { Link } from "react-router-dom";
+import PagingStyle from "../../styles/rooms/_Paging.module.scss";
 // import "firebase";
 import { useEffect, useState } from "react";
 import db from "../../Firebase";
@@ -14,9 +15,8 @@ import {
   query,
   orderBy,
   limit,
-  onSnapshot,
+  startAfter,
 } from "firebase/firestore";
-
 
 const GestroomPlan = () => {
   return (
@@ -31,15 +31,17 @@ const GestroomPlan = () => {
         <Link to={"/Plan"}> プラン </Link>
       </div>
       <RoomCard />
-      <Pageing />
+      {/* <Pageing /> */}
       <Footer />
     </>
   );
 };
 
-//部屋の詳細＆プランの詳細
+//部屋の詳細
 export const RoomCard = () => {
   const [rooms, SetRoom] = useState<any>([]);
+  const [descClick,setDescClick]=useState(false);
+  const [ascClick,setAscClick]=useState(false);
   const soartData = collection(db, "gestRoomType");
 
   useEffect(() => {
@@ -49,31 +51,75 @@ export const RoomCard = () => {
     });
   }, []);
 
+  //ソート関数
   const onAscSort = async () => {
-    const priceAsc = query(soartData, orderBy("price"),limit(100));
+    const priceAsc = query(soartData, orderBy("price"), limit(3));
     const data = await getDocs(priceAsc);
     const newAscData = data.docs.map((doc) => ({
-      ...doc.data(),id:doc.id
+      ...doc.data(),
+      id: doc.id,
     }));
+    setAscClick(true);
+    setDescClick(false);
     SetRoom(newAscData);
   };
 
   const onDescSort = async () => {
-    const priceDesc = query(soartData, orderBy("price", "desc"), limit(100));
+    const priceDesc = query(soartData, orderBy("price", "desc"), limit(3),);
     const data = await getDocs(priceDesc);
     const newDescData = data.docs.map((doc) => ({
-      ...doc.data(),id:doc.id
+      ...doc.data(),
+      id: doc.id,
     }));
+    setDescClick(true);
+    setAscClick(false);
     SetRoom(newDescData);
   };
+  //---
 
-  const handleResarvedRoom = () => {};
+  //予約ボタン
+  const handleResarvedRoomBtn = async () => {};
+
+  //次のページへ進むボタン。ソートボタンがクリックされていた場合は、料金順でページングになるように。
+  console.log(descClick)
+  console.log(ascClick)
+  const handleNextPage = async () => {
+    if(descClick===true){
+      const priceDesc = query(soartData, orderBy("price","desc"), limit(3));
+      const data = await getDocs(priceDesc);
+      const last = data.docs[data.docs.length - 1];
+      const next = query(soartData, orderBy("price","desc"), startAfter(last), limit(3));
+      const nextdata =await getDocs(next)
+      const nextPage = nextdata.docs.map((doc)=>({
+        ...doc.data(),id:doc.id
+      }))
+      // console.log(nextPage)
+      SetRoom(nextPage)
+    }else if(ascClick===true){
+      const priceDesc = query(soartData, orderBy("price"), limit(3));
+      const data = await getDocs(priceDesc);
+      const last = data.docs[data.docs.length - 1];
+      const next = query(soartData, orderBy("price"), startAfter(last), limit(3));
+      const nextdata =await getDocs(next)
+      const nextPage = nextdata.docs.map((doc)=>({
+        ...doc.data()
+      }))
+      // console.log(nextPage)
+      SetRoom(nextPage)
+    }else{
+
+    }
+  };
+  //前のページに戻るボタン
+  const handlePrevPage = () => {
+
+  };
 
   return (
     <>
       <div className={RoomStyle.roomPlanContainer}>
         <ul>
-          <RoomSearchSoart onAscClick={onAscSort} onDescClick={onDescSort}/>
+          <RoomSearchSoart onAscClick={onAscSort} onDescClick={onDescSort} />
           {rooms.map((room: any) => {
             return (
               <li key={room.area} className={RoomStyle.roomPlanCard}>
@@ -107,7 +153,7 @@ export const RoomCard = () => {
                   </div>
                 </div>
                 <div className={RoomStyle.ResarvedRoomBtn}>
-                  <PrimaryButton onClick={handleResarvedRoom}>
+                  <PrimaryButton onClick={handleResarvedRoomBtn}>
                     空室を探す
                   </PrimaryButton>
                 </div>
@@ -115,6 +161,11 @@ export const RoomCard = () => {
             );
           })}
         </ul>
+      </div>
+      <div className={PagingStyle.pagingWrapper}>
+        {<button onClick={handlePrevPage}>前へ</button>}
+        <button onClick={handleNextPage}>次へ</button>
+        <p className={PagingStyle.pagingdetail}>全2ページ</p>
       </div>
     </>
   );
