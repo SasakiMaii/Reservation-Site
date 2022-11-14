@@ -44,7 +44,7 @@ export const RoomCard = () => {
   const [descClick,setDescClick]=useState(false);
   const [ascClick,setAscClick]=useState(false);
   const soartData = collection(db, "gestRoomType");
-  const navigation = useNavigate()
+
 
 
   useEffect(() => {

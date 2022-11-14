@@ -1,9 +1,3 @@
-import { Children, MouseEvent } from "react";
-import { Link } from "react-router-dom";
-import SearchStyle from "../../styles/rooms/_Search.module.scss";
-import PrimaryButton from "../../components/button/PrimaryButton";
-import SearchInputLayout from "../../components/rooms/SearchInputLayout";
-import Header from "../../components/layout/Header";
 //React icon
 import {
   IoCalendarOutline,
@@ -11,7 +5,15 @@ import {
   IoAccessibilityOutline,
   IoSearchOutline,
 } from "react-icons/io5";
+//
+import { Children, MouseEvent, useState } from "react";
+import { Link } from "react-router-dom";
+import SearchStyle from "../../styles/rooms/_Search.module.scss";
+import PrimaryButton from "../../components/button/PrimaryButton";
+import SearchInputLayout from "../../components/rooms/SearchInputLayout";
+import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
+import Modal from "../../components/rooms/Modal";
 
 
 const RoomSearch = () => {
@@ -21,6 +23,7 @@ const RoomSearch = () => {
       <Link to={"/"} className={SearchStyle.reservedCheck}>
         ご予約内容の確認・変更・取り消しはこちら
       </Link>
+      <p>おすすめプラン</p>
       <div className={SearchStyle.container}>
         <Checkin />
         <ObsessionSearch />
@@ -31,7 +34,10 @@ const RoomSearch = () => {
 };
 
 export const Checkin = () => {
-  const dateChoise = () => {};
+  const [showModal, setShowModal] = useState(false);
+  const ShowModal = () => {
+    setShowModal(true);
+  };
 
   return (
     <div className={SearchStyle.checkContainer}>
@@ -40,8 +46,10 @@ export const Checkin = () => {
           <IoCalendarOutline />
           チェックイン日
         </p>
+        <PrimaryButton onClick={ShowModal}>日程を選ぶ</PrimaryButton>
+        <Modal showFlag={showModal} setShowModal={setShowModal}/>
 
-        <PrimaryButton onClick={dateChoise}>日程を選択</PrimaryButton>
+        {/* <Modal onOpanClick={open} onCloseClick={close} /> */}
       </div>
       <div className={SearchStyle.adult}>
         {/* 宿泊人数の上限を超えていますのエラーを出す */}
@@ -80,7 +88,6 @@ export const ObsessionSearch = ({ dateChoice }: any) => {
 
   return (
     <>
-      {/* mapでデータとってくる？ */}
 
       <div className={SearchStyle.obsessionContainer}>
         <h2 className={SearchStyle.conditions}>
@@ -94,13 +101,13 @@ export const ObsessionSearch = ({ dateChoice }: any) => {
             name="gestroom"
             id="gestroom"
           >
-            <option value="#" selected>
+            <option value="" selected>
               指定なし▼
             </option>
             <option value="north">north</option>
-            <option value="north">south</option>
-            <option value="north">west</option>
-            <option value="north">east</option>
+            <option value="south">south</option>
+            <option value="west">west</option>
+            <option value="east">east</option>
           </select>
         </div>
         <div className={SearchStyle.btnWrapper}>
@@ -111,7 +118,7 @@ export const ObsessionSearch = ({ dateChoice }: any) => {
               name="downprice"
               id="downprice"
             >
-              <option value="#" selected>
+              <option value="" selected>
                 下限なし▼
               </option>
               {obroop()}
@@ -122,7 +129,7 @@ export const ObsessionSearch = ({ dateChoice }: any) => {
               name="upprice"
               id="upprice"
             >
-              <option value="#" selected>
+              <option value="" selected>
                 上限なし▼
               </option>
               {obroop()}
@@ -138,3 +145,7 @@ export const ObsessionSearch = ({ dateChoice }: any) => {
 };
 
 export default RoomSearch;
+function useModal(arg0: string, arg1: { preventScroll: boolean; }): [any, any, any, any] {
+  throw new Error("Function not implemented.");
+}
+

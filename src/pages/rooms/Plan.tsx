@@ -58,7 +58,7 @@ export const PlanCard = () => {
 
   //firebaseのID順
   useEffect(() => {
-    const planData = collection(db, "Plan");
+    const planData = query(soartData,orderBy("price"),limit(3));
     getDocs(planData).then((snapShot) => {
       SetPlans(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
