@@ -38,7 +38,7 @@ const SearchResults = () => {
       <RoomSearchSoart />
       <p className={SearchResultsStyle.searchReasultEmpty}>現在空室はありません</p>
 
-      {
+      {/* {
         posts.map((list: any, index: number) => {
           return (
             <div key={index}>
@@ -53,7 +53,7 @@ const SearchResults = () => {
             </div>
           )
         })
-      }
+      } */}
 
       <Pageing />
       <Link to={`/`}>ホームに戻る</Link>

@@ -35,9 +35,16 @@ const RoomSearch = () => {
 
 export const Checkin = () => {
   const [showModal, setShowModal] = useState(false);
+  const [showBtn,setShowBtn]=useState(true);
+  const [datetext,setDatetext]=useState('');
+
   const ShowModal = () => {
     setShowModal(true);
   };
+
+  const CheckReset =()=>{
+    setShowBtn(true)
+  }
 
   return (
     <div className={SearchStyle.checkContainer}>
@@ -46,8 +53,18 @@ export const Checkin = () => {
           <IoCalendarOutline />
           チェックイン日
         </p>
-        <PrimaryButton onClick={ShowModal}>日程を選ぶ</PrimaryButton>
-        <Modal showFlag={showModal} setShowModal={setShowModal}/>
+       {showBtn?(
+         <PrimaryButton onClick={ShowModal}>日程を選ぶ</PrimaryButton>
+       ):(
+        <>
+        <p className={SearchStyle.checkp}>{datetext}</p>
+        <button onClick={CheckReset} className={SearchStyle.checkbtn}>→変更する</button>
+        </>
+       )
+       
+      } 
+       
+        <Modal showFlag={showModal} setShowBtn={setShowBtn} setShowModal={setShowModal} setDatetext={setDatetext}/>
 
         {/* <Modal onOpanClick={open} onCloseClick={close} /> */}
       </div>
@@ -101,7 +118,7 @@ export const ObsessionSearch = ({ dateChoice }: any) => {
             name="gestroom"
             id="gestroom"
           >
-            <option value="" selected>
+            <option value="">
               指定なし▼
             </option>
             <option value="north">north</option>
@@ -118,7 +135,7 @@ export const ObsessionSearch = ({ dateChoice }: any) => {
               name="downprice"
               id="downprice"
             >
-              <option value="" selected>
+              <option value="">
                 下限なし▼
               </option>
               {obroop()}
@@ -129,7 +146,7 @@ export const ObsessionSearch = ({ dateChoice }: any) => {
               name="upprice"
               id="upprice"
             >
-              <option value="" selected>
+              <option value="">
                 上限なし▼
               </option>
               {obroop()}
