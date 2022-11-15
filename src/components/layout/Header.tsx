@@ -5,7 +5,6 @@ import PrimaryButton from "../button/PrimaryButton";
 const Header = () => {
   //ハンバーガーメニュー作りたい
   const handleResarve=()=>{
-
   }
   return (
     <>
@@ -23,7 +22,7 @@ const Header = () => {
               <Link to={"/"}>ログイン</Link>
             </li>
           </ul>
-          <Link to={"/rooms/RoomSearch"}>
+          <Link to={"/rooms/Gestroom"}>
               <PrimaryButton onClick={handleResarve}>ご予約</PrimaryButton>
           </Link>
         </div>

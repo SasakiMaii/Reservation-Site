@@ -27,7 +27,9 @@ $breakpoints: (
   font-size: 13px;
   display: block;
   text-align: center;
-  margin: 20px 0 20px 0;
+  margin: 10px 0 10px 0;
+  border-bottom: 1px solid #000;
+  display: inline-block;
 }
 
 .container {
@@ -66,7 +68,7 @@ $breakpoints: (
   background-color: #fff;
   border-radius: 5px;
   padding: 8px;
-  font-size: 20px;
+  font-size: 18px;
   width: 120px;
 }
 
@@ -74,6 +76,7 @@ $breakpoints: (
   margin-top: 10px;
   margin-left: 20px;
   font-size: 14px;
+  border-bottom: 1px solid #000;
 }
 
 .adult {
@@ -106,17 +109,32 @@ $breakpoints: (
   border: none;
 }
 
+.secondrybtn{
+  border: 1px solid rgb(101, 109, 183); ;
+  border-radius: 5px;
+  background-color: #fff;
+  width: 150px;
+  height: 38px;
+  font-size: 17px;
+}
+
 .serchInput {
   margin-top: 20px;
   border: 1px solid rgb(101, 109, 183);
   background-color: #fff;
   border-radius: 5px;
   padding: 8px;
-  font-size: 20px;
+  font-size: 18px;
   width: 120px;
   @include mq(sp) {
     width: 150px;
   }
+}
+
+.rightBtn{
+  text-align: right;
+  padding: 2%;
+  margin-right: 50px;
 }
 
 .adult {
@@ -221,7 +239,7 @@ $breakpoints: (
     border: 1px solid RGB(44, 61, 79);
     padding: 3px;
     border-radius: 2px;
-    margin-left: 30px;
+    margin-left: 18px;
     background-color: #fff;
   }
 }

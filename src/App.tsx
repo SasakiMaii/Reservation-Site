@@ -8,7 +8,7 @@ import ReservateComplete from './pages/books/ReservateComplete';
 import ReservateHistory from './pages/books/ReservateHistory';
 import GestroomPlan from './pages/rooms/Gestroom';
 import SearchResults from './pages/rooms/SearchResults';
-import RoomSearch from './pages/rooms/Search';
+import RoomSearch from './components/rooms/Search';
 import { Registered } from './pages/users/Registered';
 import { Login } from './pages/users/Login';
 import Top from './pages/Top';
@@ -25,7 +25,7 @@ function App() {
           <Route path='/books/ReservateComplete' element={<ReservateComplete />}></Route>
           <Route path='/books/ReservateHistory' element={<ReservateHistory />}></Route>
           <Route path='/' element={<SearchResults />}></Route>
-          <Route path='/rooms/RoomSearch' element={<RoomSearch />}></Route>
+          <Route path='/rooms/RoomPlanSearch' element={<RoomSearch />}></Route>
           <Route path='/rooms/Gestroom' element={<Gestroom />}></Route>
           <Route path='/users/Login' element={<Login />}></Route>
           <Route path='/rooms/Plan' element={<Plan/>}></Route>

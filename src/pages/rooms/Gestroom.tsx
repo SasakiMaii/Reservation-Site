@@ -18,11 +18,14 @@ import {
   startAfter,
   endBefore,
 } from "firebase/firestore";
+import  RoomPlanSearch from "../../components/rooms/Search";
 
 const GestroomPlan = () => {
   return (
     <>
       <Header />
+      <p className={RoomStyle.pageTitle}>空室検索</p>
+      <RoomPlanSearch/>
       <p className={RoomStyle.pageTitle}>全ての客室＆プラン</p>
       <div className={RoomStyle.roomLinkWrapper}>
         <Link to={"#"} className={RoomStyle.roomLink}>
@@ -85,8 +88,8 @@ export const RoomCard = () => {
   const handleResarvedRoomBtn = async () => {};
 
   //次のページへ進むボタン。ソートボタンがクリックされていた場合は、料金順でページングになるように。
-  console.log(descClick)
-  console.log(ascClick)
+  // console.log(descClick)
+  // console.log(ascClick)
   const handleNextPage = async () => {
     if(descClick===true){
       const priceDesc = query(soartData, orderBy("price","desc"), limit(3));
