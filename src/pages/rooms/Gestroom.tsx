@@ -1,4 +1,3 @@
-import Pageing from "../../components/rooms/Pageing";
 import RoomSearchSoart from "../../components/rooms/RoomSearchSoart";
 import RoomStyle from "../../styles/rooms/_Gestroom.module.scss";
 import PrimaryButton from "../../components/button/PrimaryButton";
@@ -6,8 +5,9 @@ import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
 import { Link } from "react-router-dom";
 import PagingStyle from "../../styles/rooms/_Paging.module.scss";
-// import "firebase";
 import { useEffect, useState } from "react";
+import {useNavigate} from "react-router-dom"
+// import "firebase";
 import db from "../../Firebase";
 import {
   collection,
@@ -16,19 +16,23 @@ import {
   orderBy,
   limit,
   startAfter,
+  endBefore,
 } from "firebase/firestore";
+import  RoomPlanSearch from "../../components/rooms/Search";
 
 const GestroomPlan = () => {
   return (
     <>
       <Header />
+      <p className={RoomStyle.pageTitle}>空室検索</p>
+      <RoomPlanSearch/>
       <p className={RoomStyle.pageTitle}>全ての客室＆プラン</p>
       <div className={RoomStyle.roomLinkWrapper}>
         <Link to={"#"} className={RoomStyle.roomLink}>
           {" "}
           客室{" "}
         </Link>
-        <Link to={"/Plan"}> プラン </Link>
+        <Link to={"/rooms/Plan"}> プラン </Link>
       </div>
       <RoomCard />
       {/* <Pageing /> */}
@@ -44,8 +48,11 @@ export const RoomCard = () => {
   const [ascClick,setAscClick]=useState(false);
   const soartData = collection(db, "gestRoomType");
 
+
+
   useEffect(() => {
-    const roomDate = collection(db, "gestRoomType");
+    // const roomDate = collection(db, "gestRoomType");
+    const roomDate =query(soartData,orderBy("price"),limit(3));
     getDocs(roomDate).then((snapShot) => {
       SetRoom(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
@@ -81,8 +88,8 @@ export const RoomCard = () => {
   const handleResarvedRoomBtn = async () => {};
 
   //次のページへ進むボタン。ソートボタンがクリックされていた場合は、料金順でページングになるように。
-  console.log(descClick)
-  console.log(ascClick)
+  // console.log(descClick)
+  // console.log(ascClick)
   const handleNextPage = async () => {
     if(descClick===true){
       const priceDesc = query(soartData, orderBy("price","desc"), limit(3));
@@ -105,14 +112,44 @@ export const RoomCard = () => {
         ...doc.data()
       }))
       // console.log(nextPage)
+
       SetRoom(nextPage)
     }else{
+      const priceDesc = query(soartData, orderBy("price"), limit(3));
+      const data = await getDocs(priceDesc);
+      const last = data.docs[data.docs.length - 1];
+      const next = query(soartData, orderBy("price"), startAfter(last), limit(3));
+      const nextdata =await getDocs(next)
+      const nextPage = nextdata.docs.map((doc)=>({
+        ...doc.data()
+      }))
+      // console.log(nextPage)
 
+      SetRoom(nextPage)
     }
   };
   //前のページに戻るボタン
-  const handlePrevPage = () => {
-
+  const handlePrevPage =async () => {
+    //安い順の時はこれでちゃんと戻れる
+    if(descClick===true){
+      const priceDesc = query(soartData, orderBy("price", "desc"), limit(3),);
+      const data = await getDocs(priceDesc);
+      const newDescData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      SetRoom(newDescData)
+    }else{
+      const p = query(soartData, orderBy("price"), limit(4));
+      const data = await getDocs(p);
+      const descPrev = data.docs[data.docs.length - 1];
+      const next = query(soartData, orderBy("price"), endBefore(descPrev), limit(3));
+      const descPrevdata =await getDocs(next)
+      const prevPage = descPrevdata.docs.map((doc)=>({
+        ...doc.data()
+      }))
+      SetRoom(prevPage)
+    }
   };
 
   return (
@@ -130,7 +167,7 @@ export const RoomCard = () => {
                 <div className={RoomStyle.detailContainer}>
                   <img
                     className={RoomStyle.roompic}
-                    src="hotel-4.jpg"
+                    src="../hotel-4.jpg"
                     alt="roompicture"
                   />
                   <div className={RoomStyle.roomDetails}>

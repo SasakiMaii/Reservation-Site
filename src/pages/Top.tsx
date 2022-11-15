@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import useSWR, { useSWRConfig } from 'swr';
+
 // import { ItemCardsWrap } from "components/itemCards-wrap";
 // import { SearchForm } from "components/searchForm"
 // import { Loader } from "components/loader";

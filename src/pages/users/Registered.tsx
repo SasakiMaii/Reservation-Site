@@ -97,7 +97,7 @@ export const Registered = () => {
       zipErrorState === "ok" &&
       addressErrorState === "ok" &&
       passwordErrorState === "ok" &&
-      confirmPasswordErrorState === "ok" 
+      confirmPasswordErrorState === "ok"
     ) {
 
       // Authentication 新規登録
