@@ -56,7 +56,7 @@ $breakpoints: (
 .pageTitle {
   display: inline-block;
   font-size: 25px;
-  margin: 60px;
+  margin: 60px 60px 20px 60px;
   padding: 3px;
   border-bottom: 1px dotted rgb(57, 57, 57);
   @include mq(sp) {

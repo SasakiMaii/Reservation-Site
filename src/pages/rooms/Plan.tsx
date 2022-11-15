@@ -9,11 +9,14 @@ import Footer from "../../components/layout/footer";
 import RoomSearchSoart from "../../components/rooms/RoomSearchSoart";
 import Pageing from "../../components/rooms/Pageing";
 import PagingStyle from "../../styles/rooms/_Paging.module.scss";
+import RoomPlanSearch  from "../../components/rooms/Search";
 //プラン
 const Plan = () => {
   return (
     <>
       <Header />
+      <p className={PlanStyle.pageTitle}>空室検索</p>
+      <RoomPlanSearch/>
       <p className={PlanStyle.pageTitle}>全ての客室＆プラン</p>
       <div className={PlanStyle.planLinkWrapper}>
         <Link to={"/rooms/GestRoom"}>客室</Link>
@@ -58,16 +61,15 @@ export const PlanCard = () => {
 
   //firebaseのID順
   useEffect(() => {
-    const planData = collection(db, "Plan");
+    const planData = query(soartData,orderBy("price"),limit(3));
     getDocs(planData).then((snapShot) => {
       SetPlans(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
   }, []);
 
   const handleResarvedEmptyRoom = () => {};
-
-  console.log(descClick)
-  console.log(ascClick)
+  // console.log(descClick)
+  // console.log(ascClick)
   const handleNextPage = async () => {
     if(descClick===true){
       const priceDesc = query(soartData, orderBy("price","desc"), limit(3));
