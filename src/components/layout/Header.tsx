@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import headerStyle from "../../styles/layout/_Header.module.scss";
 import PrimaryButton from "../button/PrimaryButton";
+import { useAuthState } from "react-firebase-hooks/auth"
+import { auth, provider } from '../../Firebase'
 
 const Header = () => {
   //予約のイベント
-  const handleResarve=()=>{
+  const handleResarve = () => {
 
   }
   return (
@@ -22,15 +24,45 @@ const Header = () => {
             <li>
               <Link to={"/"}>お問い合わせ</Link>
             </li>
-            <li>
+            {/* <li>
               <Link to={"/"}>ログイン</Link>
-            </li>
+            </li> */}
+            <Certification />
           </ul>
-              <PrimaryButton onClick={handleResarve}>ご予約</PrimaryButton>
+          <PrimaryButton onClick={handleResarve}>ご予約</PrimaryButton>
         </div>
       </div>
     </>
   );
 };
+
+
+// ログインログアウト判定
+const Certification = () => {
+  const [user] = useAuthState(auth);
+
+  if (!user) {
+    return (
+      <>
+        <li>
+          <Link to={"/"}>ログイン</Link>
+        </li>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <li>
+          <button onClick={() => {
+            auth.signOut()
+              .then(() => {
+                alert("ログアウトしました。")
+              })
+          }}>ログアウト</button>
+        </li>
+      </>
+    )
+  }
+}
 
 export default Header;

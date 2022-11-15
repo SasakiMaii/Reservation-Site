@@ -11,12 +11,16 @@ import { ConfirmPasswordInput } from '../../components/form/confirmPassword'
 import PrimaryButton from '../../components/button/PrimaryButton'
 // import { useRouter } from 'next/router'
 import SearchStyle from "../../styles/rooms/_Search.module.scss";
-import LoginStyle from "../../styles/users/_Registered.module.scss"
-import { auth } from '../../Firebase'
+import LoginStyle from "../../styles/users/_login.module.scss"
+import { auth, provider } from '../../Firebase'
 import { useAuthState } from "react-firebase-hooks/auth"
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import {  useNavigate } from 'react-router-dom';
-import { doc } from 'firebase/firestore'
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom';
+import { doc } from 'firebase/firestore';
+import Header from "../../components/layout/Header";
+
+
+
 
 export const Login = () => {
   // ログインのstatus管理
@@ -38,7 +42,7 @@ export const Login = () => {
   const clear = () => {
     SetMailErrorState("init")
     SetPasswordErrorState("init")
-   
+
     SetMailValue("")
     SetPasswordValue("")
 
@@ -50,36 +54,36 @@ export const Login = () => {
   const login = () => {
     if (
       mailErrorState === "ok" &&
-      passwordErrorState === "ok" 
+      passwordErrorState === "ok"
     ) {
 
       // ログインしているか判定
-      // if(!user){
-        // react-hook ログイン関数 
-        signInWithEmailAndPassword(auth,mailValue,passwordValue)
-        .then(user =>{
-          alert("ログイン成功")    
+      if(!user){
+
+      // react-hook ログイン関数 
+      signInWithEmailAndPassword(auth, mailValue, passwordValue)
+        .then(user => {
+          alert("ログインしました。")
           navigate('/');  //  画面遷移
-        }, err =>{
+          // console.log(user.user.email)
+        }, err => {
           alert("メールアドレスかパスワードが違います")
         })
-        
-      // }
-      // else{
-      //   alert("既にログインしています")
-      //   console.log(user.email)
-      // }
 
+      }
+      else{
+        alert("ログアウトしてください")
+      }
 
-      } else {
+    } else {
       SetErrorFlag("true");
     }
   }
 
-
+  console.log(user)
   return (
     <>
-
+      <Header />
       <div className={`${LoginStyle.main} container`}>
 
         <form className={` ${LoginStyle.form}`}>
@@ -110,17 +114,53 @@ export const Login = () => {
           <div className={`items-center justify-center flex flex-wrap my-4 ${LoginStyle.buttonGroup}`}>
 
             {/* Primary Button */}
-            <button 
-              type="button" 
+            <button
+              type="button"
               className={`${SearchStyle.searchbtn}  ${LoginStyle.LoginButton}`}
               onClick={login}
-              >ログイン</button>
+            >ログイン</button>
+
+            {/* クリアボタン */}
+            {/* <button type="reset" className={`${LoginStyle.clearBtn}`} onClick={clear}>クリア</button> */}
+
+            {/* Primary Button　サインアウト（仮） */}
+            {/* <button
+              type="button"
+              className={`${SearchStyle.searchbtn}  ${LoginStyle.LoginButton}`}
+              onClick={() => {
+                auth.signOut()
+                  .then(() => {
+                    alert("サインアウトしました。")
+                  })
+              }}
+            >サインアウト</button> */}
 
 
-            <button type="reset" className={`text-gray-900 px-4 py-2 rounded-md text-sm mt-5 ${LoginStyle.clearBtn}`} onClick={clear}>クリア</button>
           </div>
+          <div className={` ${LoginStyle.iconGroup}`}>
+
+
+            <button type="button"  onClick={() => {
+              if(!user){
+                signInWithPopup(auth, provider)
+                .then((users)=>{
+                  console.log(auth.currentUser?.displayName)
+                  
+                })
+              }else{
+                alert("ログアウトしてください")
+              }
+            }}>
+              <img  src="/btn_google_signin_light_normal_web@2x.png" alt="google-icon"  className={` ${LoginStyle.googleIcon}`} />
+
+            </button>
+
+          </div>
+
         </form>
       </div>
     </>
   )
 }
+
+// auth.currentUser?.photoURL
