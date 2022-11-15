@@ -1,15 +1,89 @@
 import { useState, useEffect } from "react";
 import ReservateHistoryStyles from "../../styles/books/ReservateHistory.module.scss";
-import { ArrivalTime, cancel } from "../../components/ReservateConfirmContents";
-import db from "../../Firebase.js";
-import { collection, doc, setDoc, getDocs, addDoc } from "firebase/firestore";
-// import PrimaryButton from "../../components/PrimaryButton";
+import {
+  ArrivalTime,
+  cancel,
+  newCityRef,
+} from "../../components/books/ReservateConfirmContents";
+import db from "../../Firebase";
+import { auth } from '../../Firebase';
+import { useAuthState } from "react-firebase-hooks/auth";
+import {
+  collection,
+  doc,
+  setDoc,
+  getDocs,
+  addDoc,
+  updateDoc,
+  query,
+  where,
+  getDoc,
+} from "firebase/firestore";
+
 
 const ReservateHistory = () => {
   const [change, setChange] = useState(false);
   const [click, setClick] = useState(false);
   const [clickReservateDetails, setClickReservateDetails] = useState(false);
   const [reserves, setReserves] = useState<any>([]);
+  const [adultsNumber, setAdultsNum] = useState("");
+  const [childrenNumber, setChildrenNum] = useState("");
+  //ログインしているユーザーのIDが入る
+  const [docID, setDocID] = useState<any>("");
+
+  //inputに入力された数字の型を数値に変換（変換前は文字列）
+  const adultsNum = parseInt(adultsNumber);
+  const childrenNum = parseInt(childrenNumber);
+
+
+
+  //firebaseからログインユーザーの予約情報を取得
+
+  //ログインしているユーザー情報の取得（メールアドレスと一致させる）
+  const [user] = useAuthState(auth);
+  console.log(user);
+
+  // firebaseデータ　ドキュメントID取得
+  useEffect(() => {
+    const documentFetch = async () => {
+      const q = query(
+        collection(db, "reserved"),
+        where("mail", "==", "test@test.com")
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc: any) => {
+        // setDocx(doc.id)
+        // console.log(doc.id, "=>", doc.data().adultsNum);
+        // console.log(doc.id);
+        // console.log(doc.data().contact);
+        setDocID(doc.id);
+      });
+    };
+    documentFetch();
+  }, []);
+  console.log(docID);
+
+
+  useEffect(() => {
+    //データベースからデータを取得する
+    const reserveData = query(
+      collection(db, "reserved"),
+      where("mail", "==", "sample@sample.com")
+    );
+    getDocs(reserveData).then((reserveItem) => {
+      setReserves(reserveItem.docs.map((doc) => ({ ...doc.data() })));
+    });
+  }, []);
+
+  //firebaseデータ更新（ドキュメントID指定して更新）
+  const onClickReserveChange = async () => {
+    const updateRef = doc(db, "reserved", docID);
+    await updateDoc(updateRef, {
+      adultsNum: adultsNum,
+      childrenNum: childrenNum,
+    });
+    alert("変更しました");
+  };
 
   const ClickCancelPolicy = () => {
     if (click === false) {
@@ -19,10 +93,33 @@ const ReservateHistory = () => {
     }
   };
 
+  const onChangeAdults = (e: any) => {
+    setAdultsNum(e.target.value);
+  };
+
+  const onChangeChildren = (e: any) => [setChildrenNum(e.target.value)];
+
   const reservateChange = [
     {
       title: "宿泊人数（部屋の定員を超えない場合のみ）",
-      contents: <input type="number" min={1} />,
+      contents: (
+        <div>
+          大人：
+          <input
+            type="number"
+            value={adultsNumber}
+            onChange={onChangeAdults}
+            min={1}
+          />
+          小人：
+          <input
+            type="number"
+            value={childrenNumber}
+            onChange={onChangeChildren}
+            min={1}
+          />
+        </div>
+      ),
     },
     {
       title: "宿泊日数（減泊のみ）",
@@ -34,23 +131,13 @@ const ReservateHistory = () => {
     },
     {
       title: "",
-      contents: <ArrivalTime />,
+      // contents: <ArrivalTime />,
     },
     {
       title: <button onClick={ClickCancelPolicy}>キャンセルポリシー</button>,
       contents: click ? <div>{cancel}</div> : "",
     },
   ];
-
-  //propsでもらってくるほうが良い？
-  useEffect(() => {
-    //データベースからデータを取得する
-    const reserveData = collection(db, "reserved");
-    getDocs(reserveData).then((reserveItem) => {
-      setReserves(reserveItem.docs.map((doc) => ({ ...doc.data() })));
-      // console.log(reserves);
-    });
-  }, []);
 
   const clickChange = () => {
     if (change === false) {
@@ -78,9 +165,34 @@ const ReservateHistory = () => {
           <h3>宿泊待ち予約</h3>
           <div className={ReservateHistoryStyles.unLodgerContents}>
             <p>プラン内容：</p>
+            <ul>
+              {reserves.map((reserveItem: any) => {
+                return (
+                  <>
+                    <li>宿泊プラン：{reserveItem.plan}</li>
+                    <li>客室：{reserveItem.roomType}</li>
+                    <li>宿泊日程：{reserveItem.checkIn}〜{reserveItem.checkOut}</li>
+                    {(function () {
+                      let peopleNumber =
+                        reserveItem.adultsNum + reserveItem.childrenNum;
+                      return (
+                        <li>
+                          予約人数：{peopleNumber}
+                          名（内訳：大人{reserveItem.adultsNum}名、子ども
+                          {reserveItem.childrenNum}名）
+                        </li>
+                      );
+                    })()}
+                  </>
+                );
+              })}
+            </ul>
             <button onClick={clickChange}>変更</button>
             {change ? (
-              <ChangeReservate reservateChange={reservateChange} />
+              <ChangeReservate
+                reservateChange={reservateChange}
+                onClickReserveChange={onClickReserveChange}
+              />
             ) : (
               ""
             )}
@@ -104,31 +216,25 @@ const ReservateHistory = () => {
 
 export default ReservateHistory;
 
-export const ChangeReservate = ({ reservateChange }: any) => {
-  const changeSubmit = (e: any) => {
-    e.preventDefault();
-  };
+export const ChangeReservate = (props: any) => {
+  const { reservateChange, onClickReserveChange } = props;
 
   return (
-    <form action="#" onSubmit={changeSubmit}>
-      <div>
-        <ul>
-          {reservateChange.map((change: any, index: number) => {
-            return (
-              <div key={index}>
-                <li>
-                  {change.title}
-                  {change.contents}
-                </li>
-              </div>
-            );
-          })}
-        </ul>
-        <button onClick={() => alert("予約内容を変更しました")}>
-          予約内容を変更する
-        </button>
-      </div>
-    </form>
+    <div>
+      <ul>
+        {reservateChange.map((change: any, index: number) => {
+          return (
+            <div key={index}>
+              <li>
+                {change.title}
+                {change.contents}
+              </li>
+            </div>
+          );
+        })}
+      </ul>
+      <button onClick={onClickReserveChange}>予約内容を変更する</button>
+    </div>
   );
 };
 

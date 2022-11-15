@@ -16,13 +16,10 @@ const Header = () => {
         <div className={headerStyle.headerNav}>
           <ul>
             <li>
-              <Link to={"/"}>アクセス</Link>
+              <Link to={"/rooms/Gestroom"}>客室・プラン</Link>
             </li>
             <li>
-              <Link to={"/"}>客室・プラン</Link>
-            </li>
-            <li>
-              <Link to={"/"}>お問い合わせ</Link>
+              <Link to={"/"}>予約内容確認</Link>
             </li>
             {/* <li>
               <Link to={"/"}>ログイン</Link>

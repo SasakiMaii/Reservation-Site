@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { ReservateConfirmContents } from "../../components/ReservateConfirmContents"
+import { ReservateConfirmContents } from "../../components/books/ReservateConfirmContents"
 import ReservateConfirmStyles from  "../../styles/books/ReservateConfirm.module.scss";
 import { Link } from "react-router-dom";
+import { Login } from "../users/Login";
 
 const ReservateConfirm = () => {
   const [openDisplay, setOpenDisplay] = useState(false);
@@ -21,7 +22,9 @@ const ReservateConfirm = () => {
         <div className={ReservateConfirmStyles.reservateLogin}>
           <div className={ReservateConfirmStyles.registerComplete}>
             <h3>会員登録済みのお客様</h3>
-            <div>ログインコンポーネント</div>
+            <div>
+              <Login />
+            </div>
           </div>
           <div className={ReservateConfirmStyles.registerIncomplete}>
             <h3>会員未登録のお客様</h3>
