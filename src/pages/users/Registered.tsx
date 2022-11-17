@@ -145,7 +145,8 @@ export const Registered = () => {
             firstNameValue={firstNameValue}
             SetFirstNameValue={SetFirstNameValue}
 
-            firstNameErrorState={firstNameErrorState} SetFirstNameErrorState={SetFirstNameErrorState}
+            firstNameErrorState={firstNameErrorState} 
+            SetFirstNameErrorState={SetFirstNameErrorState}
             lastNameErrorState={lastNameErrorState}
             SetLastNameErrorState={SetLastNameErrorState}
             errorFlag={errorFlag}
@@ -166,7 +167,10 @@ export const Registered = () => {
           <hr />
 
           <TelInput
-            telValue={telValue} SetTelValue={SetTelValue} telErrorState={telErrorState} SetTelErrorState={SetTelErrorState}
+            telValue={telValue} 
+            SetTelValue={SetTelValue} 
+            telErrorState={telErrorState} 
+            SetTelErrorState={SetTelErrorState}
             errorFlag={errorFlag}
           />
           <hr />
