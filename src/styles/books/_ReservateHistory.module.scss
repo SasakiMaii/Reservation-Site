@@ -1,0 +1,82 @@
+//共通
+@import url("https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap");
+
+* {
+  color: rgb(65, 65, 65);
+  max-width: auto;
+  font-family: "Kosugi Maru", sans-serif;
+}
+
+//コンポーネント背景色
+$mainColor: rgb(227, 227, 227);
+
+//レスポンシブ
+$breakpoints: (
+  pc: "screen and (min-width:1200px)",
+  tab: "screen and (max-width:610px)",
+  sp: "screen and (max-width:414px)",
+);
+
+@mixin mq($breakpoint: pc) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
+.reservatehistoryTitle {
+  text-align: center;
+  margin: 50px;
+}
+
+.unLodger {
+  width: 800px;
+  max-height: 520px;
+  margin: 20px auto;
+  background-color: $mainColor;
+}
+
+.lodged {
+  width: 800px;
+  margin: 20px auto;
+  background-color: $mainColor;
+}
+
+.unLodgerContents {
+  display: flex;
+}
+
+.unLodgerContents button {
+  width: 100px;
+  height: 30px;
+  margin: 10px auto;
+  text-align: center;
+  padding: 5px;
+  background-color: rgb(101, 109, 183);
+  border-radius: 10px;
+  color: #fff;
+}
+
+.unLodgerContentsTotal {
+  padding: 10px 5px;
+  line-height: 20px;
+}
+
+.changeReservateBtn {
+  width: 170px;
+  height: 30px;
+  margin: 10px auto;
+  text-align: center;
+  padding: 5px;
+  background-color: rgb(101, 109, 183);
+  border-radius: 10px;
+  color: #fff;
+}
+
+.changeReservate input {
+  margin-top: 5px;
+  margin-right: 5px;
+  border: 1px solid rgb(24, 25, 28);
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 8px;
+}

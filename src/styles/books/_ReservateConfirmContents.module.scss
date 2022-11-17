@@ -1,0 +1,195 @@
+//共通
+@import url("https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap");
+
+* {
+  color: rgb(65, 65, 65);
+  max-width: 100%;
+  font-family: "Kosugi Maru", sans-serif;
+}
+
+//コンポーネント背景色
+$mainColor: rgb(227, 227, 227);
+
+//レスポンシブ
+$breakpoints: (
+  pc: "screen and (min-width:1200px)",
+  tab: "screen and (max-width:610px)",
+  sp: "screen and (max-width:414px)",
+);
+
+@mixin mq($breakpoint: pc) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
+.subscriber {
+  background-color: $mainColor;
+  margin-top: 30px;
+  // margin-left: 20px;
+  padding: 10px;
+  width: 550px;
+  // width: 50%;
+  border-radius: 20px;
+  box-shadow: 0px 0px 8px -4px #777777;
+  @include mq(sp) {
+    max-width: 380px;
+    margin: 0 auto;
+  }
+}
+
+.subscriber p {
+  margin-top: 10px;
+}
+
+.lodger {
+  background-color: $mainColor;
+  margin-top: 30px;
+  // margin-left: 20px;
+  margin-bottom: 30px;
+  padding: 10px;
+  width: 550px;
+  // width: 50%;
+  border-radius: 20px;
+  box-shadow: 0px 0px 8px -4px #777777;
+}
+
+.lodger ul {
+  list-style-type: none;
+}
+
+.reservateplan {
+  background-color: $mainColor;
+  width: 550px;
+  // width: 50%;
+  height: 480px;
+  margin-top: 30px;
+  // margin-left: 120px;
+  margin-right: 20px;
+  padding: 10px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 8px -4px #777777;
+}
+
+.reservateplan ul {
+  list-style-type: none;
+}
+
+// .reservePlanContents {
+//   display: flex;
+// }
+
+.reservateplan button {
+  background-color: rgb(101, 109, 183);
+  color: #fff;
+  width: 70px;
+  height: 30px;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
+.reservateplan button:hover {
+  opacity: 0.8;
+}
+
+.payment {
+  background-color: $mainColor;
+  margin: 20px auto;
+  padding: 10px;
+  border-radius: 20px;
+  width: 97%;
+  box-shadow: 0px 0px 8px -4px #777777;
+}
+
+.payment span {
+  color: red;
+}
+
+.payment label {
+  padding: 10px;
+}
+
+.information {
+  display: flex;
+  justify-content: space-around;
+  // background-color: pink;
+  max-width: 1600px;
+  max-height: 1000px;
+  margin: 0 auto;
+  flex-direction: column;
+}
+
+.input {
+  margin-top: 5px;
+  margin-right: 5px;
+  border: 1px solid rgb(24, 25, 28);
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 8px;
+  // @include mq(sp) {
+  //   width: 150px;
+  // }
+}
+
+textarea {
+  width: 80%;
+  height: 5rem;
+  margin-bottom: 10px;
+}
+
+.reservateButton {
+  width: 170px;
+  height: 50px;
+  margin: 10px auto;
+  text-align: center;
+  padding: 18px;
+  background-color: rgb(101, 109, 183);
+  border-radius: 10px;
+}
+
+.reservateButton button {
+  color: #fff;
+}
+
+.reservateButton:hover {
+  opacity: 0.8;
+}
+
+.accordionMenu button {
+  text-align: left;
+  width: 100%;
+  padding: 10px 0;
+  // border-top: 0.5px solid black;
+  border-bottom: 0.5px solid black;
+}
+
+.personInformation {
+  // width: 1600px;
+}
+
+.cancel {
+  margin: 5px;
+}
+
+.cancellist {
+  margin: 5px 0;
+}
+
+.reservePlanList span {
+  display:inline-block;
+  width: 100px;
+  margin-left: 10px;
+}
+
+.reservePlanList li {
+  padding-top: 25px;
+}
+
+.totalPrice {
+  background-color: rgb(247, 246, 234);
+  width: 500px;
+  height: 100px;
+  margin-top: 20px;
+  border-radius: 10px;
+  font-size: 20px;
+}

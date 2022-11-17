@@ -1,8 +1,10 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import ReservateConfirmContentsStyles from "../../styles/books/ReservateConfirmContents.module.scss";
+import ReservateConfirmContentsStyles from "../../styles/books/_ReservateConfirmContents.module.scss";
 import { useNavigate } from "react-router-dom";
 import db from "../../Firebase.js";
-import { collection, doc, setDoc, getDocs, addDoc, updateDoc } from "firebase/firestore";
+import { collection, doc, setDoc, getDocs, addDoc, updateDoc,query,where, deleteDoc } from "firebase/firestore";
+import { LodgerName } from "./ReservateConfirmInputName";
+import { ReserveName } from "./ReservateConfirmInputName";
 // import PrimaryButton from "./PrimaryButton";
 
 export const ReservateConfirmContents = () => {
@@ -19,7 +21,7 @@ export const ReservateConfirmContents = () => {
     value: "credit"
   }
 ]
-const selectItem = ["--",9,10,11,12,13,14,15,16,17,18,19,20,21,22]
+const selectItem = ["--",15,16,17,18,19,20,21,22]
 
   const navigate = useNavigate();
   const [val, setVal] = useState(["check"]);
@@ -35,18 +37,35 @@ const selectItem = ["--",9,10,11,12,13,14,15,16,17,18,19,20,21,22]
   const [tel, setTel] = useState<string>("");
   const [mail, setMail] = useState<string>("");
   const [contact, setContact] = useState<string>("");
+  // const [deleteMessage,setDeleteMessage] = useState(true);
+  const [deleteButton,setDeleteButton] = useState('block');
+  //ログインしているユーザーのIDが入る
+  const [docID, setDocID] = useState<any>("");
   // const [totalPrice,setTotalPrice] = useState();
   
   //firebaseから予約データ取得、予約確定時にfirebaseへ送信するためのデータ
   const reserveItem = reserves.map((reserveItems:any) => reserveItems)
 
-  console.log(selectVal);
-  console.log(radioVal);
-  
+   //inputに入力された数字の型を数値に変換（変換前は文字列）
+   const arrivalTime = parseInt(selectVal);
+
 
   const onChangeContact = (e: any) => {
     setContact(e.target.value);
   };
+
+  const onChangeReserveFirstName = (e:any) => {
+    if(reserveFirstName) {
+      setReserveFirstName(e.target.value)
+    } else {
+
+    }
+  }
+  console.log(reserves);
+
+  const onChangeReserveLastName = (e:any) => {
+    setReserveLastName(e.target.value)
+  }
 
   const onChangeLodgeFirstName = (e: any) => {
     setLodgeFirstName(e.target.value);
@@ -62,8 +81,38 @@ const selectItem = ["--",9,10,11,12,13,14,15,16,17,18,19,20,21,22]
     getDocs(reserveData).then((reserveItem) => {
       setReserves(reserveItem.docs.map((doc) => ({ ...doc.data() })));
     });
-    
   }, []);
+
+  //ドキュメントID取得
+  useEffect(() => {
+    const documentFetch = async () => {
+      const q = query(
+        collection(db, "reserve"),
+        //ログイン情報と照合したい？reserveにメールアドレス入る？
+        where("roomType", "==", "north")
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc: any) => {
+        // setDocx(doc.id)
+        // console.log(doc.id, "=>", doc.data().adultsNum);
+        // console.log(doc.id);
+        // console.log(doc.data().contact);
+        setDocID(doc.id);
+      });
+    };
+    documentFetch();
+  });
+  console.log(docID);
+
+  //プラン削除
+  const clickDelete = async () => {
+    await deleteDoc(doc(db,"reserve",docID))
+    alert('削除しました')
+    window.location.reload()
+    // setDeleteMessage('block');
+    setDeleteButton('none');
+  }
+
 
   const handleChange = (e: any) => {
     if (val.includes(e.target.value)) {
@@ -86,30 +135,6 @@ const selectItem = ["--",9,10,11,12,13,14,15,16,17,18,19,20,21,22]
   // const totalPrice = reserveItem[0].price * 1.1;
 
   
-
-  //予約時・予約確定時のデータをfirebaseに送信
-  // const clickReservate = async () => {
-  //   await addDoc(collection(db, "reserved"), {
-  //     reserveFirstName: reserveFirstName,
-  //     reserveLastName: reserveLastName,
-  //     lodgeFirstName: lodgeFirstName,
-  //     lodgeLastName: lodgeLastName,
-  //     tel: tel,
-  //     mail: mail,
-  //     contact: contact,
-  //     payment: radioVal,
-  //     adultsNum: reserveItem[0].adultsNum,
-  //     childrenNum: reserveItem[0].childrenNum,
-  //     roomType: reserveItem[0].roomType,
-  //     plan: reserveItem[0].plan,
-  //     checkIn: reserveItem[0].checkIn,
-  //     checkOut: reserveItem[0].checkOut,
-  //     reservationDate: nowDate,
-  //     price: reserveItem[0].price * 1.1
-  //   });
-  //   navigate("/books/ReservateComplete");
-  // };
-
   const clickReservate = async() => {
     const newCityRef = doc(collection(db,"reserved"));
     // const docRef = collection(db,"reserved");
@@ -130,7 +155,7 @@ const selectItem = ["--",9,10,11,12,13,14,15,16,17,18,19,20,21,22]
       checkOut: reserveItem[0].checkOut,
       reservationDate: nowDate,
       price: reserveItem[0].price * 1.1,
-      arrivalTime: selectVal
+      arrivalTime: arrivalTime
     }
     await setDoc(newCityRef,data);
     navigate("/books/ReservateComplete");
@@ -144,39 +169,7 @@ const selectItem = ["--",9,10,11,12,13,14,15,16,17,18,19,20,21,22]
             {/* ログイン済みの場合、ログイン情報から自動入力 */}
             <h3>予約者情報</h3>
             <p>氏名</p>
-            <div>
-              <input
-                type="text"
-                value={reserveFirstName}
-                onChange={(e) => setReserveFirstName(e.target.value)}
-                placeholder="姓"
-                className={ReservateConfirmContentsStyles.input}
-              />
-              <input
-                type="text"
-                value={reserveLastName}
-                onChange={(e) => setReserveLastName(e.target.value)}
-                placeholder="名"
-                className={ReservateConfirmContentsStyles.input}
-              />
-              <br />
-              <input
-                type="text"
-                placeholder="姓(フリガナ)"
-                className={ReservateConfirmContentsStyles.input}
-              />
-              <input
-                type="text"
-                placeholder="名(フリガナ)"
-                className={ReservateConfirmContentsStyles.input}
-              />
-            </div>
-            {/* <LodgerName
-              reserveFirstName={reserveFirstName}
-              onChangeReserveFirstName={onChangeReserveFirstName}
-              reserveLastName={reserveLastName}
-              onChangeReserveLastName={onChangeReserveLastName}
-            /> */}
+            <ReserveName onChangeReserveFirstName={onChangeReserveFirstName} onChangeReserveLastName={onChangeReserveLastName}/>
             <p>電話番号</p>
             <input
               type="tel"
@@ -228,30 +221,41 @@ const selectItem = ["--",9,10,11,12,13,14,15,16,17,18,19,20,21,22]
           </div>
         </div>
         <div className={ReservateConfirmContentsStyles.reservateplan}>
+          <div className={ReservateConfirmContentsStyles.reservePlanContents}>
           <h3>予約プラン確認</h3>
-          <ul>
+          <ul　className={ReservateConfirmContentsStyles.reservePlanList}>
             {reserves.map((reserve: any) => (
               <React.Fragment key={reserve.adultsNum}>
-                <li>客室：{reserve.roomType}</li>
-                <li>宿泊プラン：{reserve.plan}</li>
-                {/* <li>日程：{checkInDate}〜{checkOutDate}</li> */}
+                <li><span>客室</span>：{reserve.roomType}</li>
+                <li><span>宿泊プラン</span>：{reserve.plan}</li>
+                <li><span>日程</span>：{reserve.checkIn}〜{reserve.checkOut}</li>
                 {(function () {
                   let peopleNumber = reserve.adultsNum + reserve.childrenNum;
                   return (
                     <li>
-                      予約人数：{peopleNumber}
+                      <span>予約人数</span>：{peopleNumber}
                       名（内訳：大人{reserve.adultsNum}名、子ども
                       {reserve.childrenNum}名）
                     </li>
                   );
                 })()}
                 {(function () {
+                  const reserveNumber = reserve.adultsNum + reserve.childrenNum;
                   let totalPrice = reserve.price * 1.1;
-                  return <li>宿泊金額：{totalPrice}円（税込）</li>;
+                  let reserveTotalPrice = reserveNumber * totalPrice;
+                  return (
+                  <div className={ReservateConfirmContentsStyles.totalPrice}>
+                  <li><span>宿泊金額</span>：{reserveTotalPrice}円（税込）</li>
+                  </div>
+                  )
                 })()}
               </React.Fragment>
             ))}
           </ul>
+          </div>
+          <button onClick={clickDelete} style={{display: deleteButton}}>削除</button>
+          {/* {!deleteMessage ? (<p>選択中のプランがありません。</p>) : ("")} */}
+          
         </div>
       </div>
       <div className={ReservateConfirmContentsStyles.payment}>
@@ -317,41 +321,7 @@ export const Content = (props: any) => {
   );
 };
 
-export const LodgerName = (props:any) => {
 
-  const {lodgeFirstName,lodgeLastName,onChangeFirst,onChangeLast} = props;
-
-  return (
-    <>
-      <br />
-      <input
-        type="text"
-        value={lodgeFirstName}
-        onChange={onChangeFirst}
-        placeholder="姓"
-        className={ReservateConfirmContentsStyles.input}
-      />
-      <input
-        type="text"
-        value={lodgeLastName}
-        onChange={onChangeLast}
-        placeholder="名"
-        className={ReservateConfirmContentsStyles.input}
-      />
-      <br />
-      <input
-        type="text"
-        placeholder="姓(フリガナ)"
-        className={ReservateConfirmContentsStyles.input}
-      />
-      <input
-        type="text"
-        placeholder="名(フリガナ)"
-        className={ReservateConfirmContentsStyles.input}
-      />
-    </>
-  );
-};
 
 
 export const ArrivalTime = (props:any) => {
@@ -382,14 +352,13 @@ export const ArrivalTime = (props:any) => {
     </div> */}
     <div className={ReservateConfirmContentsStyles.checkTime}>
       <label htmlFor="arrivalTime">到着時間</label>
-      <select value={selectVal} onChange={selectValueChange}>
+      <select value={selectVal} onChange={selectValueChange} className={ReservateConfirmContentsStyles.input}>
         {selectItem.map((selects:any) => {
           return (
             <option value={selects} >{selects}</option>
           )
         })}
       </select>時
-      <p>a{selectVal}</p>
     </div>
     </>
   );

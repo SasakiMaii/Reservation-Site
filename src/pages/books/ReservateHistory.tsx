@@ -1,12 +1,14 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useState, useEffect } from "react";
-import ReservateHistoryStyles from "../../styles/books/ReservateHistory.module.scss";
+import ReservateHistoryStyles from "../../styles/books/_ReservateHistory.module.scss";
 import {
   ArrivalTime,
   cancel,
   newCityRef,
 } from "../../components/books/ReservateConfirmContents";
+import { LodgerName } from "../../components/books/ReservateConfirmInputName";
 import db from "../../Firebase";
-import { auth } from '../../Firebase';
+import { auth } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   collection,
@@ -19,7 +21,6 @@ import {
   where,
   getDoc,
 } from "firebase/firestore";
-
 
 const ReservateHistory = () => {
   const [change, setChange] = useState(false);
@@ -35,20 +36,22 @@ const ReservateHistory = () => {
   const adultsNum = parseInt(adultsNumber);
   const childrenNum = parseInt(childrenNumber);
 
-
-
   //firebaseからログインユーザーの予約情報を取得
 
-  //ログインしているユーザー情報の取得（メールアドレスと一致させる）
+
+  //ログインしているユーザーのメールアドレス（一致しているuserコレクションから取得）
   const [user] = useAuthState(auth);
-  console.log(user);
+  let userEmail = user?.email;
+  if(user){
+    console.log(user.email);
+  }
 
   // firebaseデータ　ドキュメントID取得
   useEffect(() => {
     const documentFetch = async () => {
       const q = query(
         collection(db, "reserved"),
-        where("mail", "==", "test@test.com")
+        where("mail", "==", userEmail)
       );
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc: any) => {
@@ -68,7 +71,7 @@ const ReservateHistory = () => {
     //データベースからデータを取得する
     const reserveData = query(
       collection(db, "reserved"),
-      where("mail", "==", "sample@sample.com")
+      where("mail", "==", userEmail)
     );
     getDocs(reserveData).then((reserveItem) => {
       setReserves(reserveItem.docs.map((doc) => ({ ...doc.data() })));
@@ -100,6 +103,10 @@ const ReservateHistory = () => {
   const onChangeChildren = (e: any) => [setChildrenNum(e.target.value)];
 
   const reservateChange = [
+    {
+      title: "宿泊者代表",
+      contents: <LodgerName />,
+    },
     {
       title: "宿泊人数（部屋の定員を超えない場合のみ）",
       contents: (
@@ -163,31 +170,38 @@ const ReservateHistory = () => {
       <div>
         <div className={ReservateHistoryStyles.unLodger}>
           <h3>宿泊待ち予約</h3>
-          <div className={ReservateHistoryStyles.unLodgerContents}>
-            <p>プラン内容：</p>
-            <ul>
-              {reserves.map((reserveItem: any) => {
-                return (
-                  <>
-                    <li>宿泊プラン：{reserveItem.plan}</li>
-                    <li>客室：{reserveItem.roomType}</li>
-                    <li>宿泊日程：{reserveItem.checkIn}〜{reserveItem.checkOut}</li>
-                    {(function () {
-                      let peopleNumber =
-                        reserveItem.adultsNum + reserveItem.childrenNum;
-                      return (
+          <div className={ReservateHistoryStyles.unLodgerContentsTotal}>
+            <div className={ReservateHistoryStyles.unLodgerContents}>
+              <div>
+                <h4>プラン内容</h4>
+                <ul>
+                  {reserves.map((reserveItem: any) => {
+                    return (
+                      <>
+                        <li>宿泊プラン：{reserveItem.plan}</li>
+                        <li>客室：{reserveItem.roomType}</li>
                         <li>
-                          予約人数：{peopleNumber}
-                          名（内訳：大人{reserveItem.adultsNum}名、子ども
-                          {reserveItem.childrenNum}名）
+                          宿泊日程：{reserveItem.checkIn}〜
+                          {reserveItem.checkOut}
                         </li>
-                      );
-                    })()}
-                  </>
-                );
-              })}
-            </ul>
-            <button onClick={clickChange}>変更</button>
+                        {(function () {
+                          let peopleNumber =
+                            reserveItem.adultsNum + reserveItem.childrenNum;
+                          return (
+                            <li>
+                              予約人数：{peopleNumber}
+                              名（内訳：大人{reserveItem.adultsNum}名、子ども
+                              {reserveItem.childrenNum}名）
+                            </li>
+                          );
+                        })()}
+                      </>
+                    );
+                  })}
+                </ul>
+              </div>
+              <button onClick={clickChange}>変更</button>
+            </div>
             {change ? (
               <ChangeReservate
                 reservateChange={reservateChange}
@@ -220,7 +234,7 @@ export const ChangeReservate = (props: any) => {
   const { reservateChange, onClickReserveChange } = props;
 
   return (
-    <div>
+    <div className={ReservateHistoryStyles.changeReservate}>
       <ul>
         {reservateChange.map((change: any, index: number) => {
           return (
@@ -233,7 +247,8 @@ export const ChangeReservate = (props: any) => {
           );
         })}
       </ul>
-      <button onClick={onClickReserveChange}>予約内容を変更する</button>
+      <button onClick={onClickReserveChange} className={ReservateHistoryStyles.changeReservateBtn}>予約内容を変更する</button>
+      
     </div>
   );
 };
