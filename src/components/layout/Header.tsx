@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import headerStyle from "../../styles/layout/_Header.module.scss";
 import PrimaryButton from "../button/PrimaryButton";
 import { useAuthState } from "react-firebase-hooks/auth"
-import { auth, provider } from '../../Firebase'
+import { auth } from '../../Firebase'
 
 const Header = () => {
   //予約のイベント
