@@ -1,25 +1,17 @@
 import { useState, useEffect } from "react";
 import ReservateHistoryStyles from "../../styles/books/ReservateHistory.module.scss";
-import {
-  ArrivalTime,
-  cancel,
-  newCityRef,
-} from "../../components/books/ReservateConfirmContents";
+import { cancel } from "../../components/books/ReservateConfirmContents";
 import db from "../../Firebase";
-import { auth } from '../../Firebase';
+import { auth } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import {
   collection,
   doc,
-  setDoc,
   getDocs,
-  addDoc,
   updateDoc,
   query,
   where,
-  getDoc,
 } from "firebase/firestore";
-
 
 const ReservateHistory = () => {
   const [change, setChange] = useState(false);
@@ -34,8 +26,6 @@ const ReservateHistory = () => {
   //inputに入力された数字の型を数値に変換（変換前は文字列）
   const adultsNum = parseInt(adultsNumber);
   const childrenNum = parseInt(childrenNumber);
-
-
 
   //firebaseからログインユーザーの予約情報を取得
 
@@ -62,7 +52,6 @@ const ReservateHistory = () => {
     documentFetch();
   }, []);
   console.log(docID);
-
 
   useEffect(() => {
     //データベースからデータを取得する
@@ -171,7 +160,9 @@ const ReservateHistory = () => {
                   <>
                     <li>宿泊プラン：{reserveItem.plan}</li>
                     <li>客室：{reserveItem.roomType}</li>
-                    <li>宿泊日程：{reserveItem.checkIn}〜{reserveItem.checkOut}</li>
+                    <li>
+                      宿泊日程：{reserveItem.checkIn}〜{reserveItem.checkOut}
+                    </li>
                     {(function () {
                       let peopleNumber =
                         reserveItem.adultsNum + reserveItem.childrenNum;

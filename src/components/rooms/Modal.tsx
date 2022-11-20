@@ -2,6 +2,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import SearchStyle from "../../styles/rooms/_Search.module.scss";
 import interactionPlugin from "@fullcalendar/interaction";
+import { GrFormDown } from "react-icons/gr";
 
 const Modal = ({
   showFlag,
@@ -12,6 +13,7 @@ const Modal = ({
   inputDate,
   setInputDate,
 }: any) => {
+  
   const closeModal = () => {
     setShowModal(false);
   };
@@ -76,20 +78,12 @@ const Modal = ({
                 <div className={SearchStyle.modalSelectcount}>
                   <p>宿泊数</p>
                   <select name="" id="">
-                    <option value="1">1泊 ▼</option>
+                    <option value="1">1泊</option>
                     <option value="2">2泊</option>
                     <option value="3">3泊</option>
                     <option value="4">4泊</option>
                   </select>
-                </div>
-                <div className={SearchStyle.modalSelectroom}>
-                  <p>室数</p>
-                  <select name="" id="">
-                    <option value="1">1室 ▼</option>
-                    <option value="2">2室</option>
-                    <option value="3">3室</option>
-                    <option value="4">4室</option>
-                  </select>
+                  <div className={SearchStyle.arrow}><GrFormDown/></div>
                 </div>
                 <button
                   className={SearchStyle.closeBtnBottom}
@@ -112,9 +106,10 @@ const Modal = ({
 const modalContent: React.CSSProperties = {
   background: "white",
   width: "600px",
-  height: "800px",
+  height: "750px",
   padding: "50px",
   borderRadius: "3px",
+  
 };
 
 const modalStyle: React.CSSProperties = {
@@ -127,6 +122,7 @@ const modalStyle: React.CSSProperties = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
+  zIndex:100
 };
 
 export default Modal;
