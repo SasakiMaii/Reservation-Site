@@ -1,4 +1,4 @@
-import TopPage from '../components/Pages/TopPage';
+import TopLayout from '../Templates/TopLayout';
 
 // [お願い]
 // yarn add --dev react-scroll
@@ -8,15 +8,15 @@ import TopPage from '../components/Pages/TopPage';
 // yarn add swiper
 // yarn add @types/swiperしてください！
 
-
-export const Top = () => {
+export const TopPage = () => {
 
   return (
     <>
-      <TopPage />
+      <TopLayout />
+
     </>
   )
 
 }
 
-export default Top
+export default TopPage;

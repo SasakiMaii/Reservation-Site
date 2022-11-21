@@ -1,0 +1,225 @@
+%itemsPositionCenter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  flex-direction: column;
+}
+
+
+// ヘッダー　トップ画面
+.topImage {
+  width: 100%;
+  height: 100vh;
+  height: 800px;
+  // padding-top: calc(600 / 600 * 100%); 
+  /* calc(画像高さ ÷ 画像横幅 × 100%) */
+  background: url("../../../public/topImage/sofa.jpg") center center / cover no-repeat;
+  @extend %itemsPositionCenter;
+  // margin: 0 auto;
+
+  // animation-name:topImgaeSlide;
+  // animation-duration: 60s;
+  // animation-iteration-count:infinite;
+  // animation-timing-function:ease;
+  // animation-delay: 7s;
+
+}
+
+
+.hotelName{
+  color: white;
+  z-index: 10;
+  margin: auto;
+  position:absolute;
+  left:30%;
+  top:40%;
+  font-size: 70px;
+
+  animation-name:fadeIn;
+  animation-duration: 4s;  
+}
+
+.scrollImage {
+  position:absolute;
+  height: 150px;
+  width: auto;
+  left: 45%;
+  bottom: 5%;
+  z-index: 10;
+  opacity: 0;
+
+  animation-name:bound;
+  animation-duration: 5s; 
+  animation-delay: 4s;
+  animation-iteration-count:infinite;
+}
+
+
+// おすすめプラン　セクション
+.recommendPlanSection {
+  @extend %itemsPositionCenter;
+  height: 100vh;
+  height:fit-content;  
+  margin: 100px auto;
+}
+
+
+.test {
+  height: 1000px;
+  background-color: aqua;
+  
+  @extend %itemsPositionCenter;
+}
+
+.test2 {
+  height: auto;
+  // background-color: aqua;
+  
+  @extend %itemsPositionCenter;
+  margin: 100px auto;
+}
+
+
+// Swiper　設定
+.swiperColsFrame {
+  margin: 10px 0;
+  // background-color: blueviolet;
+}
+
+.swiperCols {
+  width: 550px;
+  height: 450px;
+  margin: 10px 10px; 
+  // padding: 10px;
+  // background-color: rgb(223, 223, 223);
+  box-shadow: 10px 5px 5px rgba(128, 128, 128, 0.548);
+  border-radius: 20px  ;
+
+  // @extend %itemsPositionCenter;
+  
+}
+
+.swiperBody {
+  width: 1200px;
+  // background-color: red;
+  padding: 30px 0;
+  position: relative;
+}
+
+.swiperPlanImage {
+  height: 250px;
+  width: 550px;
+  border-radius: 20px 20px 0 0;
+}
+
+.swiperPlanTitle, .swiperPlanInformation {
+ margin: 10px auto;
+
+}
+
+.swiperPlanSentenceGroup {
+  @extend %itemsPositionCenter;
+  margin: 20px auto;
+  width: 480px;
+}
+
+
+// 部屋紹介セクション
+.roomsIntroductionCols{
+  @extend %itemsPositionCenter;
+  width: 100%;
+  // background-color: rgb(161, 161, 161);
+  padding: 40px 0;
+  display: flex;
+  flex-direction: row;
+}
+
+.roomsIntroductionImgae {
+  height: 350px;
+  width: 600px;
+  border-radius: 20px;
+  margin: 0 50px;
+  box-shadow:  5px 2px 5px rgba(128, 128, 128, 0.548);
+}
+
+.roomsIntroductionSentence {
+  width: 450px;
+  margin: 0 100px;
+  // background-color: blueviolet;
+}
+
+.roomsIntroductionTitle {
+  // font-size: 30px;
+  margin: 30px 0;
+  // background-color: beige;
+}
+
+.roomsIntroductionInformation{
+  // background-color: darkcyan;
+  
+}
+
+// 以下、アニメーション
+
+// トップ画面　矢印　バウンド
+@keyframes bound {
+  0% {
+    transform: translateY(-15px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(15px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-15px);
+    opacity: 0.5;
+  }
+}
+
+
+
+// トップ画面　文字fade-in
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-15px);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+
+
+
+// トップ画面　スライドショー
+@keyframes topImgaeSlide {
+  0% {
+    opacity: 1;
+    background: url("../../../public/topImage/sofa.jpg") center center / cover no-repeat;
+
+  }
+  40% {
+    opacity: 1;
+    background: url("../../../public/topImage/lobbySide.jpg") center center / cover no-repeat;
+  }
+  60% {
+    opacity: 1;
+    background: url("../../../public/topImage/lobbySide.jpg") center center / cover no-repeat;
+  }
+  80% {
+    opacity: 1;
+
+  }
+  100% {
+    opacity: 1;
+
+  }
+}
