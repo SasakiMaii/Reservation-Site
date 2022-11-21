@@ -3,6 +3,7 @@ import headerStyle from "../../styles/layout/_Header.module.scss";
 import PrimaryButton from "../button/PrimaryButton";
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from '../../Firebase'
+import { GiFrogPrince } from "react-icons/gi";
 
 const Header = () => {
   //予約のイベント
@@ -12,7 +13,7 @@ const Header = () => {
   return (
     <>
       <div className={headerStyle.headerFlex}>
-        <h1>Prince'View Hotel</h1>
+        <h1><GiFrogPrince />Prince'View Hotel</h1>
         <div className={headerStyle.headerNav}>
           <ul>
             <li className={headerStyle.headerlist}>

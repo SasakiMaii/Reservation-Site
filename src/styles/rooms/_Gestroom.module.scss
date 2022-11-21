@@ -198,6 +198,7 @@ align-items: right;
 .detailContainer {
   display: flex;
   align-items: center;
+  justify-content: center;
   margin-bottom: 20px;
   @include mq(tab) {
     flex-direction: column;
@@ -238,6 +239,10 @@ align-items: right;
   font-size: 20px;
 }
 
+.roomEquipment{
+  width: 400px;
+}
+
 .roomDetails {
   padding-left: 20px;
   p {
@@ -246,7 +251,7 @@ align-items: right;
 }
 
 .roompic {
-  width: 300px;
+  width: 350px;
   height: 250px;
 }
 

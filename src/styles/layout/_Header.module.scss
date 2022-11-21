@@ -22,7 +22,7 @@
   width: 100%;
   height: 2px;
   background: RGB(26, 89, 136);
-  bottom: -7px;               /*アンダーラインがaタグの下端から現れる*/
+  bottom: -10px;               /*アンダーラインがaタグの下端から現れる*/
   transform: scale(0, 1);     /*アンダーラインの縮尺比率。ホバー前はx方向に0*/
   transform-origin: left top; /*変形（アンダーラインの伸長）の原点がaタグ（各メニュー）の左端*/
   transition: transform 0.5s; /*変形の時間*/

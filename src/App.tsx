@@ -10,6 +10,8 @@ import RoomSearch from './components/rooms/Search';
 import { Registered } from './pages/users/Registered';
 import { Login } from './pages/users/Login';
 import Top from './pages/Top';
+import RoomDetails from './pages/rooms/RoomDetails';
+import NotFound from './pages/NotFound';
 
 
 function App() {
@@ -27,8 +29,11 @@ function App() {
           <Route path='/rooms/Gestroom' element={<Gestroom />}></Route>
           <Route path='/users/Login' element={<Login />}></Route>
           <Route path='/rooms/Plan' element={<Plan/>}></Route>
+          <Route path='/rooms/RoomDetails' element={<RoomDetails/>}></Route>
           <Route path='/users/Registered' element={<Registered />}></Route>
           <Route path='/Top' element={<Top />}></Route>
+          <Route path='/rooms/RoomDetails/:id' element={<RoomDetails />}></Route>
+          <Route path="*" element={<NotFound/>} />
         </Routes>
       </Router>
     </>

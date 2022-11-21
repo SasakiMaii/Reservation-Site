@@ -58,6 +58,8 @@ const RoomPlanSearch = (props: any) => {
     });
   }, []);
 
+
+
   return (
     <>
       <div className={SearchStyle.container}>
@@ -234,7 +236,6 @@ export const ObsessionSearch = ({
             <option value="east">east</option>
           </select>
           &nbsp;
-         
         </div>
 
         <div className={SearchStyle.btnWrapper}>
@@ -249,9 +250,7 @@ export const ObsessionSearch = ({
               <option value="">下限なし</option>
               {obroop()}
             </select>
-            &nbsp;
-            
-            &nbsp;&nbsp;&nbsp;〜&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;〜&nbsp;
             <select
               className={SearchStyle.priceroomSelect}
               name="upprice"
@@ -262,7 +261,6 @@ export const ObsessionSearch = ({
               {obroop()}
             </select>
             &nbsp;
-            
           </div>
         </div>
       </div>
