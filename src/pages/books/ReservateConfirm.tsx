@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ReservateConfirmContents } from "../../components/books/ReservateConfirmContents"
-import ReservateConfirmStyles from  "../../styles/books/ReservateConfirm.module.scss";
+import ReservateConfirmStyles from  "../../styles/books/_ReservateConfirm.module.scss";
 import { Link } from "react-router-dom";
 import { Login } from "../users/Login";
 
@@ -19,7 +19,7 @@ const ReservateConfirm = () => {
     <>
       <div>
         <h1 className={ReservateConfirmStyles.reservateconfirmTitle}>予約内容の確認</h1>
-        <div className={ReservateConfirmStyles.reservateLogin}>
+        {/* <div className={ReservateConfirmStyles.reservateLogin}>
           <div className={ReservateConfirmStyles.registerComplete}>
             <h3>会員登録済みのお客様</h3>
             <div>
@@ -30,15 +30,18 @@ const ReservateConfirm = () => {
             <h3>会員未登録のお客様</h3>
             <button>会員登録する</button>
           </div>
-        </div>
-        <div className={ReservateConfirmStyles.reservateGuide}>
+        </div> */}
+        {/* <div className={ReservateConfirmStyles.reservateGuide}>
           <p style={{ display: guideMessage }}>
             会員登録せずに予約する方は&nbsp;
             <button onClick={handleClick}>こちら</button>
           </p>
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           {openDisplay ? (<ReservateConfirmContents />) : ("")}
+        </div> */}
+        <div>
+          <ReservateConfirmContents />
         </div>
       </div>
     </>
