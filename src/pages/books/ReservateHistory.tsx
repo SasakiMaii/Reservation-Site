@@ -54,9 +54,6 @@ const ReservateHistory = () => {
   const childrenNums = parseInt(childrenNum);
   const lodgeNums = parseInt(lodgeNum);
 
-  //firebaseからログインユーザーの予約情報を取得
-
-  //ログインしているユーザー情報の取得（メールアドレスと一致させる）
   let totalPeople = adultsNums + childrenNums;
   let changeAfter = totalPeople * price * lodgeNums * roomNum;
 
@@ -264,60 +261,6 @@ const ReservateHistory = () => {
       <h1 className={ReservateHistoryStyles.reservatehistoryTitle}>
         予約履歴確認
       </h1>
-<<<<<<< HEAD
-      <div>
-        <div className={ReservateHistoryStyles.unLodger}>
-          <h3>宿泊待ち予約</h3>
-          <div className={ReservateHistoryStyles.unLodgerContents}>
-            <p>プラン内容：</p>
-            <ul>
-              {reserves.map((reserveItem: any) => {
-                return (
-                  <>
-                    <li>宿泊プラン：{reserveItem.plan}</li>
-                    <li>客室：{reserveItem.roomType}</li>
-                    <li>
-                      宿泊日程：{reserveItem.checkIn}〜{reserveItem.checkOut}
-                    </li>
-                    {(function () {
-                      let peopleNumber =
-                        reserveItem.adultsNum + reserveItem.childrenNum;
-                      return (
-                        <li>
-                          予約人数：{peopleNumber}
-                          名（内訳：大人{reserveItem.adultsNum}名、子ども
-                          {reserveItem.childrenNum}名）
-                        </li>
-                      );
-                    })()}
-                  </>
-                );
-              })}
-            </ul>
-            <button onClick={clickChange}>変更</button>
-            {change ? (
-              <ChangeReservate
-                reservateChange={reservateChange}
-                onClickReserveChange={onClickReserveChange}
-              />
-            ) : (
-              ""
-            )}
-          </div>
-        </div>
-        <div className={ReservateHistoryStyles.lodged}>
-          <h3>宿泊済み予約</h3>
-          <p>プラン内容</p>
-          <button onClick={clickDetails}>詳細を見る</button>
-          {clickReservateDetails ? (
-            <ReservateDetails reserves={reserves} />
-          ) : (
-            ""
-          )}
-          {/* <PrimaryButton children="変更" onClick={() => console.log("")}/> */}
-        </div>
-      </div>
-=======
       <UnReserveTitle
         clickUnlodgeOpen={clickUnlodgeOpen}
         hideUnlodgeMessage={hideUnlodgeMessage}
@@ -353,7 +296,6 @@ const ReservateHistory = () => {
       ) : (
         ""
       )}
->>>>>>> main
     </div>
   );
 };
