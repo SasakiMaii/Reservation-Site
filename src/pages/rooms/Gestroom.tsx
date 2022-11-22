@@ -256,15 +256,11 @@ export const RoomCard = (prps: any) => {
   //---
   // const roomData=collection(db,"gestRoomType")
   // const documentId=query(roomData,where("id","==","1"))
-
-  // const idArr= [ ESCltzAbsUa9uEzrEpFt,
-  //   VMThmbgb0Cb8r4Unx9Gn,
-  //   lwRWhU1tqc54kqUxwmvl,
-  //   wz128l8sMh4eAvpHPou7];
+  const params = useParams();
   //予約ボタン
   const navigate = useNavigate();
   const handleResarvedRoomBtn = () => {
-    // rooms.filter((room:any)=>{room.id})
+    rooms.filter((room:any)=>{room.id})
     navigate(`/rooms/RoomDetails`);
   };
 

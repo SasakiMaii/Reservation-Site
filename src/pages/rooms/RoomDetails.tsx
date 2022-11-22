@@ -28,7 +28,6 @@ const RoomDetails = () => {
   const [datetext, setDatetext] = useState("");
   // const location =useLocation()
   // const [selectId,setSelectId]=useState<{id:number}>(location.state as {id:number})
-  const params = useParams();
   
   const RoomData = collection(db, "gestRoomType");
   const detailRoom = query(RoomData, limit(1));
@@ -37,7 +36,7 @@ const RoomDetails = () => {
       setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
   }, []);
-
+  
   const obroop = () => {
     const price = [];
     for (let i = 1; i <= 3; i++) {
@@ -57,13 +56,13 @@ const RoomDetails = () => {
       checkIn:datetext,
       price:result,
       roomType:String(room),
-      totalDate:num,
+      totalDate:Number(num),
     };
     addDoc(reserveData, data);
   };
-
+  
   // const gestRoomData = collection(db, "gestRoomType");
-
+  
   const handleDateClick = (arg: any) => {
     if (inputDate === false) {
       arg.dayEl.style.backgroundColor = "steelblue"; //カレンダーに色つける
@@ -75,12 +74,14 @@ const RoomDetails = () => {
       // alert(arg.dateStr)
     }
   };
-
+  
   const price =rooms.map((room:any)=>(room.price))
   const room=rooms.map((room:any)=>(room.area))
-
+  
   const result=(num* Number(price)*adult+children*5000).toLocaleString()
-
+  
+  
+  const params = useParams();
   return (
     <>
       <Header />
