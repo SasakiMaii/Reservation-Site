@@ -12,6 +12,7 @@ import { Login } from './pages/users/Login';
 import Top from './pages/Top';
 import RoomDetails from './pages/rooms/RoomDetails';
 import NotFound from './pages/NotFound';
+import Header from "../src/components/layout/Header";
 
 
 function App() {

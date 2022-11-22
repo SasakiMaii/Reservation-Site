@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import headerStyle from "../../styles/layout/_Header.module.scss";
 import PrimaryButton from "../button/PrimaryButton";
 import { useAuthState } from "react-firebase-hooks/auth"
-import { auth } from '../../Firebase'
+import { auth ,provider} from '../../Firebase'
 import { GiFrogPrince } from "react-icons/gi";
 
 const Header = () => {

@@ -1,6 +1,10 @@
-import { useState, useEffect } from "react";
-import ReservateHistoryStyles from "../../styles/books/ReservateHistory.module.scss";
-import { cancel } from "../../components/books/ReservateConfirmContents";
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useState } from "react";
+import ReservateHistoryStyles from "../../styles/books/_ReservateHistory.module.scss";
+import {
+  ArrivalTime,
+  cancel,
+} from "../../components/books/ReservateConfirmContents";
 import db from "../../Firebase";
 import { auth } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -12,66 +16,81 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import { GiClick } from "react-icons/gi";
+import { IconContext } from "react-icons";
 
 const ReservateHistory = () => {
+  //(firebase)データベースを格納
+  const [reserves, setReserves] = useState<any>([]);
+
+  //firebaseから予約データ取得、予約確定時にfirebaseへ送信するためのデータ
+  const reserveItem = reserves.map((reserveItems: any) => reserveItems);
+
+  //入力フォームの値
+  const [lodgeFirstName, setLodgeFirstName] = useState("");
+  const [lodgeLastName, setLodgeLastName] = useState("");
+  const [adultsNum, setAdultsNum] = useState("0");
+  const [childrenNum, setChildrenNum] = useState("0");
+  const [lodgeNum, setLodgeNum] = useState("0");
+  const [roomNum, setRoomNum] = useState(0);
+  const [price, setPrice] = useState(0);
+
+  //コンポーネント表示切り替え
+  const [openUnlodgeDisplay, setOpenUnlodgeDisplay] = useState(false);
+  const [hideUnlodgeMessage, setHideUnlodgeMessage] = useState("block");
+  const [openLodgedDisplay, setOpenLodgedDisplay] = useState(false);
+  const [hideLodgedMessage, setHideLodgedMessage] = useState("block");
+
   const [change, setChange] = useState(false);
   const [click, setClick] = useState(false);
+  const [clickCancel, setOnCancelClick] = useState(false);
   const [clickReservateDetails, setClickReservateDetails] = useState(false);
-  const [reserves, setReserves] = useState<any>([]);
-  const [adultsNumber, setAdultsNum] = useState("");
-  const [childrenNumber, setChildrenNum] = useState("");
+
   //ログインしているユーザーのIDが入る
   const [docID, setDocID] = useState<any>("");
 
   //inputに入力された数字の型を数値に変換（変換前は文字列）
-  const adultsNum = parseInt(adultsNumber);
-  const childrenNum = parseInt(childrenNumber);
+  const adultsNums = parseInt(adultsNum);
+  const childrenNums = parseInt(childrenNum);
+  const lodgeNums = parseInt(lodgeNum);
 
   //firebaseからログインユーザーの予約情報を取得
 
   //ログインしているユーザー情報の取得（メールアドレスと一致させる）
+  let totalPeople = adultsNums + childrenNums;
+  let changeAfter = totalPeople * price * lodgeNums * roomNum;
+
+  //firebaseからログインユーザーの情報を取得
   const [user] = useAuthState(auth);
-  console.log(user);
+  let userEmail = user?.email;
+  if (user) {
+    // console.log(user.email);
+  }
 
-  // firebaseデータ　ドキュメントID取得
-  useEffect(() => {
-    const documentFetch = async () => {
-      const q = query(
-        collection(db, "reserved"),
-        where("mail", "==", "test@test.com")
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc: any) => {
-        // setDocx(doc.id)
-        // console.log(doc.id, "=>", doc.data().adultsNum);
-        // console.log(doc.id);
-        // console.log(doc.data().contact);
-        setDocID(doc.id);
-      });
-    };
-    documentFetch();
-  }, []);
-  console.log(docID);
-
-  useEffect(() => {
-    //データベースからデータを取得する
-    const reserveData = query(
-      collection(db, "reserved"),
-      where("mail", "==", "sample@sample.com")
-    );
-    getDocs(reserveData).then((reserveItem) => {
-      setReserves(reserveItem.docs.map((doc) => ({ ...doc.data() })));
-    });
-  }, []);
-
-  //firebaseデータ更新（ドキュメントID指定して更新）
+  // //firebaseデータ更新（ドキュメントID指定して更新）
   const onClickReserveChange = async () => {
-    const updateRef = doc(db, "reserved", docID);
-    await updateDoc(updateRef, {
-      adultsNum: adultsNum,
-      childrenNum: childrenNum,
-    });
-    alert("変更しました");
+    if (
+      !lodgeFirstName &&
+      !lodgeLastName &&
+      !adultsNums &&
+      !childrenNums &&
+      !lodgeNum &&
+      !roomNum
+    ) {
+      alert("変更内容を入力してください");
+    } else {
+      const updateRef = doc(db, "reserved", docID);
+      await updateDoc(updateRef, {
+        lodgeFirstName: lodgeFirstName,
+        lodgeLastName: lodgeLastName,
+        adultsNum: adultsNums,
+        childrenNum: childrenNums,
+        lodgeNum: lodgeNums,
+        roomNum: roomNum,
+        totalPrice: changeAfter,
+      });
+      alert("変更しました");
+    }
   };
 
   const ClickCancelPolicy = () => {
@@ -82,49 +101,108 @@ const ReservateHistory = () => {
     }
   };
 
+  const onClickCancel = () => {
+    if (clickCancel === false) {
+      setOnCancelClick(true);
+    } else {
+      setOnCancelClick(false);
+    }
+  };
+
   const onChangeAdults = (e: any) => {
     setAdultsNum(e.target.value);
   };
 
   const onChangeChildren = (e: any) => [setChildrenNum(e.target.value)];
 
+  const onChangeFirst = (e: any) => {
+    setLodgeFirstName(e.target.value);
+  };
+
+  const onChangeLast = (e: any) => {
+    setLodgeLastName(e.target.value);
+  };
+
   const reservateChange = [
     {
-      title: "宿泊人数（部屋の定員を超えない場合のみ）",
+      title: "宿泊者代表",
+      contents: (
+        <LodgerName
+          lodgeFirstName={lodgeFirstName}
+          lodgeLastName={lodgeLastName}
+          onChangeFirst={onChangeFirst}
+          onChangeLast={onChangeLast}
+        />
+      ),
+    },
+    {
+      title: "宿泊人数",
       contents: (
         <div>
-          大人：
+          大人&nbsp;&nbsp;
           <input
             type="number"
-            value={adultsNumber}
+            value={adultsNum}
             onChange={onChangeAdults}
-            min={1}
+            min={0}
           />
-          小人：
+          小人&nbsp;&nbsp;
           <input
             type="number"
-            value={childrenNumber}
+            value={childrenNum}
             onChange={onChangeChildren}
-            min={1}
+            min={0}
           />
         </div>
       ),
     },
     {
       title: "宿泊日数（減泊のみ）",
-      contents: <input type="number" min={1} />,
+      contents: (
+        <input
+          type="number"
+          min={1}
+          value={lodgeNum}
+          onChange={(e: any) => setLodgeNum(e.target.value)}
+        />
+      ),
     },
     {
       title: "部屋数（減室のみ）",
-      contents: <input type="number" min={1} />,
+      contents: (
+        <input
+          type="number"
+          min={1}
+          value={roomNum}
+          onChange={(e: any) => setRoomNum(e.target.value)}
+        />
+      ),
     },
+    // {
+    //   title: "到着時間",
+    //   contents: <ArrivalTime />
+    // },
     {
-      title: "",
-      // contents: <ArrivalTime />,
-    },
-    {
-      title: <button onClick={ClickCancelPolicy}>キャンセルポリシー</button>,
-      contents: click ? <div>{cancel}</div> : "",
+      title: (
+        <button
+          onClick={ClickCancelPolicy}
+          className={ReservateHistoryStyles.cancelBtn}
+        >
+          キャンセルポリシー
+        </button>
+      ),
+      contents: click ? (
+        <div className={ReservateHistoryStyles.cancel}>
+          {cancel}
+          <span>
+            キャンセルはお電話でのみ承ります。
+            <br />
+            TEL：03-0000-0000
+          </span>
+        </div>
+      ) : (
+        ""
+      ),
     },
   ];
 
@@ -134,6 +212,11 @@ const ReservateHistory = () => {
     } else {
       setChange(false);
     }
+    setAdultsNum(reserveItem[0].adultsNum);
+    setChildrenNum(reserveItem[0].childrenNum);
+    setLodgeNum(reserveItem[0].lodgeNum);
+    setRoomNum(reserveItem[0].roomNum);
+    setPrice(reserveItem[0].price);
   };
 
   const clickDetails = () => {
@@ -144,11 +227,44 @@ const ReservateHistory = () => {
     }
   };
 
+  const clickUnlodgeOpen = () => {
+    setOpenUnlodgeDisplay(true);
+    setHideUnlodgeMessage("none");
+
+    //firebaseから、ログインしているユーザーメールアドレスと一致する予約データを取得する
+    const reserveData = query(
+      collection(db, "reserved"),
+      where("mail", "==", userEmail)
+    );
+    getDocs(reserveData).then((reserveItem) => {
+      setReserves(reserveItem.docs.map((doc) => ({ ...doc.data() })));
+    });
+
+    const documentFetch = async () => {
+      const q = query(
+        collection(db, "reserved"),
+        where("mail", "==", userEmail)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc: any) => {
+        setDocID(doc.id);
+      });
+    };
+    documentFetch();
+
+  };
+
+  const clickLodgedOpen = () => {
+    setOpenLodgedDisplay(true);
+    setHideLodgedMessage("none");
+  };
+
   return (
     <div className={ReservateHistoryStyles.historycontainer}>
       <h1 className={ReservateHistoryStyles.reservatehistoryTitle}>
         予約履歴確認
       </h1>
+<<<<<<< HEAD
       <div>
         <div className={ReservateHistoryStyles.unLodger}>
           <h3>宿泊待ち予約</h3>
@@ -201,6 +317,43 @@ const ReservateHistory = () => {
           {/* <PrimaryButton children="変更" onClick={() => console.log("")}/> */}
         </div>
       </div>
+=======
+      <UnReserveTitle
+        clickUnlodgeOpen={clickUnlodgeOpen}
+        hideUnlodgeMessage={hideUnlodgeMessage}
+      />
+      {/* <div> */}
+      {openUnlodgeDisplay ? (
+        <UnReserve
+          lodgeFirstName={lodgeFirstName}
+          lodgeLastName={lodgeLastName}
+          onChangeFirst={onChangeFirst}
+          onChangeLast={onChangeLast}
+          reserves={reserves}
+          change={change}
+          onClickReserveChange={onClickReserveChange}
+          reservateChange={reservateChange}
+          clickChange={clickChange}
+          onClickCancel={onClickCancel}
+          changeAfter={changeAfter}
+        />
+      ) : (
+        ""
+      )}
+      <ReservedTitle
+        clickLodgedOpen={clickLodgedOpen}
+        hideLodgedMessage={hideLodgedMessage}
+      />
+      {openLodgedDisplay ? (
+        <Reserved
+          clickDetails={clickDetails}
+          clickReservateDetails={clickReservateDetails}
+          reserves={reserves}
+        />
+      ) : (
+        ""
+      )}
+>>>>>>> main
     </div>
   );
 };
@@ -208,35 +361,235 @@ const ReservateHistory = () => {
 export default ReservateHistory;
 
 export const ChangeReservate = (props: any) => {
-  const { reservateChange, onClickReserveChange } = props;
+  const {
+    reservateChange,
+    onClickReserveChange,
+    reserves,
+    changeAfter
+  } = props;
 
   return (
-    <div>
+    <div className={ReservateHistoryStyles.changeReservate}>
+      <p className={ReservateHistoryStyles.subTitle}>変更可能項目</p>
       <ul>
         {reservateChange.map((change: any, index: number) => {
           return (
             <div key={index}>
               <li>
-                {change.title}
+                <span>{change.title}</span>
                 {change.contents}
               </li>
             </div>
           );
         })}
       </ul>
-      <button onClick={onClickReserveChange}>予約内容を変更する</button>
+      <ChangeAfter
+        reserves={reserves}
+        changeAfter={changeAfter}
+      />
+      <button
+        onClick={onClickReserveChange}
+        className={ReservateHistoryStyles.changeReservateBtn}
+      >
+        予約内容を変更する
+      </button>
     </div>
   );
 };
 
+
 export const ReservateDetails = ({ reserves }: any) => {
   return (
-    <div>
+    <div className={ReservateHistoryStyles.reservateDetails}>
       <ul>
         {reserves?.map((reserve: any) => {
-          return <li>{reserve.mail}</li>;
+          return (
+            <>
+              <li>
+                <span>宿泊プラン</span>：{reserve.plan}
+              </li>
+              <li>
+                <span>宿泊日程</span>：{reserve.checkIn}〜{reserve.checkOut}
+              </li>
+            </>
+          );
         })}
       </ul>
     </div>
+  );
+};
+
+export const LodgerName = (props: any) => {
+  const { lodgeFirstName, lodgeLastName, onChangeFirst, onChangeLast } = props;
+
+  return (
+    <>
+      <br />
+      <input
+        type="text"
+        value={lodgeFirstName}
+        onChange={onChangeFirst}
+        placeholder="例）田中"
+        className={ReservateHistoryStyles.input}
+      />
+      <input
+        type="text"
+        value={lodgeLastName}
+        onChange={onChangeLast}
+        placeholder="例）太郎"
+        className={ReservateHistoryStyles.input}
+      />
+    </>
+  );
+};
+
+export const UnReserveTitle = (props: any) => {
+  const { clickUnlodgeOpen, hideUnlodgeMessage } = props;
+  return (
+    <div
+      className={ReservateHistoryStyles.UnReserveTitle}
+      style={{ display: hideUnlodgeMessage }}
+    >
+      <h1>宿泊待ち予約</h1>
+      <button onClick={clickUnlodgeOpen}>
+        確認する
+        <GiClick />
+      </button>
+    </div>
+  );
+};
+
+export const ReservedTitle = (props: any) => {
+  const { clickLodgedOpen, hideLodgedMessage } = props;
+  return (
+    <div
+      className={ReservateHistoryStyles.ReservedTitle}
+      style={{ display: hideLodgedMessage }}
+    >
+      <h1>宿泊済み予約</h1>
+      <button onClick={clickLodgedOpen}>
+        確認する
+        <GiClick />
+      </button>
+    </div>
+  );
+};
+
+export const UnReserve = (props: any) => {
+  const {
+    clickGet,
+    reserves,
+    clickChange,
+    change,
+    reservateChange,
+    onClickReserveChange,
+    clickCancel,
+    onClickCancel,
+    changeAfter
+  } = props;
+
+  return (
+    <div className={ReservateHistoryStyles.unLodger}>
+      <h3 className={ReservateHistoryStyles.innerTitle}>宿泊待ち予約</h3>
+      <div className={ReservateHistoryStyles.unLodgerContentsTotal}>
+        <div className={ReservateHistoryStyles.unLodgerContents}>
+          <div>
+            <p className={ReservateHistoryStyles.subTitle}>予約内容</p>
+            <ul>
+              {reserves.map((reserveItem: any) => {
+                return (
+                  <>
+                    <li>
+                      <span>予約日完了日</span>：{reserveItem.reservationDate}
+                    </li>
+                    <li>
+                      <span>宿泊プラン</span>：{reserveItem.plan}
+                    </li>
+                    <li>
+                      <span>客室</span>：{reserveItem.roomType}
+                    </li>
+                    <li>
+                      <span>客室数</span>：{reserveItem.roomNum}室
+                    </li>
+                    <li>
+                      <span>宿泊日程</span>：{reserveItem.checkIn}〜
+                      {reserveItem.checkOut}
+                    </li>
+                    <li>
+                      <span>宿泊数</span>：{reserveItem.lodgeNum}泊
+                    </li>
+                    {(function () {
+                      let peopleNumber =
+                        reserveItem.adultsNum + reserveItem.childrenNum;
+                      return (
+                        <li>
+                          <span>予約人数</span>：{peopleNumber}
+                          名（内訳：大人{reserveItem.adultsNum}名、子ども
+                          {reserveItem.childrenNum}名）
+                        </li>
+                      );
+                    })()}
+                    {(function () {
+                      let totalday =
+                        reserveItem.checkIn - reserveItem.checkOut;
+                        console.log(reserveItem.checkIn)
+                        console.log(totalday);
+                      return (
+                        <li>{totalday}
+                        </li>
+                      );
+                    })()}
+                    <li>
+                      <span>宿泊金額</span>：{reserveItem.totalPrice}円（税込）
+                    </li>
+                  </>
+                );
+              })}
+            </ul>
+          </div>
+          <button onClick={clickChange}>変更</button>
+        </div>
+        {change ? (
+          <ChangeReservate
+            reservateChange={reservateChange}
+            onClickReserveChange={onClickReserveChange}
+            clickChange={clickCancel}
+            onClickCancel={onClickCancel}
+            reserves={reserves}
+            changeAfter={changeAfter}
+          />
+        ) : (
+          ""
+        )}
+      </div>
+    </div>
+  );
+};
+
+export const Reserved = (props: any) => {
+  const { clickDetails, clickReservateDetails, reserves } = props;
+  return (
+    <div className={ReservateHistoryStyles.lodged}>
+      <h3 className={ReservateHistoryStyles.innerTitle}>宿泊済み予約</h3>
+      <div className={ReservateHistoryStyles.lodgedContents}>
+        <p>プラン内容</p>
+        <button onClick={clickDetails}>詳細を見る</button>
+        {clickReservateDetails ? <ReservateDetails reserves={reserves} /> : ""}
+      </div>
+    </div>
+  );
+};
+
+export const ChangeAfter = (props: any) => {
+  const { changeAfter } = props;
+
+  return (
+    <>
+      <div>
+        <div className={ReservateHistoryStyles.changeAfter}>
+          変更後の金額：{changeAfter}円（税込）
+        </div>
+      </div>
+    </>
   );
 };

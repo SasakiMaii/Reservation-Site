@@ -24,17 +24,18 @@
   // text-align: center;
   // justify-content: center;
 
-  position: relative;
+  // position: relative;
   margin: 30px 0;
   padding: 0;
   // justify-content: center;
   flex-wrap: wrap;
-  background-color:#C0C0C0;;
+  // background-color:#C0C0C0;
+  height: 1000px;
  }
 
  .form {
   position: absolute;
-  top:50%;
+  top:25%;
   left: 50%;
   transform: translateX(-50%);
   // background-color: red;

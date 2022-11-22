@@ -1,0 +1,21 @@
+%swiperNavigationStyle {
+  color: white !important;
+  border-radius: 100% !important;
+  background-color: rgba(158, 155, 155, 0.521) !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+
+
+// swiper のナビゲーションアイコンのスタイル変更
+:global(.mySwiper) {
+  :global(.swiper-button-prev) {
+    @extend %swiperNavigationStyle;
+    padding: 40px 43px 40px 40px !important;
+  }
+  :global(.swiper-button-next) {
+    @extend %swiperNavigationStyle;
+    padding: 40px 40px 40px 43px !important;
+  }
+}
