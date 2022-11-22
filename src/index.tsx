@@ -7,6 +7,8 @@ import 'ress';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,12 +28,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
+// redux store
+const store = configureStore({
+  reducer: {
+
+  }
+})
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}> // 全てのコンポーネントでstoreを共有
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 
