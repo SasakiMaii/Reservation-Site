@@ -2,20 +2,15 @@ import React from "react";
 import style from "../../styles/input.module.css";
 import { useState } from "react";
 import { MailInput } from "../../components/form/mailInput";
-import { TelInput } from "../../components/form/telInput";
-import { ZipInput } from "../../components/form/zipInput";
-import { AddressInput } from "../../components/form/addressInput";
 import { PasswordInput } from "../../components/form/passwordInput";
-import { NameInput } from "../../components/form/nameInput";
-import { ConfirmPasswordInput } from "../../components/form/confirmPassword";
-import PrimaryButton from "../../components/button/PrimaryButton";
-// import { useRouter } from 'next/router'
 import SearchStyle from "../../styles/rooms/_Search.module.scss";
-import LoginStyle from "../../styles/users/_Registered.module.scss";
+import LoginStyle from "../../styles/users/_login.module.scss";
 import { auth } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import Header from "../../components/layout/Header";
+import Footer from "../../components/layout/footer";
 
 export const Login = () => {
   // ログインのstatus管理
@@ -69,7 +64,8 @@ export const Login = () => {
 
   return (
     <>
-      <div className={`${LoginStyle.main} container`}>
+    <Header />
+      <div className={`${LoginStyle.main} `}>
         <form className={` ${LoginStyle.form}`}>
           <h2 className="my-5 ml-5 ">ログイン</h2>
           <hr className="border border-1 border-gray-300 bg-gray-300" />
@@ -109,17 +105,11 @@ export const Login = () => {
               ログイン
             </button>
 
-            <button
-              type="reset"
-              className={`text-gray-900 px-4 py-2 rounded-md text-sm mt-5 ${LoginStyle.clearBtn}`}
-              onClick={clear}
-            >
-              クリア
-            </button>
           </div>
 
         </form>
       </div>
+      <Footer />
     </>
   );
 };

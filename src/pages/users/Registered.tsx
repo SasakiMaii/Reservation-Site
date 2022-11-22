@@ -18,8 +18,10 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../Firebase'
 import db from '../../Firebase'
 import { setDoc, doc, collection, addDoc } from 'firebase/firestore'
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuthState } from "react-firebase-hooks/auth"
+import Header from '../../components/layout/Header'
+import Footer from '../../components/layout/footer'
 
 
 
@@ -53,7 +55,7 @@ export const Registered = () => {
 
   const [confirmPasswordValue, SetConfirmPasswordValue] = useState("");
   const [confirmPasswordErrorState, SetConfirmPasswordErrorState] = useState("init");
-  
+
   // デフォルトが男性のため（ラジオボタン）
   const [genderValue, SetGenderValue] = useState("男性");
 
@@ -133,7 +135,7 @@ export const Registered = () => {
 
   return (
     <>
-
+      <Header />
       <div className={`${RegisterStyle.main} container`}>
 
         <form className={` ${RegisterStyle.form}`}>
@@ -145,7 +147,8 @@ export const Registered = () => {
             firstNameValue={firstNameValue}
             SetFirstNameValue={SetFirstNameValue}
 
-            firstNameErrorState={firstNameErrorState} SetFirstNameErrorState={SetFirstNameErrorState}
+            firstNameErrorState={firstNameErrorState}
+            SetFirstNameErrorState={SetFirstNameErrorState}
             lastNameErrorState={lastNameErrorState}
             SetLastNameErrorState={SetLastNameErrorState}
             errorFlag={errorFlag}
@@ -166,7 +169,10 @@ export const Registered = () => {
           <hr />
 
           <TelInput
-            telValue={telValue} SetTelValue={SetTelValue} telErrorState={telErrorState} SetTelErrorState={SetTelErrorState}
+            telValue={telValue}
+            SetTelValue={SetTelValue}
+            telErrorState={telErrorState}
+            SetTelErrorState={SetTelErrorState}
             errorFlag={errorFlag}
           />
           <hr />
@@ -218,6 +224,7 @@ export const Registered = () => {
           </div>
         </form>
       </div>
+      <Footer />
     </>
   )
 }

@@ -52,12 +52,14 @@
   padding: 0;
   // justify-content: center;
   flex-wrap: wrap;
-  background-color:#C0C0C0;;
+  // background-color:#C0C0C0;;
+  height: 440px;
+
  }
 
  .form {
   position: absolute;
-  top:50%;
+  top:5%;
   left: 50%;
   transform: translateX(-50%);
   // background-color: red;
