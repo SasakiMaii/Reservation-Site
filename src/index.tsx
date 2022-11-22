@@ -39,9 +39,10 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+// 全てのコンポーネントでstoreを共有
 root.render(
   <React.StrictMode>
-    <Provider store={store}> // 全てのコンポーネントでstoreを共有
+    <Provider store={store}> 
       <App />
     </Provider>
   </React.StrictMode>
