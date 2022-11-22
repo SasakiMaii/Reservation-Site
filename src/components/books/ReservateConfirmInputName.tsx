@@ -39,37 +39,27 @@ export const ReserveName = (props: any) => {
   );
 };
 
-export const LodgerName = (props: any) => {
-  const { lodgeFirstName, lodgeLastName, onChangeFirst, onChangeLast } = props;
+// export const LodgerName = (props: any) => {
+//   const { lodgeFirstName, lodgeLastName, onChangeFirst, onChangeLast } = props;
 
-  return (
-    <>
-      <br />
-      <input
-        type="text"
-        value={lodgeFirstName}
-        onChange={onChangeFirst}
-        placeholder="姓"
-        className={ReservateConfirmContentsStyles.input}
-      />
-      <input
-        type="text"
-        value={lodgeLastName}
-        onChange={onChangeLast}
-        placeholder="名"
-        className={ReservateConfirmContentsStyles.input}
-      />
-      <br />
-      <input
-        type="text"
-        placeholder="姓(フリガナ)"
-        className={ReservateConfirmContentsStyles.input}
-      />
-      <input
-        type="text"
-        placeholder="名(フリガナ)"
-        className={ReservateConfirmContentsStyles.input}
-      />
-    </>
-  );
-};
+
+//   return (
+//     <>
+//       <br />
+//       <input
+//         type="text"
+//         value={lodgeFirstName}
+//         onChange={onChangeFirst}
+//         placeholder="例）田中"
+//         className={ReservateConfirmContentsStyles.input}
+//       />
+//       <input
+//         type="text"
+//         value={lodgeLastName}
+//         onChange={onChangeLast}
+//         placeholder="例）太郎"
+//         className={ReservateConfirmContentsStyles.input}
+//       />
+//     </>
+//   );
+// };

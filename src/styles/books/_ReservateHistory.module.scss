@@ -23,6 +23,7 @@ $breakpoints: (
   }
 }
 
+
 .reservatehistoryTitle {
   text-align: center;
   margin: 50px;
@@ -30,19 +31,66 @@ $breakpoints: (
 
 .unLodger {
   width: 800px;
-  max-height: 520px;
+  max-height: 1050px;
   margin: 20px auto;
   background-color: $mainColor;
+  border-radius: 20px;
+  box-shadow: 0px 0px 8px -4px #777777;
+  @include mq(sp) {
+    width: 300px;
+    font-size: 10px;
+    margin: 0 auto;
+  }
 }
 
 .lodged {
   width: 800px;
   margin: 20px auto;
   background-color: $mainColor;
+  max-height: 900px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 8px -4px #777777;
+  @include mq(sp) {
+    width: 300px;
+    font-size: 10px;
+    margin: 10px auto;
+  }
+}
+
+.lodgedContents {
+  margin: 20px;
+  padding-bottom: 20px;
+}
+
+.lodgedContents button {
+  width: 100px;
+  height: 30px;
+  margin: 10px auto;
+  text-align: center;
+  background-color: rgb(101, 109, 183);
+  border-radius: 10px;
+  color: #fff;
+}
+
+.lodgedContents button:hover{
+  opacity: 0.8;
 }
 
 .unLodgerContents {
   display: flex;
+  @include mq(sp) {
+    display: block;
+  }
+}
+
+.unLodgerContents ul {
+  margin: 15px 0;
+}
+
+.unLodgerContents span {
+  display: inline-block;
+  width: 100px;
+  margin-left: 10px;
 }
 
 .unLodgerContents button {
@@ -50,10 +98,17 @@ $breakpoints: (
   height: 30px;
   margin: 10px auto;
   text-align: center;
-  padding: 5px;
   background-color: rgb(101, 109, 183);
   border-radius: 10px;
   color: #fff;
+  @include mq(sp) {
+    width: 50px;
+    font-size: 10px;
+  }
+}
+
+.unLodgerContents button:hover{
+  opacity: 0.8;
 }
 
 .unLodgerContentsTotal {
@@ -66,7 +121,6 @@ $breakpoints: (
   height: 30px;
   margin: 10px auto;
   text-align: center;
-  padding: 5px;
   background-color: rgb(101, 109, 183);
   border-radius: 10px;
   color: #fff;
@@ -75,8 +129,99 @@ $breakpoints: (
 .changeReservate input {
   margin-top: 5px;
   margin-right: 5px;
-  border: 1px solid rgb(24, 25, 28);
-  background-color: #fff;
+  background-color: $mainColor;
+  border: solid 2px #C0C0C0;
+  border-radius: 6px;
   border-radius: 5px;
   padding: 8px;
+  width: 180px;
+}
+
+input:hover {
+  border: solid 2px rgb(101, 109, 183);
+}
+
+.changeReservate ul{
+  margin: 15px ;
+}
+
+.changeReservate button:hover {
+  opacity: 0.8;
+}
+
+.UnReserveTitle {
+  background-color: #B0C4DE;
+  box-shadow: 0px 0px 8px -4px #777777;
+  width: 500px;
+  margin: 70px auto;
+  text-align: center;
+  border-radius: 20px;
+  padding: 40px;
+  line-height: 40px;
+}
+
+.UnReserveTitle button:hover {
+  color: gray;
+}
+
+.ReservedTitle {
+  background-color: #B0C4DE;
+  box-shadow: 0px 0px 8px -4px #777777;
+  width: 500px;
+  margin: 20px auto;
+  text-align: center;
+  border-radius: 20px;
+  padding: 40px;
+  line-height: 40px;
+}
+
+.ReservedTitle button:hover {
+  color: gray;
+}
+
+.innerTitle {
+  display: inline-block;
+  border-bottom: 3px solid #deb887;
+  margin: 10px;
+}
+
+.unLodgerContentsTotal {
+  margin-left: 20px;
+  line-height: 30px;
+}
+
+.subTitle {
+  border-bottom: 1px solid black;
+  width: 550px;
+}
+
+.cancel ul{
+  padding: 5px 10px;
+  margin: 10px 0;
+  width: 65%;
+}
+
+.cancel span {
+  color: red;
+}
+
+.cancelBtn {
+  border-bottom: 2px solid #C0C0C0;
+  width: 65%;
+  text-align: left;
+  margin: 10px 0;
+}
+
+.changeAfter {
+  margin-left: 10px;
+}
+
+.reservateDetails span {
+  display: inline-block;
+  width: 100px;
+  margin-left: 10px;
+}
+
+.reservateDetails ul {
+  line-height: 30px;
 }

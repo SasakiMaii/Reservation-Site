@@ -33,7 +33,8 @@ $breakpoints: (
   border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
-    max-width: 380px;
+    width: 380px;
+    font-size: 10px;
     margin: 0 auto;
   }
 }
@@ -52,6 +53,11 @@ $breakpoints: (
   // width: 50%;
   border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
+  @include mq(sp) {
+    width: 380px;
+    font-size: 10px;
+    margin: 10px auto;
+  }
 }
 
 .lodger ul {
@@ -69,6 +75,11 @@ $breakpoints: (
   padding: 10px;
   border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
+  @include mq(sp) {
+    width: 380px;
+    font-size: 10px;
+    margin: 10px auto;
+  }
 }
 
 .reservateplan ul {
@@ -82,10 +93,10 @@ $breakpoints: (
 .reservateplan button {
   background-color: rgb(101, 109, 183);
   color: #fff;
-  width: 70px;
-  height: 30px;
-  border-radius: 5px;
-  margin: 5px 0;
+  width: 100px;
+  height: 40px;
+  border-radius: 10px;
+  margin: 0;
 }
 
 .reservateplan button:hover {
@@ -97,8 +108,11 @@ $breakpoints: (
   margin: 20px auto;
   padding: 10px;
   border-radius: 20px;
-  width: 97%;
+  width: 71%;
   box-shadow: 0px 0px 8px -4px #777777;
+  @include mq(sp) {
+    font-size: 10px;
+  }
 }
 
 .payment span {
@@ -106,7 +120,15 @@ $breakpoints: (
 }
 
 .payment label {
-  padding: 10px;
+  padding: 5px;
+  font-size: 15px;
+  @include mq(sp) {
+    font-size: 10px;
+  }
+}
+
+.paymentRadioBtn {
+  margin-top: 10px;
 }
 
 .information {
@@ -114,25 +136,37 @@ $breakpoints: (
   justify-content: space-around;
   // background-color: pink;
   max-width: 1600px;
-  max-height: 1000px;
+  max-height: 1500px;
   margin: 0 auto;
+  @include mq(sp) {
   flex-direction: column;
+  margin: 0 10px;
+  }
+  @include mq(tab) {
+    width: 800px;
+    display: block;
+    margin: 0 auto;
+    }
 }
 
 .input {
   margin-top: 5px;
   margin-right: 5px;
-  border: 1px solid rgb(24, 25, 28);
-  background-color: #fff;
-  border-radius: 5px;
+  background-color: $mainColor;
+  border: solid 2px #C0C0C0;
+  border-radius: 6px;
   padding: 8px;
   // @include mq(sp) {
   //   width: 150px;
   // }
 }
 
+.input:hover {
+  border: solid 2px rgb(101, 109, 183);
+}
+
 textarea {
-  width: 80%;
+  width: 90%;
   height: 5rem;
   margin-bottom: 10px;
 }
@@ -157,10 +191,10 @@ textarea {
 
 .accordionMenu button {
   text-align: left;
-  width: 100%;
+  width: 90%;
   padding: 10px 0;
   // border-top: 0.5px solid black;
-  border-bottom: 0.5px solid black;
+  border-bottom: 2px solid #C0C0C0;
 }
 
 .personInformation {
@@ -176,7 +210,7 @@ textarea {
 }
 
 .reservePlanList span {
-  display:inline-block;
+  display: inline-block;
   width: 100px;
   margin-left: 10px;
 }
@@ -185,6 +219,7 @@ textarea {
   padding-top: 25px;
 }
 
+
 .totalPrice {
   background-color: rgb(247, 246, 234);
   width: 500px;
@@ -192,4 +227,89 @@ textarea {
   margin-top: 20px;
   border-radius: 10px;
   font-size: 20px;
+  @include mq(sp) {
+    font-size: 15px;
+  }
+  
 }
+
+.innertitle {
+  display: inline-block;
+  border-bottom: 3px solid #deb887;
+}
+
+.lodgerName {
+  margin: 15px;
+  line-height: 20px;
+}
+
+.lodgerName label {
+  font-size: 14px;
+  @include mq(sp) {
+    font-size: 10px;
+    }
+  
+}
+
+.lodgerContents {
+  margin: 15px;
+}
+
+.checkTime {
+  margin-bottom: 15px;
+}
+
+.arrivalText {
+  margin-right: 10px;
+}
+
+.payment span {
+  font-size: 10px;
+  padding: 5px;
+  border-radius: 6px;
+  background-color: rgb(220 38 38);
+  color: white;
+  transform: translateY(-2px) translateX(8px);
+  position: absolute;
+} 
+
+.cancel {
+  margin-top: 10px;
+  line-height: 25px;
+}
+
+.cancellist {
+  background-color: #fffef8;
+  width: 90%;
+  border-radius: 10px;
+  font-size: 14px;
+  padding-left: 10px;
+}
+
+// .reservePlanContents {
+//   height: auto;
+// }
+
+
+.reservateplanBtn button {
+  display: block;
+  margin: 50px auto;
+  width: 150px;
+  height: 50px;
+}
+
+#overlay{
+  /*　画面全体を覆う設定　*/
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background-color:rgba(0,0,0,0.5);
+  
+    /*　画面の中央に要素を表示させる設定　*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+  }
