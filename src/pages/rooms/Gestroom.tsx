@@ -3,9 +3,9 @@ import RoomStyle from "../../styles/rooms/_Gestroom.module.scss";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, } from "react-router-dom";
 import PagingStyle from "../../styles/rooms/_Paging.module.scss";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState} from "react";
 import { IoSearchOutline } from "react-icons/io5";
 // import "firebase";
 import db from "../../Firebase";
@@ -17,7 +17,6 @@ import {
   limit,
   startAfter,
   endBefore,
-  where,
 } from "firebase/firestore";
 import RoomPlanSearch from "../../components/rooms/Search";
 import SecondryButton from "../../components/button/SecondryButton";
@@ -259,9 +258,15 @@ export const RoomCard = (prps: any) => {
   const params = useParams();
   //予約ボタン
   const navigate = useNavigate();
+  
   const handleResarvedRoomBtn = () => {
-    rooms.filter((room:any)=>{room.id})
-    navigate(`/rooms/RoomDetails`);
+    
+      // rooms.map((room:any)=>{
+      //   return(
+          navigate(`/rooms/RoomDetails`,{state:{id:1}})
+        // )
+      // })
+  
   };
 
   //次のページへ進むボタン。ソートボタンがクリックされていた場合は、料金順でページングになるように。
@@ -387,7 +392,8 @@ export const RoomCard = (prps: any) => {
                   </div>
                 </div>
                 <div className={RoomStyle.ResarvedRoomBtn}>
-                  <PrimaryButton onClick={handleResarvedRoomBtn}>
+                  <PrimaryButton 
+                  onClick={handleResarvedRoomBtn}>
                     空室を探す
                   </PrimaryButton>
                 </div>

@@ -36,7 +36,7 @@ const RoomDetails = () => {
       setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
   }, []);
-  
+
   const obroop = () => {
     const price = [];
     for (let i = 1; i <= 3; i++) {
@@ -82,11 +82,17 @@ const RoomDetails = () => {
   
   
   const params = useParams();
+//   const location = useLocation();
+//   const [selectId, setSelectId] = useState<{ room:any[]}>(location.state as { room:any[]})
+// console.log(location.state)
+//   if(location.state){
+//     setSelectId(location.state)
+
+  // }
   return (
     <>
       <Header />
         <>
-        <p>{params.id}番目の記事です</p>
       <Link to={"/"} className={RoomDetailStyle.detailreservedchange}>
         予約内容の確認・取り消しはこちら
       </Link>

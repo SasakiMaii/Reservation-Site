@@ -13,14 +13,16 @@ const Header = () => {
   return (
     <>
       <div className={headerStyle.headerFlex}>
+        <Link to={'/'}>
         <h1><GiFrogPrince />Prince'View Hotel</h1>
+        </Link>
         <div className={headerStyle.headerNav}>
           <ul>
             <li className={headerStyle.headerlist}>
               <Link to={"/rooms/Gestroom"}> <span className={headerStyle.headerspan}> 客室・プラン</span></Link>
             </li>
             <li className={headerStyle.headerlist}>
-              <Link to={"/"}><span className={headerStyle.headerspan}> 予約内容確認</span></Link>
+              <Link to={"/books/ReservateHistory"}><span className={headerStyle.headerspan}> 予約内容確認</span></Link>
             </li>
             {/* <li>
               <Link to={"/"}>ログイン</Link>
@@ -45,7 +47,7 @@ const Certification = () => {
     return (
       <>
         <li>
-          <Link to={"/"}> <span className={headerStyle.headerspan}>ログイン</span> </Link>
+          <Link to={"/users/login"}> <span className={headerStyle.headerspan}>ログイン</span> </Link>
         </li>
       </>
     )

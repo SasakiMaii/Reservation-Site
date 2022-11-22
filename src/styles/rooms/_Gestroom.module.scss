@@ -1,9 +1,9 @@
 //共通
 
 * {
-  color: rgb(65, 65, 65);
+  color: rgb(16, 16, 16);
   max-width: auto;
- 
+  font-family: 'Shippori Mincho', serif;
 }
 
 li {
@@ -150,7 +150,7 @@ align-items: right;
   padding-bottom: 2px;
   font-weight: bold;
   display: inline-block;
-  border-bottom: solid 5px rgb(26, 89, 136);
+  border-bottom: solid 5px RGB(107, 1, 0);
 }
 
 //roomcard
@@ -192,7 +192,7 @@ align-items: right;
   padding: 0.25em 0.5em;/*上下 左右の余白*/
   color: #494949;/*文字色*/
   background: transparent;/*背景透明に*/
-  border-left: solid 5px RGB(26, 89, 136);/*左線*/
+  border-left: solid 5px RGB(107, 1, 0);/*左線*/
 }
 
 .detailContainer {
@@ -295,7 +295,7 @@ align-items: right;
   margin-left: 10px;
   padding-bottom: 2px;
   font-weight: bold;
-  border-bottom: solid 5px rgb(26, 89, 136);
+  border-bottom: solid 5px RGB(107, 1, 0);
 }
 
 .planName {
@@ -307,7 +307,7 @@ align-items: right;
     padding: 0.25em 0.5em;/*上下 左右の余白*/
     color: #494949;/*文字色*/
     background: transparent;/*背景透明に*/
-    border-left: solid 5px RGB(26, 89, 136);/*左線*/
+    border-left: solid 5px RGB(107, 1, 0);/*左線*/
   
 }
 

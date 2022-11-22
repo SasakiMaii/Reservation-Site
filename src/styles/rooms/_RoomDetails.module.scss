@@ -56,7 +56,7 @@
   padding: 0.25em 0.5em;/*上下 左右の余白*/
   color: #494949;/*文字色*/
   background: transparent;/*背景透明に*/
-  border-left: solid 7px RGB(26, 89, 136);/*左線*/
+  border-left: solid 7px RGB(107, 1, 0);/*左線*/
 }
 
 .detailCheck{
@@ -142,7 +142,7 @@ position: relative;
   content: '';
   width: 100%;
   height: 2px;
-  background: RGB(26, 89, 136);
+  background: RGB(107, 1, 0);
   bottom: -10px;               /*アンダーラインがaタグの下端から現れる*/
   transform: scale(0, 1);     /*アンダーラインの縮尺比率。ホバー前はx方向に0*/
   transform-origin: left top; /*変形（アンダーラインの伸長）の原点がaタグ（各メニュー）の左端*/
