@@ -2,10 +2,40 @@ import { Link } from "react-router-dom";
 import headerStyle from "../../styles/layout/_Header.module.scss";
 import PrimaryButton from "../button/PrimaryButton";
 import { useAuthState } from "react-firebase-hooks/auth"
-import { auth ,provider} from '../../Firebase'
+import { auth, provider } from '../../Firebase'
 import { GiFrogPrince } from "react-icons/gi";
+import { useEffect } from "react";
 
 const Header = () => {
+
+  // gestID（hJ2JnzBn）の入れ物
+  const cookieList: any = [];
+
+  useEffect(() => {
+
+    // 以下、cookie取り出し処理
+    const splitCookie = document.cookie.split(';');
+    const list = [];
+
+    for (let i = 0; i < splitCookie.length; i++) {
+      list.push(splitCookie[i].split('='));
+    }
+
+    // cookieにgestID（hJ2JnzBn）がセットされていな場合、付与する
+    list.map((data, index) => {
+      if (data[0].includes("hJ2JnzBn")) {
+        cookieList.push(data[0])
+      }
+    })
+
+    // gestID（hJ2JnzBn）が入っていなければ、ランダムな文字列をcookieに追加
+    if (cookieList.length === 0) {
+      let randomId = Math.random().toString(32).substring(2);
+      document.cookie = `hJ2JnzBn=${randomId}; path=/;`;
+    }
+
+  }, [])
+
   //予約のイベント
   const handleResarve = () => {
 
@@ -28,7 +58,7 @@ const Header = () => {
             <Certification />
           </ul>
           <Link to={"/rooms/Gestroom"}>
-          <PrimaryButton onClick={handleResarve}>ご予約</PrimaryButton>
+            <PrimaryButton onClick={handleResarve}>ご予約</PrimaryButton>
           </Link>
         </div>
       </div>
