@@ -56,6 +56,7 @@ export const RoomsIntroduction = () => {
                 data-aos-easing="linear"
                 data-aos-duration="1500"
                 data-aos-anchor-placement="bottom-bottom"
+                key={index}
                 >
                   <img src={data.image} alt="" className={style.roomsIntroductionImgae} />
                   <div className={style.roomsIntroductionSentence}>
@@ -73,6 +74,7 @@ export const RoomsIntroduction = () => {
                 data-aos-easing="linear"
                 data-aos-duration="1500"
                 data-aos-anchor-placement="bottom-bottom"
+                key={index}
                 >
                   <div className={style.roomsIntroductionSentence}>
                     <h3 className={style.roomsIntroductionTitle}>{data.area}</h3>
