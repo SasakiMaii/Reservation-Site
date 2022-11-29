@@ -19,6 +19,8 @@ import { MailInput } from "../form/mailInput";
 import useSWR, { useSWRConfig } from "swr";
 import { FiAlertTriangle } from "react-icons/fi";
 import { ArrivalTime } from "./ArrivalTime";
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const ReservateConfirmContents = () => {
   const radioItem = [
@@ -91,33 +93,36 @@ export const ReservateConfirmContents = () => {
     // console.log(user.email);
   }
 
+  const location = useLocation()
+
   // データベースからデータを取得する（ログインメールアドレスと一致）
   const ReserveData = () => {
-    const reserveData = query(
-      collection(db, "reserve"),
-      where("mail", "==", userEmail)
-    );
-    getDocs(reserveData).then((reserveItem) => {
-      setReserves(reserveItem.docs.map((doc) => ({ ...doc.data() })));
-    });
+    const reserveData = location.state;
+    // const reserveData = query(
+    //   collection(db, "reserve"),
+    //   where("mail", "==", userEmail)
+    // );
+    // getDocs(reserveData).then((reserveItem) => {
+    //   setReserves(reserveItem.docs.map((doc) => ({ ...doc.data() })));
+    // });
 
-    //ドキュメントID取得
-    const documentFetch = async () => {
-      const q = query(
-        collection(db, "reserve"),
-        where("mail", "==", userEmail)
-      );
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc: any) => {
-        setDocID(doc.id);
-      });
-    };
-    documentFetch();
-    setConfirmButton("none");
-    if (docID === undefined) {
-      setConfirmError("選択中のプランはありません");
-      // console.log("a");
-    }
+    // //ドキュメントID取得
+    // const documentFetch = async () => {
+    //   const q = query(
+    //     collection(db, "reserve"),
+    //     where("mail", "==", userEmail)
+    //   );
+    //   const querySnapshot = await getDocs(q);
+    //   querySnapshot.forEach((doc: any) => {
+    //     setDocID(doc.id);
+    //   });
+    // };
+    // documentFetch();
+    // setConfirmButton("none");
+    // if (docID === undefined) {
+    //   setConfirmError("選択中のプランはありません");
+    //   // console.log("a");
+    // }
   };
   // console.log(docID);
 
@@ -164,14 +169,6 @@ export const ReservateConfirmContents = () => {
     }
   };
 
-  const reserveAdd = () => {
-    navigate("/rooms/Gestroom");
-  };
-
-  const onChangeAdd = (e: any) => {
-    setAddLodgeNum(e.target.value);
-  };
-
   let dt = new Date();
   let y = dt.getFullYear();
   let m = ("00" + (dt.getMonth() + 1)).slice(-2);
@@ -205,7 +202,7 @@ export const ReservateConfirmContents = () => {
         roomType: reserveItem[0].roomType,
         plan: reserveItem[0].plan,
         checkIn: reserveItem[0].checkIn,
-        checkOut: reserveItem[0].checkOut,
+        // checkOut: reserveItem[0].checkOut,
         reservationDate: todayDate,
         price: reserveItem[0].price * 1.1,
         arrivalTime: arrivalTime,
@@ -374,7 +371,7 @@ export const ReservateConfirmContents = () => {
                       </div>
                     );
                   })()}
-                  <li className={ReservateConfirmContentsStyles.deleteBtn}>
+                  {/* <li className={ReservateConfirmContentsStyles.deleteBtn}>
                     <button
                       onClick={clickDelete}
                       style={{ display: deleteButton }}
@@ -382,10 +379,11 @@ export const ReservateConfirmContents = () => {
                       削除
                     </button>
                     {!error ? <p>選択中のプランがありません。</p> : ""}
-                  </li>
+                  </li> */}
                 </React.Fragment>
               ))}
             </ul>
+            <Link to="/rooms/Gestroom">戻る</Link>
           </div>
         </div>
       </div>

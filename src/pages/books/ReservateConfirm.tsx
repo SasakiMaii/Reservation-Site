@@ -19,7 +19,6 @@ const ReservateConfirm = () => {
 
   return (
     <>
-    <Header/>
       <div>
       <Header />
         <h1 className={ReservateConfirmStyles.reservateconfirmTitle}>予約内容の確認</h1>
