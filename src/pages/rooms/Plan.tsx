@@ -17,10 +17,10 @@ import PrimaryButton from "../../components/button/PrimaryButton";
 import { Link } from "react-router-dom";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
-import RoomSearchSoart from "../../components/rooms/RoomSearchSoart";
-import Pageing from "../../components/rooms/Pageing";
+import RoomSearchSoart from "../../components/Organisms/rooms/RoomSearchSoart";
+import Pageing from "../../components/Organisms/rooms/Pageing";
 import PagingStyle from "../../styles/rooms/_Paging.module.scss";
-import RoomPlanSearch from "../../components/rooms/Search";
+import RoomPlanSearch from "../../components/Templates/Search";
 import SecondryButton from "../../components/button/SecondryButton";
 
 //プラン
@@ -41,15 +41,14 @@ const Plan = () => {
   const [upChange, setUpChange] = useState<any>("");
   const [datetext, setDatetext] = useState("");
 
-  
   const dateChoice = () => {
-    const res = reserve.filter((x: any) => {
-      return x.checkIn === datetext;
-    }); //日付が一致
+    // const res = reserve.filter((x: any) => {
+    //   return x.checkIn === datetext;
+    // }); //日付が一致
 
-    const result = reserved.filter((y: any) => {
-      return y.checkIn === datetext;
-    }); //日付が一致
+    // const result = reserved.filter((y: any) => {
+    //   return y.checkIn === datetext;
+    // }); //日付が一致
 
     const roomFilter = reserve.filter((x: any) => {
       return x.roomType === roomChange;
@@ -63,12 +62,16 @@ const Plan = () => {
     const count = Number(adultInput) + Number(chilrdInput) <= 3;
     //人数が合わせて３人以上だったらtrue
 
-    const noemptyRoom = room.filter((x: any) => {
-      return String(x.roomType) === roomChange;
-    });
-    //ゲストルームのDBのルームタイプと,部屋の入力値が一致
+    // const noemptyRoom = room.filter((x: any) => {
+    //   return String(x.roomType) === roomChange;
+    // });
+    // //ゲストルームのDBのルームタイプと,部屋の入力値が一致
 
     const noemptyRooms = reserve.filter((x: any) => {
+      return String(x.checkIn) === datetext;
+    });
+    //日付が一致（予約確認のDBと入力値）
+    const noemptyRoom = reserved.filter((x: any) => {
       return String(x.checkIn) === datetext;
     });
     //日付が一致（予約確認のDBと入力値）
@@ -88,10 +91,11 @@ const Plan = () => {
     }
     if (new Date(datetext) <= new Date(new Date().toString())) {
       console.log("今日以降の日付を入れてください");
-    } else if (noemptyRooms.length === 1 && roomFilter.length === 0) {
+    } else if (noemptyRoom.length===0||noemptyRooms.length === 1 && roomFilter.length === 0) {
       console.log("日付は埋まってるけど部屋は埋まってないのでその部屋を表示");
     } else if (
-      noemptyRooms.length === 1 &&
+      (noemptyRoom.length===1||
+      noemptyRooms.length === 1) &&
       roomFilter.length === 1 &&
       roomFilters.length === 1 &&
       priceFilter === false
@@ -109,7 +113,7 @@ const Plan = () => {
       <Header />
       <p className={PlanStyle.pageTitle}><IoSearchOutline/>空室検索</p>
       <RoomPlanSearch room={room} setRoom={setRoom} reserve={reserve} setReserve={setReserve} reserved={reserved} setReserved={setReserved} chilrdInput={chilrdInput} setChilrdInput={setChilrdInput} adultInput={adultInput} setAdultInput={setAdultInput} roomChange={roomChange} setRoomChange={setRoomChange} downChange={downChange} setDownChange={setDownChange} upChange={upChange} setUpChange={setUpChange} datetext={datetext} setDatetext={setDatetext} dateChoice={dateChoice}/>
-      <p className={PlanStyle.pageTitle}>全ての客室＆プラン</p>
+      <p className={PlanStyle.pageTitle2}>全ての客室＆プラン</p>
       <div className={PlanStyle.planLinkWrapper}>
         <Link to={"/rooms/GestRoom"}>客室で探す</Link>
         <Link to={"#"} className={PlanStyle.planLink}>
@@ -124,7 +128,7 @@ const Plan = () => {
 };
 
 export const PlanCard = (props:any) => {
-  const{plans,SetPlans,rooms,SetRooms,descClick,setDescClick,ascClick,setAscClick}=props
+  const{plans,SetPlans,SetRooms,descClick,setDescClick,ascClick,setAscClick}=props
 
   const soartData = collection(db, "Plan");
   const roomData = collection(db, "gestRoomType");
@@ -283,7 +287,7 @@ export const PlanCard = (props:any) => {
                     部屋
                   </p>
                 </div>
-                <hr />
+
                 <div className={PlanStyle.roomplanCard}>
                   <img
                     className={PlanStyle.roompic}

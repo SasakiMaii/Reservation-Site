@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   addDoc,
   collection,
@@ -8,51 +8,39 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { useEffect } from "react";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import db, { auth } from "../../Firebase";
 import RoomDetailStyle from "../../styles/rooms/_RoomDetails.module.scss";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
-import { Link, useLocation } from "react-router-dom";
-import { useParams, useSearchParams, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { useAuthState } from "react-firebase-hooks/auth";
-
-import { useNavigation } from "react-router-dom";
 import { HiOutlineChevronLeft } from "react-icons/hi";
 import PlanRecomendSwiper from "../../components/Organisms/PlanRecomendSwiper";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 // const status = 404;
 // if (status === 404) {
-// return <Navigate to="/notfound" />;
-// }リダイレクト
+// <Navigate to="/notfound" />;
+// }
 
-const RoomDetails = () => {
+const PlanDetails = () => {
   const [num, setNum] = useState(1);
   const [adult, setAdult] = useState(1);
   const [children, setChildren] = useState(0);
   const [rooms, setRooms] = useState<any>([]);
+  const [plans, setPlans] = useState<any>([]);
   const [roomsId, setRoomsId] = useState<any>([]);
   const [inputDate, setInputDate] = useState(false);
   const [datetext, setDatetext] = useState("");
-  // const location =useLocation()
-  // const [selectId,setSelectId]=useState<{id:number}>(location.state as {id:number})
 
-  // データの受け渡しのため
   const navigation = useNavigate();
-
-  // ログイン情報
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
-
-  // ゲストID情報取得
-  const [gestIdCookie, SetGestIdCookie] = useState();
-
-  // gestID（hJ2JnzBn）の入れ物
   const cookieList: any = [];
   useEffect(() => {
     // 以下、cookie取り出し処理
@@ -70,16 +58,57 @@ const RoomDetails = () => {
       }
     });
   }, []);
-  const [SearchParams] = useSearchParams();
 
+  const [SearchParams] = useSearchParams();
   const RoomData = collection(db, "gestRoomType");
+  const PlanData = collection(db, "Plan");
+
+  const roomtype = SearchParams.get("plan");
+  const roomtype2 = SearchParams.get("plan2");
+  const roomtype3 = SearchParams.get("plan3");
+  const roomtype4 = SearchParams.get("plan4");
 
   useEffect(() => {
-    const roomtype = SearchParams.get("room");
-    const detailRoom = query(RoomData, limit(1), where("id", "==", roomtype)); //一つだけ表示
-    getDocs(detailRoom).then((snapShot) => {
-      setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+    getDocs(PlanData).then((SnapShot) => {
+      setPlans(SnapShot.docs.map((doc) => ({ ...doc.data() })));
     });
+    if (roomtype) {
+      const detailRoom = query(
+        RoomData,
+        limit(1),
+        where("plan1", "==", roomtype)
+      ); //一つだけ表示
+      getDocs(detailRoom).then((snapShot) => {
+        setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+      });
+    } else if (roomtype2) {
+      const detailRoom = query(
+        RoomData,
+        limit(1),
+        where("plan2", "==", roomtype2)
+      ); //一つだけ表示
+      getDocs(detailRoom).then((snapShot) => {
+        setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+      });
+    } else if (roomtype3) {
+      const detailRoom = query(
+        RoomData,
+        limit(1),
+        where("plan3", "==", roomtype3)
+      ); //一つだけ表示
+      getDocs(detailRoom).then((snapShot) => {
+        setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+      });
+    } else if (roomtype4) {
+      const detailRoom = query(
+        RoomData,
+        limit(1),
+        where("plan4", "==", roomtype4)
+      ); //一つだけ表示
+      getDocs(detailRoom).then((snapShot) => {
+        setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+      });
+    }
   }, []);
 
   const obroop = () => {
@@ -94,8 +123,18 @@ const RoomDetails = () => {
     return price;
   };
 
-  // ログインログアウト判定追加
   const handleResarve = () => {
+    // const reserveData = collection(db, "reserve");
+    // const data = {
+    //   adultsNum: adult,
+    //   childrenNum: children,
+    //   checkIn: datetext,
+    //   price: result,
+    //   roomType: String(room),
+    //   totalDate: Number(num),
+    //   plan: roomtype || roomtype2 || roomtype3 || roomtype4,
+    // };
+    // addDoc(reserveData, data);
     if (user) {
       console.log(user.email);
       const reserveData = collection(db, "reserve");
@@ -106,6 +145,7 @@ const RoomDetails = () => {
         price: result,
         roomType: String(room),
         totalDate: Number(num),
+        plan: roomtype || roomtype2 || roomtype3 || roomtype4,
         mail: user.email,
         // gestId:
       };
@@ -142,18 +182,42 @@ const RoomDetails = () => {
   };
 
   const room = rooms.map((room: any) => room.area);
+
   const price = rooms.map((room: any) => room.price);
+
+  const planPrice = rooms.map((room: any) => {
+    if (room.plan1) {
+      return room.price1;
+    } else if (room.plan2) {
+      return room.price2;
+    } else if (room.plan3) {
+      return room.price3;
+    } else {
+      return room.price4;
+    }
+  });
+
   const result = (
-    num * Number(price) * adult +
+    (Number(price) + Number(planPrice)) * num * adult +
     children * 5000
   ).toLocaleString();
+  // const result = (
+  //   (num * Number(price) * adult +
+  //   children * 5000)+Number(planPrice)
+  // ).toLocaleString();
 
   return (
     <>
       <Header />
-      <div className={RoomDetailStyle.containerAllDetail}>
+      <>
+        {/* <Link
+          to={"/books/ReservateHistory"}
+          className={RoomDetailStyle.detailreservedchange}
+          >
+          →予約内容の確認・取り消しはこちら
+        </Link> */}
         <Link to={"/rooms/Gestroom"} className={RoomDetailStyle.detaillink}>
-          <HiOutlineChevronLeft size={25} /> 客室・プランへ戻る{" "}
+          <HiOutlineChevronLeft size={25} /> 客室・プラン{" "}
         </Link>
         {rooms.map((room: any) => {
           return (
@@ -172,16 +236,50 @@ const RoomDetails = () => {
                       plugins={[dayGridPlugin, interactionPlugin]}
                       locale="ja"
                       initialView="dayGridMonth"
-                      dateClick={handleDateClick}
+                      dateClick={() => handleDateClick}
                       selectable={true}
                       selectMirror={true}
                       businessHours={true}
+                      buttonText={{
+                        today: "今日",
+                      }}
                     />
                     <p>チェックイン：{room.checkIn}</p>
                     <p>チェックアウト：{room.checkOut}</p>
                   </div>
                 </div>
                 <div className={RoomDetailStyle.detailplan}>
+                  {roomtype ? (
+                    <>
+                      <p className={RoomDetailStyle.planName}>プラン名</p>
+                      <p className={RoomDetailStyle.plandetailName}>
+                        {room.plan1}
+                      </p>
+                    </>
+                  ) : roomtype2 ? (
+                    <>
+                      <p className={RoomDetailStyle.planName}>プラン名</p>
+                      <p className={RoomDetailStyle.plandetailName}>
+                        {room.plan2}
+                      </p>
+                    </>
+                  ) : roomtype3 ? (
+                    <>
+                      <p className={RoomDetailStyle.planName}>プラン名</p>
+                      <p className={RoomDetailStyle.plandetailName}>
+                        {room.plan3}
+                      </p>
+                    </>
+                  ) : roomtype4 ? (
+                    <>
+                      <p className={RoomDetailStyle.planName}>プラン名</p>
+                      <p className={RoomDetailStyle.plandetailName}>
+                        {room.plan4}
+                      </p>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                   <p className={RoomDetailStyle.count}>人数</p>
                   <div className={RoomDetailStyle.detailcount}>
                     <p>大人</p>
@@ -219,14 +317,27 @@ const RoomDetails = () => {
                   </div>
                   <div>
                     <p className={RoomDetailStyle.count}>合計金額</p>
-                    <p>一泊¥{room.price.toLocaleString()}〜/人</p>
+                    <p>
+                      一泊¥{(room.price + Number(planPrice)).toLocaleString()}
+                      〜/人
+                    </p>
                     <p className={RoomDetailStyle.roomPrice}>¥{result}</p>
+                    <br />
+                    {planPrice ? (
+                      <>
+                        <span className={RoomDetailStyle.discountPrev}>
+                          *プラン適用で¥{planPrice * num * adult}割引
+                        </span>
+                      </>
+                    ) : (
+                      <></>
+                    )}
                     <p className={RoomDetailStyle.detailAttention}>
                       *お子様は一泊¥5,000です。
                     </p>
                   </div>
                   <div className={RoomDetailStyle.detailBtn}>
-                    <PrimaryButton onClick={handleResarve}>
+                    <PrimaryButton onClick={ handleResarve}>
                       予約する
                     </PrimaryButton>
                   </div>
@@ -242,31 +353,42 @@ const RoomDetails = () => {
                   冷蔵庫 金庫 / 電気ケトル / Wi-Fi
                 </p>
               </div>
-
               <PlanRecomendSwiper />
-              <div className={RoomDetailStyle.recomend}></div>
-              <p className={RoomDetailStyle.detail}>お部屋の詳細</p>
-              <p className={RoomDetailStyle.detailStyle}>
-                {" "}
-                32～40インチテレビ / 竹製 歯ブラシ / 歯磨き粉 / シャンプー /
-                コンディショナー ボディーソープ / ハンドソープ / パジャマ /
-                スリッパ アロマディフューザー / ヘアドライヤー / 空気清浄機 /
-                冷蔵庫 金庫 / 電気ケトル / Wi-Fi
-              </p>
-              <Link
-                to={"/rooms/Gestroom"}
-                className={RoomDetailStyle.detaillink}
-              >
-                {" "}
-                →前の画面に戻る{" "}
-              </Link>
             </div>
           );
         })}
-      </div>
+      </>
       <Footer />
     </>
   );
 };
 
-export default RoomDetails;
+export const RecomendRoom = () => {
+  const PlanData = collection(db, "Plan");
+  const detailPlan = query(PlanData, limit(3));
+  const [plans, setPlans] = useState<any>([]);
+  useEffect(() => {
+    getDocs(detailPlan).then((snapShot) => {
+      setPlans(snapShot.docs.map((doc) => ({ ...doc.data() })));
+    });
+  }, []);
+  return (
+    <>
+      <p className={RoomDetailStyle.recomendName}>お客さまにおすすめのプラン</p>
+      <div className={RoomDetailStyle.recomendContainer}>
+        {plans.map((plan: any) => (
+          <div key={plan.name}>
+            <img
+              src="../hotel-4.jpg"
+              className={RoomDetailStyle.detailrecomendpic}
+              alt="roompicture"
+            />
+            <p>{plan.name}</p>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+};
+
+export default PlanDetails;

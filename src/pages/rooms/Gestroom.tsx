@@ -1,11 +1,11 @@
-import RoomSearchSoart from "../../components/rooms/RoomSearchSoart";
+import RoomSearchSoart from "../../components/Organisms/rooms/RoomSearchSoart";
 import RoomStyle from "../../styles/rooms/_Gestroom.module.scss";
 import PrimaryButton from "../../components/button/PrimaryButton";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import PagingStyle from "../../styles/rooms/_Paging.module.scss";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 // import "firebase";
 import db from "../../Firebase";
@@ -17,17 +17,17 @@ import {
   limit,
   startAfter,
   endBefore,
-  where,
 } from "firebase/firestore";
-import RoomPlanSearch from "../../components/rooms/Search";
+import RoomPlanSearch from "../../components/Templates/Search";
 import SecondryButton from "../../components/button/SecondryButton";
+import { useSelector } from "react-redux";
 
+// const Rooms: any[]=[];
+// console.log(Rooms)
 const GestroomPlan = () => {
-  const navigate = useNavigate();
   const [rooms, SetRooms] = useState<any>([]);
   const [descClick, setDescClick] = useState(false);
   const [ascClick, setAscClick] = useState(false);
-
   const [room, setRoom] = useState<any>([]); //db取り出し
   const [reserve, setReserve] = useState<any>([]); //db取り出し
   const [reserved, setReserved] = useState<any>([]); //db取り出し
@@ -54,9 +54,9 @@ const GestroomPlan = () => {
   });
   //部屋が一致
 
-  const reserveRoom = reserve.map((x: any) => {
-    return x;
-  });
+  // const reserveRoom = reserve.map((x: any) => {
+  //   return x;
+  // });
 
   const noemptyRooms = reserve.filter((x: any) => {
     return x.roomType === roomChange;
@@ -82,7 +82,14 @@ const GestroomPlan = () => {
   const roomPick = room.filter((r: any) => {
     return r.roomType === roomChange;
   });
+  const resRoom = rooms.map((room: any) => {
+    return room;
+  }); //全部を表示
 
+  const reset = rooms.filter((room:any)=>{
+    return room.null;
+  })
+  
   //検索ボタン・検索バリデーション
   const dateChoice = () => {
     setErr([]);
@@ -107,37 +114,40 @@ const GestroomPlan = () => {
       errorMsg.push(
         "上記の条件で空室はございません。条件を変更して検索しなおしてください。"
       );
+      SetRooms(reset)
     } else if (
       (noemptyDate.length === 1 && !noemptyRoom.length) ||
       (noemptyDates.length === 1 && !noemptyRooms.length)
     ) {
-      SetRooms(roomPick);
+      SetRooms(resRoom);
+      console.log("b")
+      // Rooms.push(roomPick)
     }
 
-    if (
-      (noemptyDate.length === 0 && roomPick) ||
-      (noemptyDates.length === 0 && roomPick)
-    ) {
-      SetRooms(roomPick);
-    }
+
+
+    // if (
+    //   (noemptyDate.length === 0 && roomPick) ||
+    //   (noemptyDates.length === 0 && roomPick)
+    // ) {
+    //   console.log("www")
+    //   SetRooms(roomPick);
+    // }
 
     if (
       (noemptyDate.length === 1 && noemptyRoom.length === 0) ||
       (noemptyDates.length === 1 && noemptyRooms.length === 0)
     ) {
+      console.log("ccc")
       SetRooms(roomPick);
     }
 
-    const resRoom = rooms.map((room: any) => {
-      return room;
-    }); //全部を表示
 
     if (datetext && roomChange === "") {
       SetRooms(resRoom);
     }
 
-    console.log(roomPick)
-
+    console.log(roomPick);
 
     //日付は埋まってるけど部屋は空いてるから指定の部屋を表示
 
@@ -149,57 +159,66 @@ const GestroomPlan = () => {
   return (
     <>
       <Header />
-      <p className={RoomStyle.pageTitle}>
-        <IoSearchOutline size={28} />
-        空室検索
-      </p>
-      <Link to={"/"} className={RoomStyle.reservedCheck}>
-        ご予約内容の確認・変更・取り消しはこちら
-      </Link>
-      {err.map((error: any) => {
-        return (
-          <p key={err[0]} className={RoomStyle.err}>
-            ※{error}
-          </p>
-        );
-      })}
-      <RoomPlanSearch
-        room={room}
-        setRoom={setRoom}
-        reserve={reserve}
-        setReserve={setReserve}
-        reserved={reserved}
-        setReserved={setReserved}
-        chilrdInput={chilrdInput}
-        setChilrdInput={setChilrdInput}
-        adultInput={adultInput}
-        setAdultInput={setAdultInput}
-        roomChange={roomChange}
-        setRoomChange={setRoomChange}
-        downChange={downChange}
-        setDownChange={setDownChange}
-        upChange={upChange}
-        setUpChange={setUpChange}
-        datetext={datetext}
-        setDatetext={setDatetext}
-        dateChoice={dateChoice}
-      />
-      <p className={RoomStyle.pageTitle}>全ての客室＆プラン</p>
-      <div className={RoomStyle.roomLinkWrapper}>
-        <Link to={"#"} className={RoomStyle.roomLink}>
-          {" "}
-          客室で探す{" "}
+      <div className={RoomStyle.hidden}>
+        <p className={RoomStyle.pageTitle}>
+          <IoSearchOutline size={28} />
+          空室検索
+        </p>
+        <Link to={"/"} className={RoomStyle.reservedCheck}>
+          ご予約内容の確認・変更・取り消しはこちら
         </Link>
-        <Link to={"/rooms/Plan"}> プランで探す </Link>
+        {err.map((error: any) => {
+          return (
+            <p key={err[0]} className={RoomStyle.err}>
+              ※{error}
+            </p>
+          );
+        })}
+        <RoomPlanSearch
+          room={room}
+          setRoom={setRoom}
+          reserve={reserve}
+          setReserve={setReserve}
+          reserved={reserved}
+          setReserved={setReserved}
+          chilrdInput={chilrdInput}
+          setChilrdInput={setChilrdInput}
+          adultInput={adultInput}
+          setAdultInput={setAdultInput}
+          roomChange={roomChange}
+          setRoomChange={setRoomChange}
+          downChange={downChange}
+          setDownChange={setDownChange}
+          upChange={upChange}
+          setUpChange={setUpChange}
+          datetext={datetext}
+          setDatetext={setDatetext}
+          dateChoice={dateChoice}
+        />
+        <p className={RoomStyle.pageTitle2}>全ての客室＆プラン</p>
+        <div className={RoomStyle.roomLinkWrapper}>
+          <Link to={"#"} className={RoomStyle.roomLink}>
+            {" "}
+            客室で探す{" "}
+          </Link>
+          <Link to={"/rooms/Plan"}> プランで探す </Link>
+        </div>
+        {err.map((error: any) => {
+          return (
+            <p key={err[0]} className={RoomStyle.err}>
+              ※{error}
+            </p>
+          );
+        })}
+        <RoomCard
+          descClick={descClick}
+          setDescClick={setDescClick}
+          rooms={rooms}
+          setRooms={SetRooms}
+          ascClick={ascClick}
+          setAscClick={setAscClick}
+        />
       </div>
-      <RoomCard
-        descClick={descClick}
-        setDescClick={setDescClick}
-        rooms={rooms}
-        setRooms={SetRooms}
-        ascClick={ascClick}
-        setAscClick={setAscClick}
-      />
       {/* <Pageing /> */}
       <Footer />
     </>
@@ -211,6 +230,7 @@ export const RoomCard = (prps: any) => {
   const { descClick, setDescClick, rooms, setRooms, ascClick, setAscClick } =
     prps;
   const soartData = collection(db, "gestRoomType");
+  const planData = collection(db, "Plan");
   const [showPlan, setShowPlan] = useState(false);
 
   const showPlanChange = () => {
@@ -256,7 +276,7 @@ export const RoomCard = (prps: any) => {
   //---
   // const roomData=collection(db,"gestRoomType")
   // const documentId=query(roomData,where("id","==","1"))
-  const params = useParams();
+  // const params = useParams();
   //予約ボタン
   const navigate = useNavigate();
   const handleResarvedRoomBtn = () => {
@@ -265,8 +285,7 @@ export const RoomCard = (prps: any) => {
   };
 
   //次のページへ進むボタン。ソートボタンがクリックされていた場合は、料金順でページングになるように。
-  // console.log(descClick)
-  // console.log(ascClick)
+
   const handleNextPage = async () => {
     if (descClick === true) {
       const priceDesc = query(soartData, orderBy("price", "desc"), limit(3));
@@ -387,7 +406,11 @@ export const RoomCard = (prps: any) => {
                   </div>
                 </div>
                 <div className={RoomStyle.ResarvedRoomBtn}>
-                  <PrimaryButton onClick={handleResarvedRoomBtn}>
+                  <PrimaryButton
+                    onClick={() => {
+                      navigate(`/rooms/RoomDetails?room=${room.id}`);
+                    }}
+                  >
                     空室を探す
                   </PrimaryButton>
                 </div>
@@ -396,32 +419,37 @@ export const RoomCard = (prps: any) => {
                   {showPlan ? (
                     <button
                       onClick={showPlanChange}
-                      style={{ fontSize: "18px" }}
+                      className={RoomStyle.roomplanbutton}
                     >
                       元に戻す
                     </button>
                   ) : (
                     <button
                       onClick={showPlanChange}
-                      style={{ fontSize: "17px" }}
+                      className={RoomStyle.roomplanbutton}
                     >
                       もっと見る...
                     </button>
                   )}
                 </div>
-                <hr />
+                {/* <hr /> */}
 
                 <div className={RoomStyle.roomplanCards}>
                   <img width={200} src="../hotel-4.jpg" alt="roompicture" />
                   <div className={RoomStyle.roomplanContainer}>
                     <p className={RoomStyle.roomplantext}>{room.plan1}</p>
                     <div className={RoomStyle.roomplanButton}>
-                      <SecondryButton onClick={handleResarvedRoomBtn}>
+                      <SecondryButton
+                        onClick={() => {
+                          navigate(`/rooms/PlanDetails?plan=${room.plan1}`);
+                        }}
+                      >
                         このプランで探す
                       </SecondryButton>
                     </div>
                   </div>
                 </div>
+                {}
                 {showPlan ? (
                   <div>
                     <div className={RoomStyle.roomplanCards}>
@@ -429,7 +457,13 @@ export const RoomCard = (prps: any) => {
                       <div className={RoomStyle.roomplanContainer}>
                         <p className={RoomStyle.roomplantext}>{room.plan2}</p>
                         <div className={RoomStyle.roomplanButton}>
-                          <SecondryButton onClick={handleResarvedRoomBtn}>
+                          <SecondryButton
+                            onClick={() => {
+                              navigate(
+                                `/rooms/PlanDetails?plan2=${room.plan2}`
+                              );
+                            }}
+                          >
                             このプランで探す
                           </SecondryButton>
                         </div>
@@ -445,7 +479,13 @@ export const RoomCard = (prps: any) => {
                         <div className={RoomStyle.roomplanContainer}>
                           <p className={RoomStyle.roomplantext}>{room.plan3}</p>
                           <div className={RoomStyle.roomplanButton}>
-                            <SecondryButton onClick={handleResarvedRoomBtn}>
+                            <SecondryButton
+                              onClick={() => {
+                                navigate(
+                                  `/rooms/PlanDetails?plan3=${room.plan3}`
+                                );
+                              }}
+                            >
                               このプランで探す
                             </SecondryButton>
                           </div>
@@ -464,7 +504,13 @@ export const RoomCard = (prps: any) => {
                         <div className={RoomStyle.roomplanContainer}>
                           <p className={RoomStyle.roomplantext}>{room.plan4}</p>
                           <div className={RoomStyle.roomplanButton}>
-                            <SecondryButton onClick={handleResarvedRoomBtn}>
+                            <SecondryButton
+                              onClick={() => {
+                                navigate(
+                                  `/rooms/PlanDetails?plan4=${room.plan4}`
+                                );
+                              }}
+                            >
                               このプランで探す
                             </SecondryButton>
                           </div>

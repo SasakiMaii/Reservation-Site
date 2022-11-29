@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "../../styles/input.module.css";
 import { useState } from "react";
 import { MailInput } from "../../components/form/mailInput";
@@ -11,6 +11,9 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
+import { useLocation } from "react-router-dom";
+import { addDoc, collection, getDocs, limit, orderBy, query } from "firebase/firestore";
+import db from "../../Firebase";
 
 export const Login = () => {
   // ログインのstatus管理
@@ -26,29 +29,53 @@ export const Login = () => {
 
   const [errorFlag, SetErrorFlag] = useState("false");
 
+  const [cookie, SetCookie] = useState("")
+
   // 画面遷移関数
   const navigate = useNavigate();
 
-  const clear = () => {
-    SetMailErrorState("init");
-    SetPasswordErrorState("init");
+  // cookie取り出し
+  const splitCookie = document.cookie.split(';');
+  const list:any = [];
 
-    SetMailValue("");
-    SetPasswordValue("");
+  useEffect(() => {
 
-    SetErrorFlag("false");
-  };
+    for (let i = 0; i < splitCookie.length; i++) {
+      list.push(splitCookie[i].split('='));
+    }
 
+    list.map((data:any, index:number) => {
+      // cookieにconfirmが含まれている場合、予約確認画面へ遷移
+      if (data.includes("confirm")) {
+        SetCookie(data[1])
+      }
+    })
+  })
+
+  const location = useLocation()
   // yarn add react-firebase-hooks/authしてください
   const login = () => {
+    // 仮予約データ受け取り
+    const data = location.state;
+  
     if (mailErrorState === "ok" && passwordErrorState === "ok") {
       // ログインしているか判定
       if (!user) {
         // react-hook ログイン関数
         signInWithEmailAndPassword(auth, mailValue, passwordValue).then(
           (user) => {
-            alert("ログイン成功");
-            navigate("/"); //  画面遷移
+            if(cookie === "confirm"){
+              alert("ログイン成功");
+              data.mail = user.user.email
+              const reserveData = collection(db, "reserve");
+              addDoc(reserveData, data);
+              navigate("/books/ReservateConfirm");
+
+            }else{
+              alert("ログイン成功");
+              navigate("/");
+            }
+            
           },
           (err) => {
             alert("メールアドレスかパスワードが違います");
@@ -64,7 +91,7 @@ export const Login = () => {
 
   return (
     <>
-    <Header />
+      <Header />
       <div className={`${LoginStyle.main} `}>
         <form className={` ${LoginStyle.form}`}>
           <h2 className="my-5 ml-5 ">ログイン</h2>

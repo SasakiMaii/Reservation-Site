@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import RoomSearchSoart from "../../components/rooms/RoomSearchSoart";
-import Pageing from "../../components/rooms/Pageing";
+import RoomSearchSoart from "../../components/Organisms/rooms/RoomSearchSoart";
+import Pageing from "../../components/Organisms/rooms/Pageing";
 import Header from "../../components/layout/Header";
 import SearchResultsStyle from "../../styles/rooms/_SearchResult.module.scss";
 

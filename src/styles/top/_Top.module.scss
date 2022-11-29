@@ -8,23 +8,47 @@
 }
 
 
+*{
+  outline: 2px red solid;
+}
+
+//レスポンシブ
+$breakpoints: (
+  display: "screen and (min-width:1920px)",
+  pc: "screen and (min-width:1200px)",
+  nest:"screen and (max-width:1024px)",
+  tab: "screen and (max-width:610px)",
+  sp: "screen and (max-width:414px)",
+  galaxy: "screen and (max-width:280px)",
+);
+
+@mixin mq($breakpoint: pc) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
+
 // ヘッダー　トップ画面
 .topImage {
   width: 100%;
-  height: 100vh;
+  // height: 100vh;
   height: 800px;
   // padding-top: calc(600 / 600 * 100%); 
   /* calc(画像高さ ÷ 画像横幅 × 100%) */
   background: url("../../../public/topImage/sofa.jpg") center center / cover no-repeat;
   @extend %itemsPositionCenter;
-  // margin: 0 auto;
-
-  // animation-name:topImgaeSlide;
-  // animation-duration: 60s;
-  // animation-iteration-count:infinite;
-  // animation-timing-function:ease;
-  // animation-delay: 7s;
-
+  @include mq(nest) {
+    width: 1024px;
+    height: 400px;
+  }
+  @include mq(galaxy) {
+    width: 280px;
+    height: 100vh;
+  }
+  @include mq(display) {
+    height: 100vh;
+  }
 }
 
 
@@ -32,11 +56,29 @@
   color: white;
   z-index: 10;
   margin: auto;
-  position:absolute;
-  left:30%;
-  top:40%;
   font-size: 70px;
-
+  @include mq(sp) {
+    font-size: 60px;
+  }  
+  @include mq(nest) {
+    left:22%
+  }
+  @include mq(display) {
+    left:35%;
+    top:45%;    
+  }
+  @include mq(galaxy) {
+    left:5%;
+    top:40%;
+    font-size: 20px;
+  }
+  @include mq(tab) {
+    left:0%;
+    top:40%;
+    font-size: 20px;
+  }
+  
+  
   animation-name:fadeIn;
   animation-duration: 4s;  
 }
@@ -49,6 +91,12 @@
   bottom: 5%;
   z-index: 10;
   opacity: 0;
+
+  @include mq(galaxy) {
+    height: 70px;
+    left: 10%;
+    bottom: 250px;
+  }
 
   animation-name:bound;
   animation-duration: 5s; 
@@ -86,6 +134,9 @@
 .swiperColsFrame {
   margin: 10px 0;
   // background-color: blueviolet;
+  @include mq(galaxy) {
+   margin: auto;
+  }
 }
 
 .swiperCols {
@@ -97,6 +148,10 @@
   box-shadow: 10px 5px 5px rgba(128, 128, 128, 0.548);
   border-radius: 20px  ;
 
+  @include mq(galaxy) {
+    width: 100px;
+    height: 250px;
+  }
   // @extend %itemsPositionCenter;
   
 }
@@ -106,12 +161,19 @@
   // background-color: red;
   padding: 30px 0;
   position: relative;
+  @include mq(galaxy) {
+    width: 280px;
+  }
 }
 
 .swiperPlanImage {
   height: 250px;
   width: 550px;
   border-radius: 20px 20px 0 0;
+  @include mq(galaxy) {
+    height: 100px;
+    width: 100px;
+  }
 }
 
 .swiperPlanTitle, .swiperPlanInformation {

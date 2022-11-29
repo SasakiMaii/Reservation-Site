@@ -1,6 +1,6 @@
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
-import SearchStyle from "../../styles/rooms/_Search.module.scss";
+import SearchStyle from "../../../styles/rooms/_Search.module.scss";
 import interactionPlugin from "@fullcalendar/interaction";
 import { GrFormDown } from "react-icons/gr";
 
