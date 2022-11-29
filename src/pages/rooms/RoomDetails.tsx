@@ -98,7 +98,7 @@ const RoomDetails = () => {
   const handleResarve = () => {
     if (user) {
       console.log(user.email);
-      const reserveData = collection(db, "reserve");
+      // const reserveData = collection(db, "reserve");
       const data = {
         adultsNum: adult,
         childrenNum: children,
@@ -109,10 +109,11 @@ const RoomDetails = () => {
         mail: user.email,
         // gestId:
       };
-      addDoc(reserveData, data);
-      navigate("/books/ReservateConfirm");
+      // addDoc(reserveData, data);
+      navigation("/books/ReservateConfirm", { state: data });
+      // navigate("/books/ReservateConfirm");
     } else {
-      const reserveData = collection(db, "reserve");
+      // const reserveData = collection(db, "reserve");
       const data = {
         adultsNum: adult,
         childrenNum: children,
