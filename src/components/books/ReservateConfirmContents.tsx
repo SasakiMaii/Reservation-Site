@@ -93,38 +93,11 @@ export const ReservateConfirmContents = () => {
     // console.log(user.email);
   }
 
-  const location = useLocation()
-
-  // データベースからデータを取得する（ログインメールアドレスと一致）
-  const ReserveData = () => {
-    const reserveData = location.state;
-    // const reserveData = query(
-    //   collection(db, "reserve"),
-    //   where("mail", "==", userEmail)
-    // );
-    // getDocs(reserveData).then((reserveItem) => {
-    //   setReserves(reserveItem.docs.map((doc) => ({ ...doc.data() })));
-    // });
-
-    // //ドキュメントID取得
-    // const documentFetch = async () => {
-    //   const q = query(
-    //     collection(db, "reserve"),
-    //     where("mail", "==", userEmail)
-    //   );
-    //   const querySnapshot = await getDocs(q);
-    //   querySnapshot.forEach((doc: any) => {
-    //     setDocID(doc.id);
-    //   });
-    // };
-    // documentFetch();
-    // setConfirmButton("none");
-    // if (docID === undefined) {
-    //   setConfirmError("選択中のプランはありません");
-    //   // console.log("a");
-    // }
-  };
+  // データ受け取り
+  const location = useLocation();
+  const reserveData = location.state;
   // console.log(docID);
+  console.log("s", reserveData);
 
   const { mutate } = useSWRConfig();
   const { data } = useSWR("/books/ReservateConfirm", getDocs);
@@ -197,24 +170,21 @@ export const ReservateConfirmContents = () => {
         mail: mailValue,
         contact: contact,
         payment: radioVal,
-        adultsNum: reserveItem[0].adultsNum,
-        childrenNum: reserveItem[0].childrenNum,
-        roomType: reserveItem[0].roomType,
-        plan: reserveItem[0].plan,
-        checkIn: reserveItem[0].checkIn,
+        adultsNum: reserveData.adultsNum,
+        childrenNum: reserveData.childrenNum,
+        roomType: reserveData.roomType,
+        // plan: reserveData.plan,
+        checkIn: reserveData.checkIn,
         // checkOut: reserveItem[0].checkOut,
         reservationDate: todayDate,
-        price: reserveItem[0].price * 1.1,
+        price: reserveData.price,
         arrivalTime: arrivalTime,
-        lodgeNum: reserveItem[0].lodgeNum,
+        lodgeNum: reserveData.totalDate,
       };
       await setDoc(newCityRef, data);
-      await deleteDoc(doc(db, "reserve", docID));
       navigate("/books/ReservateComplete");
     }
   };
-
-
 
   return (
     <div>
@@ -285,6 +255,7 @@ export const ReservateConfirmContents = () => {
                   lastNameErrorState={lodgeLastNameErrorState}
                   SetLastNameErrorState={SetLodgeLastNameErrorState}
                   errorFlag={errorFlag}
+                  markNone="ok"
                 />
               )}
             </div>
@@ -309,87 +280,52 @@ export const ReservateConfirmContents = () => {
             <h3 className={ReservateConfirmContentsStyles.innertitle}>
               予約プラン確認
             </h3>
-            <div className={ReservateConfirmContentsStyles.reservateplanBtn}>
-              <button
-                onClick={ReserveData}
-                style={{ display: confirmButton }}
-              >
-                確認する
-              </button>
-            </div>
-            {<p className={ReservateConfirmContentsStyles.deleteMessage}>{message}</p>}
-            {!confirmError ? <p>選択中のプランがありません</p> : ""}
-            <ul className={ReservateConfirmContentsStyles.reservePlanList}>
-              {reserves.map((reserve: any) => (
-                <React.Fragment key={reserve.adultsNum}>
-                  <li>
-                    <span>宿泊プラン</span>{reserve.plan}
-                  </li>
-                  <li>
-                    <span>客室</span>{reserve.roomType}
-                  </li>
-                  <li>
-                    <span>日程</span>{reserve.checkIn}〜{reserve.checkOut}
-                  </li>
-                  <li>
-                    <span>宿泊数</span>{reserve.lodgeNum}泊
-                  </li>
-                  {/* <li>
-                    <span>宿泊数</span>：{(
-                      function() {
-                        let totalLodgeNum = reserve.lodgeNum + addLodgeNum
-                        return (
-                          <li>{totalLodgeNum}</li>
-                        )
-                      }
-                      )()}泊
-                    追加<input type="number" value={addLodgeNum} onChange={onChangeAdd}></input>
-                  </li> */}
-                  {(function () {
-                    let peopleNumber = reserve.adultsNum + reserve.childrenNum;
-                    return (
+            <div>
+              <ul>
+                <li>
+                  <span>宿泊プラン</span>
+                  {reserveData.plan}
+                </li>
+                <li>
+                  <span>客室</span>
+                  {reserveData.roomType}
+                </li>
+                <li>
+                  <span>チェックイン日</span>
+                  {reserveData.checkIn}
+                </li>
+                <li>
+                  <span>宿泊数</span>
+                  {reserveData.totalDate}泊
+                </li>
+                {(function () {
+                  let peopleNumber =
+                    reserveData.adultsNum + reserveData.childrenNum;
+                  return (
+                    <li>
+                      <span>予約人数</span>
+                      {peopleNumber}
+                      名（内訳：大人{reserveData.adultsNum}名、子ども
+                      {reserveData.childrenNum}名）
+                    </li>
+                  );
+                })()}
+                    <div className={ReservateConfirmContentsStyles.totalPrice}>
                       <li>
-                        <span>予約人数</span>{peopleNumber}
-                        名（内訳：大人{reserve.adultsNum}名、子ども
-                        {reserve.childrenNum}名）
+                        <span>宿泊金額</span>
+                        {reserveData.price}円（税込）
                       </li>
-                    );
-                  })()}
-                  {(function () {
-                    const reserveNumber =
-                      reserve.adultsNum + reserve.childrenNum;
-                    let totalPrice = reserve.price * 1.1;
-                    let reserveTotalPrice =
-                      reserveNumber * totalPrice * reserve.lodgeNum;
-                    return (
-                      <div
-                        className={ReservateConfirmContentsStyles.totalPrice}
-                      >
-                        <li>
-                          <span>宿泊金額</span>{reserveTotalPrice}円（税込）
-                        </li>
-                      </div>
-                    );
-                  })()}
-                  {/* <li className={ReservateConfirmContentsStyles.deleteBtn}>
-                    <button
-                      onClick={clickDelete}
-                      style={{ display: deleteButton }}
-                    >
-                      削除
-                    </button>
-                    {!error ? <p>選択中のプランがありません。</p> : ""}
-                  </li> */}
-                </React.Fragment>
-              ))}
-            </ul>
+                    </div>
+              </ul>
+            </div>
+            {/* {<p className={ReservateConfirmContentsStyles.deleteMessage}>{message}</p>} */}
             <Link to="/rooms/Gestroom">戻る</Link>
           </div>
         </div>
       </div>
 
       <div className={ReservateConfirmContentsStyles.payment}>
-        <h3　className={ReservateConfirmContentsStyles.innertitle}>
+        <h3 className={ReservateConfirmContentsStyles.innertitle}>
           お支払い方法<span>必須</span>
         </h3>
         <div className={ReservateConfirmContentsStyles.paymentRadioBtn}>
@@ -430,7 +366,7 @@ export const Content = (props: any) => {
     setSelectVal,
     click,
     accordionClick,
-    ArrivalTime
+    ArrivalTime,
   } = props;
 
   let result = 0;
