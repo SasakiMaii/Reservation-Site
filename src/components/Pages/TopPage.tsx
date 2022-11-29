@@ -1,7 +1,7 @@
 import TopLayout from '../Templates/TopLayout';
 
 // [お願い]
-// yarn add --dev react-scroll
+// yarn add --dev react-scroll o
 // yarn add @types/react-scroll
 // yarn add aos
 // yarn add @types/aos

@@ -3,6 +3,7 @@ import { ReservateConfirmContents } from "../../components/books/ReservateConfir
 import ReservateConfirmStyles from  "../../styles/books/_ReservateConfirm.module.scss";
 import { Link } from "react-router-dom";
 import { Login } from "../users/Login";
+import Header from "../../components/layout/Header";
 
 const ReservateConfirm = () => {
   const [openDisplay, setOpenDisplay] = useState(false);
@@ -17,6 +18,7 @@ const ReservateConfirm = () => {
 
   return (
     <>
+    <Header/>
       <div>
         <h1 className={ReservateConfirmStyles.reservateconfirmTitle}>予約内容の確認</h1>
         {/* <div className={ReservateConfirmStyles.reservateLogin}>

@@ -1,54 +1,107 @@
+$breakpoints: (
+  pc: "screen and (min-width:1200px)",
+  tab2: "screen and (max-width:923px)",
+  ham: "screen and (max-width:925px)",
+  tab: "screen and (max-width:760px)",
+  sp: "screen and (max-width:375px)",
+);
 
-.headerFlex{
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 2%;
-  height: 100px;
-  background-image: linear-gradient(90deg, rgba(172, 172, 172, 1), rgba(233, 233, 233, 1));
-  h1{
-    margin-right: 60px;
+@mixin mq($breakpoint: pc) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
   }
 }
 
-.headerspan{
+.headerFlex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2%;
+  height: 100px;
+  background-image: linear-gradient(90deg, rgb(205, 176, 109), #f7f5e6);
+  width: 100%;
+  h1 {
+    margin-right: 45px;
+    @include mq(tab2){
+      margin: 0 auto;
+      font-size: 30px;
+    }
+  }
+    @include mq(sp){
+      margin: 0 auto;
+      font-size: 18px;
+      width: 100%;
+    }
+}
+
+
+
+.headerspan {
   position: relative;
 }
 
 .headerspan::after {
   position: absolute;
   left: 0;
-  content: '';
+  content: "";
   width: 100%;
   height: 2px;
-  background: RGB(26, 89, 136);
-  bottom: -10px;               /*アンダーラインがaタグの下端から現れる*/
-  transform: scale(0, 1);     /*アンダーラインの縮尺比率。ホバー前はx方向に0*/
-  transform-origin: left top; /*変形（アンダーラインの伸長）の原点がaタグ（各メニュー）の左端*/
-  transition: transform 0.5s; /*変形の時間*/
-  }
-  
-  .headerspan:hover::after {
-  transform: scale(1, 1);     /*ホバー後、x軸方向に1（相対値）伸長*/
-  }
-  
+  background: RGB(107, 1, 0);
+  bottom: -10px;
+  transform: scale(0, 1);
+  transform-origin: left top;
+  transition: transform 0.5s;
+}
 
+.headerspan:hover::after {
+  transform: scale(1, 1);
 
+}
 
-.headerNav{
+.headerNav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  ul{
+  @include mq(tab2){
+    flex-direction: column;
+    background-color: rgba(255, 253, 245, 0.8);
+    width: 250px;
+   z-index: 100;
+  }
+  @include mq(sp){
+    flex-direction: column;
+    background-color: rgb(244, 244, 244);
+    width: 400px;
+   z-index: 100;
+  }
+  ul {
     font-size: 15px;
     display: flex;
-    li{
+    align-items: center;
+    @include mq(tab2){
+      margin-top: 350px;
+      flex-direction: column;
+      padding: 5px 20px 20px 20px;
+    }
+    @include mq(sp){
+      margin-top: 350px;
+      flex-direction: column;
+      padding: 30px 20px 30px 20px;
+    }
+    li {
       margin-right: 20px;
+    
+      @include mq(tab2){
+       font-size: 18px;
+       margin-bottom: 50px;
+      }
+      @include mq(sp){
+       font-size: 18px;
+       margin-bottom: 50px;
+        
+      }
     }
   }
 }
-
-
-
 
 

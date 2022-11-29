@@ -1,12 +1,17 @@
 import { Link } from "react-router-dom";
 import headerStyle from "../../styles/layout/_Header.module.scss";
 import PrimaryButton from "../button/PrimaryButton";
-import { useAuthState } from "react-firebase-hooks/auth"
-import { auth, provider } from '../../Firebase'
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, provider } from "../../Firebase";
 import { GiFrogPrince } from "react-icons/gi";
+import Hamburger from "hamburger-react";
+import { useState } from "react";
+// yarn add hamburger-react;
 import { useEffect } from "react";
 
 const Header = () => {
+  const [isOpen, setOpen] = useState(false);
+  const [flag,setFlag]=useState(false);
 
   // gestID（hJ2JnzBn）の入れ物
   const cookieList: any = [];
@@ -37,35 +42,69 @@ const Header = () => {
   }, [])
 
   //予約のイベント
-  const handleResarve = () => {
 
+
+  const flagChange=()=>{
+    if(flag===false){
+      setFlag(true)
+    }else{
+      setFlag(false)
+    }
   }
+
   return (
     <>
       <div className={headerStyle.headerFlex}>
-        <h1><GiFrogPrince />Prince'View Hotel</h1>
-        <div className={headerStyle.headerNav}>
-          <ul>
-            <li className={headerStyle.headerlist}>
-              <Link to={"/rooms/Gestroom"}> <span className={headerStyle.headerspan}> 客室・プラン</span></Link>
-            </li>
-            <li className={headerStyle.headerlist}>
-              <Link to={"/"}><span className={headerStyle.headerspan}> 予約内容確認</span></Link>
-            </li>
-            {/* <li>
+            <Link to={"/"}>
+              <h1>
+                <GiFrogPrince />
+                {' '}
+                Prince'View Hotel
+              </h1>
+            </Link>
+        {flag ? (
+            <div className={headerStyle.headerNav}>
+              <ul>
+                <li className={headerStyle.headerlist}>
+                  <Link to={"/rooms/Gestroom"}>
+                    {" "}
+                    <span className={headerStyle.headerspan}>
+                      {" "}
+                      客室・プラン
+                    </span>
+                  </Link>
+                </li>
+                <li className={headerStyle.headerlist}>
+                  <Link to={"/books/ReservateHistory"}>
+                    <span className={headerStyle.headerspan}>
+                      {" "}
+                      予約内容確認
+                    </span>
+                  </Link>
+                </li>
+                {/* <li>
               <Link to={"/"}>ログイン</Link>
             </li> */}
-            <Certification />
-          </ul>
-          <Link to={"/rooms/Gestroom"}>
-            <PrimaryButton onClick={handleResarve}>ご予約</PrimaryButton>
-          </Link>
-        </div>
+                <Certification />
+                <Link to={"/rooms/Gestroom"}>
+                <PrimaryButton>ご予約</PrimaryButton>
+              </Link>
+              </ul>
+            <Hamburger toggled={isOpen} toggle={setOpen} size={30} onToggle={flagChange}/>
+            </div>
+        
+        ) : (
+
+          <>
+          <Hamburger toggled={isOpen} toggle={setOpen} size={30} onToggle={flagChange}/>
+          </>
+
+        )}
       </div>
     </>
   );
-};
 
+};
 
 // ログインログアウト判定
 const Certification = () => {
@@ -75,24 +114,31 @@ const Certification = () => {
     return (
       <>
         <li>
-          <Link to={"/"}> <span className={headerStyle.headerspan}>ログイン</span> </Link>
+          <Link to={"/users/login"}>
+            {" "}
+            <span className={headerStyle.headerspan}>ログイン</span>{" "}
+          </Link>
         </li>
       </>
-    )
+    );
   } else {
     return (
       <>
         <li>
-          <button onClick={() => {
-            auth.signOut()
-              .then(() => {
-                alert("ログアウトしました。")
-              })
-          }}>ログアウト</button>
+          <button
+            className={headerStyle.headerspan}
+            onClick={() => {
+              auth.signOut().then(() => {
+                alert("ログアウトしました。");
+              });
+            }}
+          >
+            ログアウト
+          </button>
         </li>
       </>
-    )
+    );
   }
-}
+};
 
 export default Header;

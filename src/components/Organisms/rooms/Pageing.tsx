@@ -1,7 +1,7 @@
 import { collection, getDoc, getDocs } from "firebase/firestore";
 import React, { Children, useState } from "react";
-import db from "../../Firebase";
-import  PagingStyle  from "../../styles/rooms/_Paging.module.scss"
+import db from "../../../Firebase";
+import  PagingStyle  from "../../../styles/rooms/_Paging.module.scss"
 
 //昇順降順そのままでページ遷移、後でコンポーネント記述
 
