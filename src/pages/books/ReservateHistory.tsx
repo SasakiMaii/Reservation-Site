@@ -58,7 +58,7 @@ const ReservateHistoryCopy = () => {
   //ログインしているユーザーのIDが入る
   const [unLodgedocID, setUnLodgeDocID] = useState<any>("");
   const [lodgeddocID, setLodgedDocID] = useState<any>("");
-  const [docID, setDocID] = useState<any>("");
+  const [docID, setDocID] = useState<any>({});
 
   //inputに入力された数字の型を数値に変換（変換前は文字列）
   const adultsNums = parseInt(adultsNum);
