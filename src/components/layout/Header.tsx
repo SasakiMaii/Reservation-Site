@@ -6,11 +6,43 @@ import { auth, provider } from "../../Firebase";
 import { GiFrogPrince } from "react-icons/gi";
 import Hamburger from "hamburger-react";
 import { useState } from "react";
-// yarn add hamburger-react
+// yarn add hamburger-react;
+import { useEffect } from "react";
 
 const Header = () => {
   const [isOpen, setOpen] = useState(false);
   const [flag,setFlag]=useState(false);
+
+  // gestID（hJ2JnzBn）の入れ物
+  const cookieList: any = [];
+
+  useEffect(() => {
+
+    // 以下、cookie取り出し処理
+    const splitCookie = document.cookie.split(';');
+    const list = [];
+
+    for (let i = 0; i < splitCookie.length; i++) {
+      list.push(splitCookie[i].split('='));
+    }
+
+    // cookieにgestID（hJ2JnzBn）がセットされていな場合、付与する
+    list.map((data, index) => {
+      if (data[0].includes("hJ2JnzBn")) {
+        cookieList.push(data[0])
+      }
+    })
+
+    // gestID（hJ2JnzBn）が入っていなければ、ランダムな文字列をcookieに追加
+    if (cookieList.length === 0) {
+      let randomId = Math.random().toString(32).substring(2);
+      document.cookie = `hJ2JnzBn=${randomId}; path=/;`;
+    }
+
+  }, [])
+
+  //予約のイベント
+
 
   const flagChange=()=>{
     if(flag===false){
@@ -62,16 +94,16 @@ const Header = () => {
             </div>
         
         ) : (
+
           <>
-              {/* <Link to={"/rooms/Gestroom"}>
-                <PrimaryButton>ご予約</PrimaryButton>
-              </Link> */}
           <Hamburger toggled={isOpen} toggle={setOpen} size={30} onToggle={flagChange}/>
           </>
+
         )}
       </div>
     </>
   );
+
 };
 
 // ログインログアウト判定

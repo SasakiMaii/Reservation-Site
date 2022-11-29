@@ -14,65 +14,69 @@ import db, { auth } from "../../Firebase";
 import RoomDetailStyle from "../../styles/rooms/_RoomDetails.module.scss";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useParams, useSearchParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
-import { HiOutlineChevronLeft, } from "react-icons/hi";
-import PlanRecomendSwiper from "../../components/Organisms/PlanRecomendSwiper";
-import { useNavigation } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 
+import { useNavigation } from "react-router-dom";
+import { HiOutlineChevronLeft } from "react-icons/hi";
+import PlanRecomendSwiper from "../../components/Organisms/PlanRecomendSwiper";
 
 // const status = 404;
 // if (status === 404) {
-  // <Navigate to="/notfound" />;
-  // }
-  
-  const RoomDetails = () => {
-    const [num, setNum] = useState(1);
-    const [adult, setAdult] = useState(1);
-    const [children, setChildren] = useState(0);
-    const [rooms, setRooms] = useState<any>([]);
-    const [roomsId, setRoomsId] = useState<any>([]);
-    const [inputDate, setInputDate] = useState(false);
-    const [datetext, setDatetext] = useState("");
-    
-    const navigation = useNavigate()
-    const [user] = useAuthState(auth);
-    const navigate = useNavigate()
-    const cookieList: any = [];
-    useEffect(() => {
-  
-      // 以下、cookie取り出し処理
-      const splitCookie = document.cookie.split(';');
-      const list = [];
-  
-      for (let i = 0; i < splitCookie.length; i++) {
-        list.push(splitCookie[i].split('='));
-      }
-  
-      // cookieにgestID（hJ2JnzBn）がセットされていな場合、付与する
-      list.map((data, index) => {
-        if (data[0].includes("hJ2JnzBn")) {
-          cookieList.push(data[0])
-        }
-      })
-  
-    }, [])
+// return <Navigate to="/notfound" />;
+// }リダイレクト
 
+const RoomDetails = () => {
+  const [num, setNum] = useState(1);
+  const [adult, setAdult] = useState(1);
+  const [children, setChildren] = useState(0);
+  const [rooms, setRooms] = useState<any>([]);
+  const [roomsId, setRoomsId] = useState<any>([]);
+  const [inputDate, setInputDate] = useState(false);
+  const [datetext, setDatetext] = useState("");
+  // const location =useLocation()
+  // const [selectId,setSelectId]=useState<{id:number}>(location.state as {id:number})
+
+  // データの受け渡しのため
+  const navigation = useNavigate();
+
+  // ログイン情報
+  const [user] = useAuthState(auth);
+  const navigate = useNavigate();
+
+  // ゲストID情報取得
+  const [gestIdCookie, SetGestIdCookie] = useState();
+
+  // gestID（hJ2JnzBn）の入れ物
+  const cookieList: any = [];
+  useEffect(() => {
+    // 以下、cookie取り出し処理
+    const splitCookie = document.cookie.split(";");
+    const list = [];
+
+    for (let i = 0; i < splitCookie.length; i++) {
+      list.push(splitCookie[i].split("="));
+    }
+
+    // cookieにgestID（hJ2JnzBn）がセットされていな場合、付与する
+    list.map((data, index) => {
+      if (data[0].includes("hJ2JnzBn")) {
+        cookieList.push(data[0]);
+      }
+    });
+  }, []);
   const [SearchParams] = useSearchParams();
+
   const RoomData = collection(db, "gestRoomType");
 
   useEffect(() => {
     const roomtype = SearchParams.get("room");
-    const detailRoom = query(
-      RoomData,
-      limit(1),
-      where("id", "==", roomtype)
-    ); //一つだけ表示
+    const detailRoom = query(RoomData, limit(1), where("id", "==", roomtype)); //一つだけ表示
     getDocs(detailRoom).then((snapShot) => {
       setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
@@ -90,48 +94,37 @@ import { useAuthState } from "react-firebase-hooks/auth";
     return price;
   };
 
+  // ログインログアウト判定追加
   const handleResarve = () => {
-      // const reserveData = collection(db, "reserve");
-      // const data = {
-      //   adultsNum: adult,
-      //   childrenNum: children,
-      //   checkIn: datetext,
-      //   price: result,
-      //   roomType: String(room),
-      //   totalDate: Number(num),
-      //   plan:"選択なし",
-      // };
-      // addDoc(reserveData, data);
-      if (user) {
-        console.log(user.email)
-        const reserveData = collection(db, "reserve");
-        const data = {
-          adultsNum: adult,
-          childrenNum: children,
-          checkIn: datetext,
-          price: result,
-          roomType: String(room),
-          totalDate: Number(num),
-          mail: user.email
-          // gestId:
-        };
-        addDoc(reserveData, data);
-        navigate("/books/ReservateConfirm")
-      } else {
-        const reserveData = collection(db, "reserve");
-        const data = {
-          adultsNum: adult,
-          childrenNum: children,
-          checkIn: datetext,
-          price: result,
-          roomType: String(room),
-          totalDate: Number(num)
-          
-        };
-        // navigate("/users/login")
-        navigation("/users/login", { state: data })
-        document.cookie = "next=confirm; path=/;"
-      }
+    if (user) {
+      console.log(user.email);
+      const reserveData = collection(db, "reserve");
+      const data = {
+        adultsNum: adult,
+        childrenNum: children,
+        checkIn: datetext,
+        price: result,
+        roomType: String(room),
+        totalDate: Number(num),
+        mail: user.email,
+        // gestId:
+      };
+      addDoc(reserveData, data);
+      navigate("/books/ReservateConfirm");
+    } else {
+      const reserveData = collection(db, "reserve");
+      const data = {
+        adultsNum: adult,
+        childrenNum: children,
+        checkIn: datetext,
+        price: result,
+        roomType: String(room),
+        totalDate: Number(num),
+      };
+      // navigate("/users/login")
+      navigation("/users/login", { state: data });
+      document.cookie = "next=confirm; path=/;";
+    }
   };
 
   // const gestRoomData = collection(db, "gestRoomType");
@@ -155,12 +148,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
     children * 5000
   ).toLocaleString();
 
-
   return (
     <>
       <Header />
       <div className={RoomDetailStyle.containerAllDetail}>
-      <Link to={"/rooms/Gestroom"} className={RoomDetailStyle.detaillink}>
+        <Link to={"/rooms/Gestroom"} className={RoomDetailStyle.detaillink}>
           <HiOutlineChevronLeft size={25} /> 客室・プランへ戻る{" "}
         </Link>
         {rooms.map((room: any) => {
@@ -180,7 +172,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
                       plugins={[dayGridPlugin, interactionPlugin]}
                       locale="ja"
                       initialView="dayGridMonth"
-                      dateClick={() => handleDateClick}
+                      dateClick={handleDateClick}
                       selectable={true}
                       selectMirror={true}
                       businessHours={true}
@@ -241,6 +233,18 @@ import { useAuthState } from "react-firebase-hooks/auth";
                 </div>
               </div>
               <div className={RoomDetailStyle.detailcard}>
+                <p className={RoomDetailStyle.detail}>お部屋の詳細</p>
+                <p className={RoomDetailStyle.detailStyle}>
+                  {" "}
+                  32～40インチテレビ / 竹製 歯ブラシ / 歯磨き粉 / シャンプー /
+                  コンディショナー ボディーソープ / ハンドソープ / パジャマ /
+                  スリッパ アロマディフューザー / ヘアドライヤー / 空気清浄機 /
+                  冷蔵庫 金庫 / 電気ケトル / Wi-Fi
+                </p>
+              </div>
+
+              <PlanRecomendSwiper />
+              <div className={RoomDetailStyle.recomend}></div>
               <p className={RoomDetailStyle.detail}>お部屋の詳細</p>
               <p className={RoomDetailStyle.detailStyle}>
                 {" "}
@@ -249,11 +253,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
                 スリッパ アロマディフューザー / ヘアドライヤー / 空気清浄機 /
                 冷蔵庫 金庫 / 電気ケトル / Wi-Fi
               </p>
-              </div>
-
-              <PlanRecomendSwiper />
-              <div className={RoomDetailStyle.recomend}>
-              </div>
+              <Link
+                to={"/rooms/Gestroom"}
+                className={RoomDetailStyle.detaillink}
+              >
+                {" "}
+                →前の画面に戻る{" "}
+              </Link>
             </div>
           );
         })}
