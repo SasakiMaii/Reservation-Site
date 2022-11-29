@@ -5,14 +5,14 @@ import ReservateConfirm from './pages/books/ReservateConfirm';
 import ReservateComplete from './pages/books/ReservateComplete';
 import ReservateHistory from './pages/books/ReservateHistory';
 import Gestroom from './pages/rooms/Gestroom';
-import SearchResults from './pages/rooms/SearchResults';
-import RoomSearch from './components/rooms/Search';
+import RoomSearch from './components/Templates/Search';
 import { Registered } from './pages/users/Registered';
 import { Login } from './pages/users/Login';
 import Top from './pages/Top';
 import RoomDetails from './pages/rooms/RoomDetails';
 import NotFound from './pages/NotFound';
 import Header from "../src/components/layout/Header";
+import PlanDetails from './pages/rooms/PlanDetails';
 
 
 function App() {
@@ -34,6 +34,7 @@ function App() {
           <Route path='/users/Registered' element={<Registered />}></Route>
           {/* <Route path='/Top' element={<Top />}></Route> */}
           <Route path='/rooms/RoomDetails/:id' element={<RoomDetails />}></Route>
+          <Route path='/rooms/PlanDetails' element={<PlanDetails/>}></Route>
           <Route path="*" element={<NotFound/>} />
         </Routes>
       </Router>

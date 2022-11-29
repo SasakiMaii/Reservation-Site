@@ -1,5 +1,5 @@
 //共通
-
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho&display=swap');
 * {
   color: rgb(16, 16, 16);
   max-width: auto;
@@ -58,7 +58,20 @@ $breakpoints: (
 .roomplanCard{
   display: flex;
   justify-content: space-between;
-  padding: 2% 2% 2%;
+  padding: 2% 2%
+ 2%;
+
+ @include mq(sp){
+  flex-direction: column;
+  margin: 0 auto;
+}
+}
+
+.roomplanbutton{
+  @include mq(sp){
+    flex-direction: column;
+    border: none;
+  }
 }
 
 .roomplantitle{
@@ -66,14 +79,20 @@ $breakpoints: (
   border-bottom: 1px solid rgb(72, 72, 72);
   margin-bottom: 10px;
   display: inline-block;
+  @include mq(sp) {
+   font-size: 23px;
+  }
 }
 
 .roomplanContainer{
-  width: 500px;
+  max-width: 370px;
   padding-left: 10px;
   text-align: center;
   p{
     padding-bottom: 2%;
+  }
+  @include mq(sp) {
+    font-size: 14px;
   }
 }
 
@@ -86,23 +105,45 @@ $breakpoints: (
     font-size: 20px;
   }
 }
+// *{
+//   outline: 2px red solid;
+// }
 
 .roomplan{
   font-size: 27px;
   padding-left: 14px;
   padding-bottom: 5px;
+  @include mq(sp){
+    text-align: center;
+    margin: 20px;
+    border-top: 1px solid rgb(130, 130, 130);
+    padding: 10px;
+    font-size: 23px;
+  }
 }
 
 .roomplanBtnPrice{
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @include mq(sp) {
+    flex-direction: column;
+    border-bottom: 1px solid #000;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
 }
 
 .roomplanWrapper{
   display: flex;
+  border-bottom: 1px solid rgb(191, 191, 191);
   button{
     margin-left: 30px;
+  }
+  @include mq(sp){
+    flex-direction: column;
+    border: none;
+
   }
 }
 
@@ -111,7 +152,9 @@ $breakpoints: (
 .roomplantext{
   font-size: 22px;
   padding-bottom: 5px;
-
+  @include mq(sp) {
+    font-size: 15px;
+  }
 
 }
 
@@ -128,6 +171,19 @@ align-items: right;
   background-color: rgb(238, 238, 238);
   border-radius: 5px;
   margin: 20px;
+  img{
+    @include mq(sp){
+      width: 200px;
+      height: 150px;
+      margin: 0 auto;
+      margin-bottom: 30px;
+    }
+   }
+  @include mq(sp){
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 30px ;
+  }
 }
 
 .pageTitle {
@@ -137,14 +193,45 @@ align-items: right;
   padding: 3px;
   border-bottom: 1px dotted rgb(57, 57, 57);
   @include mq(sp) {
-    font-size: 23px;
-    text-align: center;
+    font-size: 25px;
+    border-bottom: none;
+    margin-left: 120px;
+  }
+}
+
+.rromplanbutton{
+  text-align: left;
+}
+
+.pageTitle2 {
+  display: inline-block;
+  font-size: 25px;
+  margin: 60px 60px 20px 60px;
+  padding: 3px;
+  border-bottom: 1px dotted rgb(57, 57, 57);
+  @include mq(sp) {
+    font-size: 25px;
+    width: 300px;
+    border-bottom: none;
+    margin-left: 90px;
+    margin-bottom: 30px;
+
+  }
+  @include mq(tab) {
+    font-size: 25px;
+    width: 240px;
+    border-bottom: none;
+    margin-left: 60px;
+    margin-bottom: 30px;
   }
 }
 //roomLink
 .roomLinkWrapper {
   font-size: 18px;
   padding-left: 4%;
+  @include mq(tab) {
+    margin-bottom: 20px;
+  }
 }
 .roomLink {
   padding-bottom: 2px;
@@ -166,6 +253,11 @@ align-items: right;
   @include mq(tab) {
     box-shadow: none;
   }
+  @include mq(sp) {
+    box-shadow: none;
+    max-width: 350px;
+   
+  }
 }
 
 .cardTitle {
@@ -182,9 +274,19 @@ align-items: right;
     text-align: center;
   }
 }
+// *{
+//   outline: 2px red solid;
+// }
 
 .roomArea {
   padding-left: 10px;
+  @include mq(sp) {
+   font-size: 14px;
+  }
+}
+
+.hidden{
+  overflow: hidden;
 }
 
 .roomName {
@@ -193,6 +295,9 @@ align-items: right;
   color: #494949;/*文字色*/
   background: transparent;/*背景透明に*/
   border-left: solid 5px RGB(107, 1, 0);/*左線*/
+  @include mq(sp) {
+    font-size: 24px;
+  }
 }
 
 .detailContainer {
@@ -228,19 +333,35 @@ align-items: right;
 .roomCapacity {
   padding-bottom: 20px;
   font-size: 18px;
+  @include mq(sp) {
+    padding-top: 10px;
+    font-size: 14px;
+  }
 }
 
 .bedType {
   padding-bottom: 20px;
   font-size: 18px;
+  @include mq(sp) {
+
+    font-size: 14px;
+  }
 }
 
 .roomEquipmentTitle {
   font-size: 20px;
+  @include mq(sp) {
+    padding-top: 10px;
+    font-size: 17px;
+  }
 }
 
 .roomEquipment{
   width: 400px;
+  @include mq(sp) {
+    padding-top: 10px;
+    font-size: 14px;
+  }
 }
 
 .roomDetails {
@@ -266,6 +387,9 @@ align-items: right;
   text-align: center;
   span {
     font-size: 20px;
+  }
+  @include mq(sp) {
+    font-size: 30px;
   }
 }
 
@@ -308,6 +432,10 @@ align-items: right;
     color: #494949;/*文字色*/
     background: transparent;/*背景透明に*/
     border-left: solid 5px RGB(107, 1, 0);/*左線*/
+
+    @include mq(sp) {
+      font-size: 23px;
+    }
   
 }
 
@@ -328,6 +456,10 @@ align-items: right;
   margin-top: 20px;
   margin-bottom: 20px;
   font-size: 20px;
+
+  @include mq(sp) {
+    font-size: 16px;
+  }
 }
 
 .plantitle {
@@ -355,6 +487,11 @@ align-items: right;
   margin: 30px 0 30px 300px;
   text-align: center;
   padding: 20px;
+  @include mq(sp) {
+    margin: 0 auto;
+    margin-left: 40px;
+
+  }
 }
 
 
@@ -411,4 +548,7 @@ align-items: right;
   margin: 10px 0 10px 0;
   border-bottom: 1px solid #000;
   display: inline-block;
+  @include mq(sp){
+    margin-left: 70px;
+  }
 }

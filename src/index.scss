@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho&display=swap');
+
 body {
   margin: 0;
   -moz-osx-font-smoothing: grayscale;
@@ -8,5 +10,13 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-    
+    font-family: 'Shippori Mincho', serif;
+}
+
+.fc-icon {
+  color: #fff;
+}
+
+svg{
+  vertical-align: -5px;
 }

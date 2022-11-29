@@ -1,4 +1,4 @@
-import RoomStyle from "../../styles/rooms/_Gestroom.module.scss";
+import RoomStyle from "../../../styles/rooms/_Gestroom.module.scss";
 
 //料金が安い順高い順並び替え
 const RoomSearchSoart = ({ onDescClick, onAscClick }: any) => {

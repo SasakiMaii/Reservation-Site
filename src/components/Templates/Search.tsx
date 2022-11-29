@@ -10,8 +10,8 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import SearchStyle from "../../styles/rooms/_Search.module.scss";
 import PrimaryButton from "../button/PrimaryButton";
-import SearchInputLayout from "./SearchInputLayout";
-import Modal from "./Modal";
+import SearchInputLayout from "../Molecules/rooms/SearchInputLayout";
+import Modal from "../Molecules/rooms/Modal";
 import SecondryButton from "../button/SecondryButton";
 import db from "../../Firebase";
 import { collection, getDocs } from "firebase/firestore";
@@ -126,14 +126,16 @@ export const Checkin = (props: any) => {
 
   return (
     <div className={SearchStyle.checkContainer}>
-      <div className="checkinDate">
-        <p style={{ fontSize: "18px", marginBottom: "20px" }}>
+      <div className={SearchStyle.checkinDate}>
+        <p style={{ fontSize: "18px", marginBottom: "20px" }}className={SearchStyle.checkinp}>
           <IoCalendarOutline size={20} />
           &nbsp;チェックイン日
         </p>
         {/* showBtnがtrueで、カレンダーの日程が選択されていたらカレンダーの日付を表示。選択されてなかったら日程は未定の文字を表示 */}
         {props.showBtn ? (
-          <SecondryButton onClick={ShowModal}>日程を選択</SecondryButton>
+          <div className={SearchStyle.checkinbuton}>
+            <SecondryButton onClick={ShowModal} >日程を選択</SecondryButton>
+          </div>
         ) : props.inputDate ? (
           <>
             <p className={SearchStyle.checkp}>{props.datetext}</p>
