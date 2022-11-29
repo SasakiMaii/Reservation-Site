@@ -8,7 +8,8 @@
 }
 
 //コンポーネント背景色
-$mainColor: rgb(227, 227, 227);
+// $mainColor: rgb(227, 227, 227);
+$mainColor: #ffffff;
 
 //レスポンシブ
 $breakpoints: (
@@ -31,7 +32,7 @@ $breakpoints: (
 
 .unLodger {
   width: 800px;
-  max-height: 1050px;
+  max-height: 1150px;
   margin: 20px auto;
   background-color: $mainColor;
   border-radius: 20px;
@@ -41,11 +42,17 @@ $breakpoints: (
     font-size: 10px;
     margin: 0 auto;
   }
+  @include mq(tab) {
+    width: 300px;
+    font-size: 10px;
+    margin: 0 auto;
+  }
 }
 
 .lodged {
   width: 800px;
   margin: 20px auto;
+  padding-bottom: 10px;
   background-color: $mainColor;
   max-height: 900px;
   border-radius: 20px;
@@ -58,21 +65,38 @@ $breakpoints: (
 }
 
 .lodgedContents {
-  margin: 20px;
-  padding-bottom: 20px;
+  margin: 20px 20px 0 20px;
+  // padding-bottom: 20px;
+  display: flex;
 }
 
-.lodgedContents button {
+.reservateDetails {
+  background-color: rgb(196, 196, 196);
+  margin: 15px 20px 20px 20px;
+  width: 69%;
+  border-radius: 10px;
+}
+
+.lodgedContentsList {
+  display: flex;
+}
+
+.lodgedContentsList p {
+  margin: 15px 20px 0 20px;
+  width: 66%;
+}
+
+.lodgedContentsList button {
   width: 100px;
   height: 30px;
-  margin: 10px auto;
+  margin: 0 auto;
   text-align: center;
-  background-color: rgb(101, 109, 183);
+  background-color: rgb(171, 171, 171);
   border-radius: 10px;
   color: #fff;
 }
 
-.lodgedContents button:hover{
+.lodgedContentsList button:hover{
   opacity: 0.8;
 }
 
@@ -85,6 +109,8 @@ $breakpoints: (
 
 .unLodgerContents ul {
   margin: 15px 0;
+  background-color: rgb(196, 196, 196);
+  border-radius: 10px;
 }
 
 .unLodgerContents span {
@@ -98,7 +124,7 @@ $breakpoints: (
   height: 30px;
   margin: 10px auto;
   text-align: center;
-  background-color: rgb(101, 109, 183);
+  background-color: rgb(171, 171, 171);
   border-radius: 10px;
   color: #fff;
   @include mq(sp) {
@@ -117,13 +143,15 @@ $breakpoints: (
 }
 
 .changeReservateBtn {
+  // display: block;
   width: 170px;
-  height: 30px;
+  height: 40px;
   margin: 10px auto;
   text-align: center;
-  background-color: rgb(101, 109, 183);
-  border-radius: 10px;
+  background-color: rgb(171, 171, 171);
+  border-radius: 5px;
   color: #fff;
+  transition: 0.3s;
 }
 
 .changeReservate input {
@@ -143,29 +171,56 @@ input:hover {
 
 .changeReservate ul{
   margin: 15px ;
+  li {
+    padding-bottom: 15px;
+  }
 }
 
 .changeReservate button:hover {
   opacity: 0.8;
 }
 
+.changeReservateMessage {
+  color: red;
+  font-size: 15px;
+}
+
+.changeReservateMessage svg {
+  stroke: red;
+  margin-right: 5px;
+}
+
 .UnReserveTitle {
-  background-color: #B0C4DE;
+  background-color: #ffffff;
   box-shadow: 0px 0px 8px -4px #777777;
   width: 500px;
-  margin: 70px auto;
+  margin: 50px auto 30px auto;
   text-align: center;
   border-radius: 20px;
   padding: 40px;
   line-height: 40px;
+  button {
+    padding: 0 10px;
+    border-radius: 50px;
+    margin-top: 10px;
+    border: 2px solid #deb887;
+    background-color: #deb887;
+    transition: 0.7s;
+  }
 }
 
 .UnReserveTitle button:hover {
-  color: gray;
+  // color: #ffffff;
+  background-color: #ffffff;
+  transition: 0.7s;
 }
 
+// .UnReserveTitle svg {
+//   font-size: 18px;
+// }
+
 .ReservedTitle {
-  background-color: #B0C4DE;
+  background-color: #ffffff;
   box-shadow: 0px 0px 8px -4px #777777;
   width: 500px;
   margin: 20px auto;
@@ -173,16 +228,36 @@ input:hover {
   border-radius: 20px;
   padding: 40px;
   line-height: 40px;
+  button {
+    padding: 0 10px;
+    border-radius: 50px;
+    margin-top: 10px;
+    border: 2px solid #deb887;
+    background-color: #deb887;
+    transition: 0.7s;
+  }
 }
 
 .ReservedTitle button:hover {
-  color: gray;
+  // color: #ffffff;
+  background-color: #ffffff;
+  transition: 0.7s;
 }
+
+// .ReservedTitle svg {
+//   font-size: 18px;
+// }
 
 .innerTitle {
   display: inline-block;
   border-bottom: 3px solid #deb887;
   margin: 10px;
+}
+
+.innerMessage {
+  font-size: 13px;
+  margin: 5px 20px;
+  color: #deb887;
 }
 
 .unLodgerContentsTotal {
@@ -193,6 +268,7 @@ input:hover {
 .subTitle {
   border-bottom: 1px solid black;
   width: 550px;
+  padding-bottom: 13px;
 }
 
 .cancel ul{
@@ -214,6 +290,13 @@ input:hover {
 
 .changeAfter {
   margin-left: 10px;
+  margin-bottom: 20px;
+  padding: 20px;
+  width: 50%;
+  background-color: rgb(247, 246, 234);
+  border-radius: 20px;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 .reservateDetails span {
@@ -225,3 +308,14 @@ input:hover {
 .reservateDetails ul {
   line-height: 30px;
 }
+
+.numMessage {
+  color: red;
+  font-size: 14px;
+}
+
+// footer {
+//   width: 100%;
+//   position: absolute;
+//   bottom: 0; 
+// }

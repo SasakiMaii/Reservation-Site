@@ -8,7 +8,8 @@
 }
 
 //コンポーネント背景色
-$mainColor: rgb(227, 227, 227);
+// $mainColor: rgb(227, 227, 227);
+$mainColor: #ffffff;
 
 //レスポンシブ
 $breakpoints: (
@@ -33,9 +34,14 @@ $breakpoints: (
   border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
-    width: 380px;
+    width: 420px;
     font-size: 10px;
     margin: 0 auto;
+  }
+  @include mq(tab) {
+    width: 320px;
+    font-size: 12px;
+    margin: 40px auto;
   }
 }
 
@@ -54,9 +60,14 @@ $breakpoints: (
   border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
-    width: 380px;
+    width: 420px;
     font-size: 10px;
     margin: 10px auto;
+  }
+  @include mq(tab) {
+    width: 320px;
+    font-size: 12px;
+    margin: 40px auto;
   }
 }
 
@@ -68,7 +79,7 @@ $breakpoints: (
   background-color: $mainColor;
   width: 550px;
   // width: 50%;
-  height: 480px;
+  max-height: 500px;
   margin-top: 30px;
   // margin-left: 120px;
   margin-right: 20px;
@@ -76,9 +87,14 @@ $breakpoints: (
   border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
-    width: 380px;
+    width: 420px;
     font-size: 10px;
     margin: 10px auto;
+  }
+  @include mq(tab) {
+    width: 320px;
+    font-size: 12px;
+    margin: 40px auto;
   }
 }
 
@@ -91,12 +107,21 @@ $breakpoints: (
 // }
 
 .reservateplan button {
-  background-color: rgb(101, 109, 183);
+  border-radius: 5px;
   color: #fff;
-  width: 100px;
-  height: 40px;
-  border-radius: 10px;
-  margin: 0;
+  width: 170px;
+  height: 55px;
+  font-size: 14px;
+  line-height: 1;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 18px;
+  border-radius: 5px;
+  width: 150px;
+  height: 50px;
+  position: relative;
+  transition: 0.3s;
+  background-color: rgb(171, 171, 171);
 }
 
 .reservateplan button:hover {
@@ -108,27 +133,38 @@ $breakpoints: (
   margin: 20px auto;
   padding: 10px;
   border-radius: 20px;
-  width: 71%;
+  width: 88%;
   box-shadow: 0px 0px 8px -4px #777777;
-  @include mq(sp) {
-    font-size: 10px;
+  span {
+    color: red;
   }
-}
-
-.payment span {
-  color: red;
-}
-
-.payment label {
-  padding: 5px;
-  font-size: 15px;
   @include mq(sp) {
+    width: 500px;
     font-size: 10px;
+    //autoが効かない
+    margin: 20px 190px;
+  }
+  label {
+    padding: 5px;
+    font-size: 15px;
+    @include mq(sp) {
+      font-size: 10px;
+    }
+  }
+  @include mq(tab) {
+    width: 320px;
+    font-size: 12px;
+    //autoが効かない
+    margin: 40px 240px;
   }
 }
 
 .paymentRadioBtn {
-  margin-top: 10px;
+  margin:  15px 20px 10px 20px;
+  @include mq(sp) {
+    width: 500px;
+    font-size: 10px;
+  }
 }
 
 .information {
@@ -136,7 +172,7 @@ $breakpoints: (
   justify-content: space-around;
   // background-color: pink;
   max-width: 1600px;
-  max-height: 1500px;
+  max-height: 2500px;
   margin: 0 auto;
   @include mq(sp) {
   flex-direction: column;
@@ -172,17 +208,53 @@ textarea {
 }
 
 .reservateButton {
-  width: 170px;
-  height: 50px;
+  // width: 170px;
+  // height: 50px;
   margin: 10px auto;
   text-align: center;
-  padding: 18px;
-  background-color: rgb(101, 109, 183);
-  border-radius: 10px;
+  padding: 15px;
+  // background-color: rgb(101, 109, 183);
+  // border-radius: 10px;
+  border-radius: 5px;
+  color: #fff;
+  width: 170px;
+  height: 55px;
+  font-size: 18px;
+  line-height: 1;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 18px;
+  border-radius: 5px;
+  width: 180px;
+  height: 50px;
+  // border: 1.5px solid #6a6a6a;
+  position: relative;
+  transition: 0.3s;
+  background-color: rgb(171, 171, 171);
+  @include mq(sp) {
+    display: block;
+    margin: 0 300px;
+  }
 }
 
 .reservateButton button {
   color: #fff;
+}
+
+.reservateMessage p{
+  text-align: center;
+  font-size: 15px;
+  color: red;
+  @include mq(sp) {
+    width: 300px;
+    text-align: center;
+    margin: 20px 240px;
+  }
+}
+
+.reservateMessage svg {
+  stroke: red;
+  margin-right: 5px;
 }
 
 .reservateButton:hover {
@@ -195,10 +267,6 @@ textarea {
   padding: 10px 0;
   // border-top: 0.5px solid black;
   border-bottom: 2px solid #C0C0C0;
-}
-
-.personInformation {
-  // width: 1600px;
 }
 
 .cancel {
@@ -219,10 +287,28 @@ textarea {
   padding-top: 25px;
 }
 
+.reserveConfrimBtn button {
+  width: 90px;
+  height: 40px;
+  font-size: 15px;
+  border-radius: 5px;
+  color: #fff;
+  line-height: 1;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 18px;
+  border-radius: 5px;
+  width: 150px;
+  height: 50px;
+  position: relative;
+  transition: 0.3s;
+  background-color: rgb(171, 171, 171);
+}
+
 
 .totalPrice {
-  background-color: rgb(247, 246, 234);
-  width: 500px;
+  background-color: rgb(227, 227, 227);
+  width: 100%;
   height: 100px;
   margin-top: 20px;
   border-radius: 10px;
@@ -259,6 +345,17 @@ textarea {
   margin-bottom: 15px;
 }
 
+.checkTime span {
+  font-size: 10px;
+  padding: 5px;
+  border-radius: 6px;
+  background-color: rgb(220 38 38);
+  color: white;
+  margin-right: 15px;
+  // transform: translateY(-2px) translateX(8px);
+  // position: absolute;
+}
+
 .arrivalText {
   margin-right: 10px;
 }
@@ -279,7 +376,7 @@ textarea {
 }
 
 .cancellist {
-  background-color: #fffef8;
+  background-color: rgb(227, 227, 227);
   width: 90%;
   border-radius: 10px;
   font-size: 14px;
@@ -294,22 +391,43 @@ textarea {
 .reservateplanBtn button {
   display: block;
   margin: 50px auto;
-  width: 150px;
+  // width: 150px;
+  // height: 50px;
+  background-color: rgb(26, 89, 136);
+  border-radius: 5px;
+  color: #fff;
+  width: 170px;
+  height: 55px;
+  font-size: 18px;
+  line-height: 1;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 18px;
+  border-radius: 5px;
+  width: 180px;
   height: 50px;
+  // border: 1.5px solid #6a6a6a;
+  position: relative;
+  transition: 0.3s;
+  background-color: rgb(171, 171, 171);
 }
 
-#overlay{
-  /*　画面全体を覆う設定　*/
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background-color:rgba(0,0,0,0.5);
+.deleteMessage {
+  margin-top: 35px;
+}
+
+// #overlay{
+//   /*　画面全体を覆う設定　*/
+//     position:fixed;
+//     top:0;
+//     left:0;
+//     width:100%;
+//     height:100%;
+//     background-color:rgba(0,0,0,0.5);
   
-    /*　画面の中央に要素を表示させる設定　*/
-    display: flex;
-    align-items: center;
-    justify-content: center;
+//     /*　画面の中央に要素を表示させる設定　*/
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
   
-  }
+//   }

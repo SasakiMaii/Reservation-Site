@@ -16,10 +16,11 @@ import { TelInput } from "../form/telInput";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../Firebase";
 import { MailInput } from "../form/mailInput";
-
+import useSWR, { useSWRConfig } from "swr";
+import { FiAlertTriangle } from "react-icons/fi";
+import { ArrivalTime } from "./ArrivalTime";
 
 export const ReservateConfirmContents = () => {
-
   const radioItem = [
     {
       id: "localpay",
@@ -41,12 +42,6 @@ export const ReservateConfirmContents = () => {
 
   //(firebase)データベースを格納
   const [reserves, setReserves] = useState<any>([]);
-
-  const [adultsNums,setAdultsNums] = useState("");
-  const [childrenNums,setChildrenNums] = useState("");
-  const [lodgeNums,setLodgeNums] = useState("");
-  const [roomNums,setRoomNums] = useState("");
-  const [prices,setPrices] = useState("");
 
   //入力フォームの値
   const [reserveFirstNameValue, SetReserveFirstNameValue] = useState("");
@@ -70,9 +65,11 @@ export const ReservateConfirmContents = () => {
   const [selectVal, setSelectVal] = useState("--");
   const [addLodgeNum, setAddLodgeNum] = useState();
   const [errorFlag, SetErrorFlag] = useState("false");
+  const [message, setMessage] = useState("");
 
   const [error, setError] = useState(true);
-  const [confirmError, setConfirmError] = useState(true);
+  const [confirmError, setConfirmError] = useState("none");
+  const [confirmMessage, setConfirmMessage] = useState("none");
 
   //プラン確認コンポーネントのボタン表示非表示
   const [deleteButton, setDeleteButton] = useState("block");
@@ -117,39 +114,26 @@ export const ReservateConfirmContents = () => {
     };
     documentFetch();
     setConfirmButton("none");
-    if (!reserves) {
-      setConfirmError(false);
+    if (docID === undefined) {
+      setConfirmError("選択中のプランはありません");
+      // console.log("a");
     }
-
-    // setAdultsNums(reserveItem[0].adultsNum);
-    // setChildrenNums(reserveItem[0].childrenNum);
-    // setLodgeNums(reserveItem[0].lodgeNum);
-    // setRoomNums(reserveItem[0].roomNum);
-    // setPrices(reserveItem[0].price);
-  
   };
-  console.log(docID);
+  // console.log(docID);
 
-  // const adultsNumParse = parseInt(adultsNums);
-  // const childrenNumParse = parseInt(childrenNums);
-  // const lodgeNumParse = parseInt(lodgeNums);
-  // const roomNumParse = parseInt(roomNums);
-  // const priceParse = parseInt(prices);
+  const { mutate } = useSWRConfig();
+  const { data } = useSWR("/books/ReservateConfirm", getDocs);
+  console.log(data);
 
-
-  // let reserveNums = adultsNumParse + childrenNumParse;
-  // let totals = priceParse * 1.1;
-  // let reserveTotals = reserveNums * totals * lodgeNumParse * roomNumParse;
-  // console.log(reserveTotals);
-  // console.log(reserveTotals);
-
-
+  console.log(userEmail);
   //プラン削除
   const clickDelete = async () => {
     await deleteDoc(doc(db, "reserve", docID));
     alert("削除しました");
-    window.location.reload();
+    mutate("/books/ReservateConfirm");
+    // window.location.reload();
     setError(false);
+    setMessage("選択中のプランがありません");
   };
 
   const handleChange = (e: any) => {
@@ -204,7 +188,7 @@ export const ReservateConfirmContents = () => {
       !radioVal ||
       !arrivalTime
     ) {
-      alert("必須項目を入力してください");
+      setConfirmMessage("block");
     } else {
       const newCityRef = doc(collection(db, "reserved"));
       const data = {
@@ -226,19 +210,14 @@ export const ReservateConfirmContents = () => {
         price: reserveItem[0].price * 1.1,
         arrivalTime: arrivalTime,
         lodgeNum: reserveItem[0].lodgeNum,
-        roomNum: reserveItem[0].roomNum,
-        // totalPrice: reserveTotal
       };
       await setDoc(newCityRef, data);
+      await deleteDoc(doc(db, "reserve", docID));
       navigate("/books/ReservateComplete");
     }
   };
 
 
-  // let reserveNum = reserveItem[0].adultsNum + reserveItem[0].childrenNum;
-  // let total = reserveItem[0].price * 1.1;
-  // let reserveTotal = reserveNum * total * reserveItem[0].lodgeNum * reserveItem[0].roomNum;
-  // console.log(reserveTotal);
 
   return (
     <div>
@@ -323,6 +302,7 @@ export const ReservateConfirmContents = () => {
                 click={click}
                 setClick={setClick}
                 accordionClick={accordionClick}
+                ArrivalTime={ArrivalTime}
               />
             </div>
           </div>
@@ -335,31 +315,27 @@ export const ReservateConfirmContents = () => {
             <div className={ReservateConfirmContentsStyles.reservateplanBtn}>
               <button
                 onClick={ReserveData}
-                className={ReservateConfirmContentsStyles.reserveConfrimBtn}
                 style={{ display: confirmButton }}
               >
                 確認する
               </button>
             </div>
+            {<p className={ReservateConfirmContentsStyles.deleteMessage}>{message}</p>}
             {!confirmError ? <p>選択中のプランがありません</p> : ""}
-            {/* <button onClick={reserveAdd}>追加する</button> */}
             <ul className={ReservateConfirmContentsStyles.reservePlanList}>
               {reserves.map((reserve: any) => (
                 <React.Fragment key={reserve.adultsNum}>
                   <li>
-                    <span>宿泊プラン</span>：{reserve.plan}
+                    <span>宿泊プラン</span>{reserve.plan}
                   </li>
                   <li>
-                    <span>客室</span>：{reserve.roomType}
+                    <span>客室</span>{reserve.roomType}
                   </li>
                   <li>
-                    <span>客室数</span>：{reserve.roomNum}室
+                    <span>日程</span>{reserve.checkIn}〜{reserve.checkOut}
                   </li>
                   <li>
-                    <span>日程</span>：{reserve.checkIn}〜{reserve.checkOut}
-                  </li>
-                  <li>
-                    <span>宿泊数</span>：{reserve.lodgeNum}泊
+                    <span>宿泊数</span>{reserve.lodgeNum}泊
                   </li>
                   {/* <li>
                     <span>宿泊数</span>：{(
@@ -376,7 +352,7 @@ export const ReservateConfirmContents = () => {
                     let peopleNumber = reserve.adultsNum + reserve.childrenNum;
                     return (
                       <li>
-                        <span>予約人数</span>：{peopleNumber}
+                        <span>予約人数</span>{peopleNumber}
                         名（内訳：大人{reserve.adultsNum}名、子ども
                         {reserve.childrenNum}名）
                       </li>
@@ -387,16 +363,13 @@ export const ReservateConfirmContents = () => {
                       reserve.adultsNum + reserve.childrenNum;
                     let totalPrice = reserve.price * 1.1;
                     let reserveTotalPrice =
-                      reserveNumber *
-                      totalPrice *
-                      reserve.lodgeNum *
-                      reserve.roomNum;
+                      reserveNumber * totalPrice * reserve.lodgeNum;
                     return (
                       <div
                         className={ReservateConfirmContentsStyles.totalPrice}
                       >
                         <li>
-                          <span>宿泊金額</span>：{reserveTotalPrice}円（税込）
+                          <span>宿泊金額</span>{reserveTotalPrice}円（税込）
                         </li>
                       </div>
                     );
@@ -406,7 +379,7 @@ export const ReservateConfirmContents = () => {
                       onClick={clickDelete}
                       style={{ display: deleteButton }}
                     >
-                      予約を削除
+                      削除
                     </button>
                     {!error ? <p>選択中のプランがありません。</p> : ""}
                   </li>
@@ -418,9 +391,9 @@ export const ReservateConfirmContents = () => {
       </div>
 
       <div className={ReservateConfirmContentsStyles.payment}>
-        <p>
+        <h3　className={ReservateConfirmContentsStyles.innertitle}>
           お支払い方法<span>必須</span>
-        </p>
+        </h3>
         <div className={ReservateConfirmContentsStyles.paymentRadioBtn}>
           {radioItem.map((radioItems) => (
             <React.Fragment key={radioItems.title}>
@@ -439,6 +412,12 @@ export const ReservateConfirmContents = () => {
       <div className={ReservateConfirmContentsStyles.reservateButton}>
         <button onClick={clickReservate}>予約する</button>
       </div>
+      <div className={ReservateConfirmContentsStyles.reservateMessage}>
+        <p style={{ display: confirmMessage }}>
+          <FiAlertTriangle />
+          必須項目を入力してください
+        </p>
+      </div>
     </div>
   );
 };
@@ -453,6 +432,7 @@ export const Content = (props: any) => {
     setSelectVal,
     click,
     accordionClick,
+    ArrivalTime
   } = props;
 
   let result = 0;
@@ -492,32 +472,33 @@ export const Content = (props: any) => {
   );
 };
 
-export const ArrivalTime = (props: any) => {
-  const { selectValueChange, selectItem, selectVal, setSelectVal } = props;
+// export const ArrivalTime = (props: any) => {
+//   const { selectValueChange, selectItem, selectVal, setSelectVal } = props;
 
-  return (
-    <>
-      <div className={ReservateConfirmContentsStyles.checkTime}>
-        <label
-          htmlFor="arrivalTime"
-          className={ReservateConfirmContentsStyles.arrivalText}
-        >
-          到着時間
-        </label>
-        <select
-          value={selectVal}
-          onChange={selectValueChange}
-          className={ReservateConfirmContentsStyles.input}
-        >
-          {selectItem.map((selects: any) => {
-            return <option value={selects}>{selects}</option>;
-          })}
-        </select>
-        時
-      </div>
-    </>
-  );
-};
+//   return (
+//     <>
+//       <div className={ReservateConfirmContentsStyles.checkTime}>
+//         <label
+//           htmlFor="arrivalTime"
+//           className={ReservateConfirmContentsStyles.arrivalText}
+//         >
+//           到着時間
+//         </label>
+//         <span>必須</span>
+//         <select
+//           value={selectVal}
+//           onChange={selectValueChange}
+//           className={ReservateConfirmContentsStyles.input}
+//         >
+//           {selectItem.map((selects: any) => {
+//             return <option value={selects}>{selects}</option>;
+//           })}
+//         </select>
+//         時
+//       </div>
+//     </>
+//   );
+// };
 
 export const ClickCancelPolicy = (accordionClick: any, click: any) => {
   return (

@@ -279,6 +279,10 @@ export const RoomCard = (prps: any) => {
   // const params = useParams();
   //予約ボタン
   const navigate = useNavigate();
+  const handleResarvedRoomBtn = () => {
+    // rooms.filter((room:any)=>{room.id})
+    navigate(`/rooms/RoomDetails`);
+  };
 
   //次のページへ進むボタン。ソートボタンがクリックされていた場合は、料金順でページングになるように。
 
@@ -537,4 +541,3 @@ export const RoomCard = (prps: any) => {
 };
 
 export default GestroomPlan;
-

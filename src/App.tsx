@@ -4,6 +4,7 @@ import { Route, BrowserRouter as Router, Routes, Link } from 'react-router-dom';
 import ReservateConfirm from './pages/books/ReservateConfirm';
 import ReservateComplete from './pages/books/ReservateComplete';
 import ReservateHistory from './pages/books/ReservateHistory';
+import ReservateHistoryCopy from './pages/books/ReservateHistory';
 import Gestroom from './pages/rooms/Gestroom';
 import RoomSearch from './components/Templates/Search';
 import { Registered } from './pages/users/Registered';
