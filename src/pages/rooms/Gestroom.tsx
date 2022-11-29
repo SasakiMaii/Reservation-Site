@@ -260,7 +260,7 @@ export const RoomCard = (prps: any) => {
   //予約ボタン
   const navigate = useNavigate();
   const handleResarvedRoomBtn = () => {
-    rooms.filter((room:any)=>{room.id})
+    // rooms.filter((room:any)=>{room.id})
     navigate(`/rooms/RoomDetails`);
   };
 
