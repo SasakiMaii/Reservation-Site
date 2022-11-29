@@ -19,6 +19,8 @@ export const Login = () => {
   // ログインのstatus管理
   const [user] = useAuthState(auth);
 
+    // データの受け渡しのため
+    const navigation = useNavigate();
   // const router = useRouter();
 
   const [mailValue, SetMailValue] = useState("");
@@ -53,10 +55,12 @@ export const Login = () => {
   })
 
   const location = useLocation()
+  
   // yarn add react-firebase-hooks/authしてください
   const login = () => {
     // 仮予約データ受け取り
     const data = location.state;
+    console.log("j",data)
   
     if (mailErrorState === "ok" && passwordErrorState === "ok") {
       // ログインしているか判定
@@ -67,9 +71,10 @@ export const Login = () => {
             if(cookie === "confirm"){
               alert("ログイン成功");
               data.mail = user.user.email
-              const reserveData = collection(db, "reserve");
-              addDoc(reserveData, data);
-              navigate("/books/ReservateConfirm");
+              // const reserveData = collection(db, "reserve");
+              // addDoc(reserveData, data);
+              // navigate("/books/ReservateConfirm");
+              navigation("/books/ReservateConfirm", { state: data });
 
             }else{
               alert("ログイン成功");
