@@ -41,12 +41,23 @@ export const NameInput = (props: any) => {
     }
   }
 
+  const Mark = () => {
+    if(!props.markNone) {
+      return (
+        <span className={`${FormStyle.mark}`}>必須</span>
+      )
+    } else {
+      return <></>
+    }
+  }
+
   return (
     <>
       <div className={`${FormStyle.formMain}`}>
         <div className={` ${FormStyle.labelGroup}`}>
           <label htmlFor="family-name">お名前 </label>
           <span className={`${FormStyle.mark}`} >必須</span>
+          <Mark />
           <Error
             text="名前を入力してください"
             value1={props.lastNameErrorState}
