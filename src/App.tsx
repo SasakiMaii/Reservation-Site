@@ -4,7 +4,6 @@ import { Route, BrowserRouter as Router, Routes, Link } from 'react-router-dom';
 import ReservateConfirm from './pages/books/ReservateConfirm';
 import ReservateComplete from './pages/books/ReservateComplete';
 import ReservateHistory from './pages/books/ReservateHistory';
-import ReservateHistoryCopy from './pages/books/ReservateHistory';
 import Gestroom from './pages/rooms/Gestroom';
 import RoomSearch from './components/Templates/Search';
 import { Registered } from './pages/users/Registered';
@@ -26,7 +25,7 @@ function App() {
           <Route path='/books/ReservateConfirm' element={<ReservateConfirm />}></Route>
           <Route path='/books/ReservateComplete' element={<ReservateComplete />}></Route>
           <Route path='/books/ReservateHistory' element={<ReservateHistory />}></Route>
-          <Route path='/' element={<Top />}></Route>
+          <Route path='/' element={<Top />}></Route>        
           <Route path='/rooms/RoomPlanSearch' element={<RoomSearch />}></Route>
           <Route path='/rooms/Gestroom' element={<Gestroom />}></Route>
           <Route path='/users/Login' element={<Login />}></Route>

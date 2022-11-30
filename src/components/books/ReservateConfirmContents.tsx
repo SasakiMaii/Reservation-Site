@@ -1,3 +1,4 @@
+/* eslint-disable valid-typeof */
 import React, { useState } from "react";
 import ReservateConfirmContentsStyles from "../../styles/books/_ReservateConfirmContents.module.scss";
 import { useNavigate } from "react-router-dom";
@@ -21,6 +22,7 @@ import { FiAlertTriangle } from "react-icons/fi";
 import { ArrivalTime } from "./ArrivalTime";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import NotFound from "../../pages/NotFound";
 
 export const ReservateConfirmContents = () => {
   const radioItem = [
@@ -44,6 +46,13 @@ export const ReservateConfirmContents = () => {
 
   //(firebase)データベースを格納
   const [reserves, setReserves] = useState<any>([]);
+
+  //ログインしているユーザーのメールアドレス
+  const [user] = useAuthState(auth);
+  let userEmail = user?.email;
+  if (user) {
+    // console.log(user.email);
+  }
 
   //入力フォームの値
   const [reserveFirstNameValue, SetReserveFirstNameValue] = useState("");
@@ -86,16 +95,12 @@ export const ReservateConfirmContents = () => {
   //Arrival inputに入力された数字の型を数値に変換
   const arrivalTime = parseInt(selectVal);
 
-  //ログインしているユーザーのメールアドレス
-  const [user] = useAuthState(auth);
-  let userEmail = user?.email;
-  if (user) {
-    // console.log(user.email);
-  }
+  
 
   // データ受け取り
   const location = useLocation();
-  const reserveData = location.state;
+    const reserveData = location.state;
+
   // console.log(docID);
   console.log("s", reserveData);
 
@@ -185,9 +190,13 @@ export const ReservateConfirmContents = () => {
       navigate("/books/ReservateComplete");
     }
   };
+console.log("f",reserveData);
 
+//ログインしていたら表示、していなかったら404
   return (
     <div>
+      {/* {userEmail ? (
+        <> */}
       <div className={ReservateConfirmContentsStyles.information}>
         <div className={ReservateConfirmContentsStyles.personInformation}>
           <div className={ReservateConfirmContentsStyles.subscriber}>
@@ -352,8 +361,10 @@ export const ReservateConfirmContents = () => {
           必須項目を入力してください
         </p>
       </div>
+      {/* </>
+      ) : (<NotFound />)} */}
     </div>
-  );
+  )
 };
 
 export const Content = (props: any) => {
@@ -457,9 +468,9 @@ const cancel = (
       キャンセル料がかかる場合がございます。
     </p>
     <ul className={ReservateConfirmContentsStyles.cancellist}>
-      <li>当日：宿泊料金の80%</li>
-      <li>1日前：宿泊料金の20%</li>
-      <li> 連絡なしキャンセル：宿泊料金の100%</li>
+      <li>当日：宿泊料金の<span>80%</span></li>
+      <li>1日前：宿泊料金の<span>20%</span></li>
+      <li> 連絡なしキャンセル：宿泊料金の<span>100%</span></li>
     </ul>
   </div>
 );

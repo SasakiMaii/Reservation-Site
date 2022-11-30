@@ -79,13 +79,23 @@ $breakpoints: (
   background-color: $mainColor;
   width: 550px;
   // width: 50%;
-  max-height: 500px;
+  max-height: 460px;
   margin-top: 30px;
   // margin-left: 120px;
   margin-right: 20px;
   padding: 10px;
   border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
+  ul {
+    list-style-type: none;
+    line-height: 40px;
+    margin: 25px 0;
+  }
+  span {
+    display: inline-block;
+    width: 120px;
+    margin: 0 10px;
+  }
   @include mq(sp) {
     width: 420px;
     font-size: 10px;
@@ -98,13 +108,20 @@ $breakpoints: (
   }
 }
 
-.reservateplan ul {
-  list-style-type: none;
+.reservePlanContents a{
+  display: block;
+  width: 200px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 14px;
+  transition: 0.2s;
 }
 
-// .reservePlanContents {
-//   display: flex;
-// }
+.reservePlanContents a:hover {
+  color: #deb887;
+  transition: 0.2s;
+}
 
 .reservateplan button {
   border-radius: 5px;
@@ -133,7 +150,7 @@ $breakpoints: (
   margin: 20px auto;
   padding: 10px;
   border-radius: 20px;
-  width: 88%;
+  width: 71%;
   box-shadow: 0px 0px 8px -4px #777777;
   span {
     color: red;
@@ -230,7 +247,7 @@ textarea {
   // border: 1.5px solid #6a6a6a;
   position: relative;
   transition: 0.3s;
-  background-color: rgb(171, 171, 171);
+  background-color: rgb(137, 0, 0);
   @include mq(sp) {
     display: block;
     margin: 0 300px;
@@ -265,7 +282,6 @@ textarea {
   text-align: left;
   width: 90%;
   padding: 10px 0;
-  // border-top: 0.5px solid black;
   border-bottom: 2px solid #C0C0C0;
 }
 
@@ -275,6 +291,9 @@ textarea {
 
 .cancellist {
   margin: 5px 0;
+  span {
+    color: rgb(178, 12, 12);
+  }
 }
 
 .reservePlanList span {
@@ -313,6 +332,9 @@ textarea {
   margin-top: 20px;
   border-radius: 10px;
   font-size: 20px;
+  li {
+    padding-top: 30px; 
+  }
   @include mq(sp) {
     font-size: 15px;
   }
@@ -382,10 +404,6 @@ textarea {
   font-size: 14px;
   padding-left: 10px;
 }
-
-// .reservePlanContents {
-//   height: auto;
-// }
 
 
 .reservateplanBtn button {

@@ -23,22 +23,14 @@ const ReservateHistory = () => {
   //(firebase)データベースを格納
   const [reserves, setReserves] = useState<any>([]);
 
-  //firebaseから予約データ取得、予約確定時にfirebaseへ送信するためのデータ
-  // const reserveItem = reserves.map((reserveItems: any) => reserveItems);
-  // const reserveItem = unReserve.map((reserveItems:any) => reserveItems);
-
   //入力フォームの値
   const [lodgeFirstName, setLodgeFirstName] = useState("");
   const [lodgeLastName, setLodgeLastName] = useState("");
   const [adultsNum, setAdultsNum] = useState("0");
   const [childrenNum, setChildrenNum] = useState("0");
   const [lodgeNum, setLodgeNum] = useState("0");
-  const [roomNum, setRoomNum] = useState(0);
   const [price, setPrice] = useState(0);
   const [checkIn, setCheckIn] = useState("0");
-  const [checkOutDay, setCheckOutDay] = useState("");
-  const [selectVal, setSelectVal] = useState("--");
-  // const [arrivalTime,setArrivalTime] = useState("");
 
   //コンポーネント表示切り替え
   const [openUnlodgeDisplay, setOpenUnlodgeDisplay] = useState(false);
@@ -46,19 +38,14 @@ const ReservateHistory = () => {
   const [openLodgedDisplay, setOpenLodgedDisplay] = useState(false);
   const [hideLodgedMessage, setHideLodgedMessage] = useState("block");
 
-  const [openContents, setOpenContents] = useState(false);
-
   const [change, setChange] = useState(false);
   const [click, setClick] = useState(false);
   const [clickCancel, setOnCancelClick] = useState(false);
   const [clickReservateDetails, setClickReservateDetails] = useState(false);
   const [clickUnReservateDetails, setClickUnReservateDetails] = useState(false);
   const [errorMessage, setErrorMessage] = useState("none");
-  const [numMessage, setNumMessage] = useState("none");
 
   //ログインしているユーザーのIDが入る
-  const [unLodgedocID, setUnLodgeDocID] = useState<any>("");
-  const [lodgeddocID, setLodgedDocID] = useState<any>("");
   const [docID, setDocID] = useState<any>({});
   const docIDstate = useRef<any>([]);
 
@@ -69,7 +56,6 @@ const ReservateHistory = () => {
 
   let totalPeople = adultsNums + childrenNums;
   let changeAfter = totalPeople * price * lodgeNums;
-  const selectItem = ["--", 15, 16, 17, 18, 19, 20, 21, 22];
 
   let dt = new Date();
   let y = dt.getFullYear();
@@ -77,22 +63,11 @@ const ReservateHistory = () => {
   let d = ("00" + dt.getDate()).slice(-2);
   let todayDate = y + "-" + m + "-" + d;
 
-  const { mutate } = useSWRConfig();
-  const { data } = useSWR("/books/ReservateHistoryCopy", getDocs);
-  console.log(data);
-
-  // console.log(lodgeNums);
   const checkIns = Date.parse(checkIn);
-  // console.log(checkIns);
-  // console.log(checkIn);
   let a = checkIn.slice(8, 10);
-  // console.log(a);
-  // console.log(typeof todayDate)
   const dateNum = Date.parse(todayDate);
-  //   console.log(dateNum);
   const x = "2023-01-01";
   const p = Date.parse(x);
-  // console.log(p);
 
   //firebaseからログインユーザーの情報を取得
   const [user] = useAuthState(auth);
@@ -100,38 +75,6 @@ const ReservateHistory = () => {
   if (user) {
     // console.log(user.email);
   }
-  console.log(docID);
-
-  // //firebaseデータ更新（ドキュメントID指定して更新）
-  const onClickReserveChange = async () => {
-    if (
-      !lodgeFirstName &&
-      !lodgeLastName &&
-      adultsNums === unReserveItem[0].adultsNum &&
-      childrenNums === unReserveItem[0].childrenNum &&
-      lodgeNum === unReserveItem[0].lodgeNum &&
-      roomNum === unReserveItem[0].roomNum
-      // arrivalTime === reserveItem[0].arrivalTime
-    ) {
-      setErrorMessage("block");
-    } else if (adultsNums + childrenNums > 3) {
-      setNumMessage("block");
-    } else {
-      const updateRef = doc(db, "reserved", docID);
-      await updateDoc(updateRef, {
-        lodgeFirstName: lodgeFirstName,
-        lodgeLastName: lodgeLastName,
-        adultsNum: adultsNums,
-        childrenNum: childrenNums,
-        lodgeNum: lodgeNums,
-        totalPrice: changeAfter,
-        // arrivalTime: arrivalTime
-      });
-      alert("変更しました");
-      mutate("/books/ReservateHistoryCopy");
-    }
-  };
-  console.log(docID);
 
   const ClickCancelPolicy = () => {
     if (click === false) {
@@ -163,102 +106,7 @@ const ReservateHistory = () => {
     setLodgeLastName(e.target.value);
   };
 
-  // const selectValueChange = (e: any) => {
-  //   setSelectVal(e.target.value);
-  // };
-
-  const reservateChange = [
-    {
-      title: "宿泊者代表",
-      contents: (
-        <LodgerName
-          lodgeFirstName={lodgeFirstName}
-          lodgeLastName={lodgeLastName}
-          onChangeFirst={onChangeFirst}
-          onChangeLast={onChangeLast}
-        />
-      ),
-    },
-    {
-      title: "宿泊人数",
-      contents: (
-        <>
-          <p
-            style={{ display: numMessage }}
-            className={ReservateHistoryStyles.numMessage}
-          >
-            客室定員(3名)以上は選択できません
-          </p>
-          <div>
-            大人&nbsp;&nbsp;
-            <input
-              type="number"
-              value={adultsNum}
-              onChange={onChangeAdults}
-              min={0}
-            />
-            小人&nbsp;&nbsp;
-            <input
-              type="number"
-              value={childrenNum}
-              onChange={onChangeChildren}
-              min={0}
-            />
-          </div>
-        </>
-      ),
-    },
-    // {
-    //   title: "宿泊日数（減泊のみ）",
-    //   contents: (
-    //     <input
-    //       type="number"
-    //       min={1}
-    //       value={lodgeNum}
-    //       onChange={(e: any) => setLodgeNum(e.target.value)}
-    //     />
-    //   ),
-    // },
-    // {
-    //   title: "",
-    //   contents: <ArrivalTime selectValueChange={selectValueChange} selectItem={selectItem} selectVal={selectVal} value={arrivalTime}/>
-    // },
-    {
-      title: (
-        <button
-          onClick={ClickCancelPolicy}
-          className={ReservateHistoryStyles.cancelBtn}
-        >
-          キャンセルポリシー
-        </button>
-      ),
-      contents: click ? (
-        <div className={ReservateHistoryStyles.cancel}>
-          {cancel}
-          <span>
-            キャンセルはお電話でのみ承ります。
-            <br />
-            TEL：03-0000-0000
-          </span>
-        </div>
-      ) : (
-        ""
-      ),
-    },
-  ];
-
   const clickChange = () => {
-    // if (change === false) {
-    //   setChange(true);
-    // } else {
-    //   setChange(false);
-    // }
-    // setAdultsNum(unReserveItem[0].adultsNum);
-    // setChildrenNum(unReserveItem[0].childrenNum);
-    // setLodgeNum(unReserveItem[0].lodgeNum);
-    // setRoomNum(unReserveItem[0].roomNum);
-    // setPrice(unReserveItem[0].price);
-    // setCheckIn(unReserveItem[0].checkIn.toString());
     if (clickUnReservateDetails === false) {
       setClickUnReservateDetails(true);
     } else {
@@ -356,33 +204,19 @@ const ReservateHistory = () => {
       querySnapshot.forEach((doc: any) => {
         const docData = doc.data();
       });
-      // const querySnapshot = await getDocs(q);
-      // querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
-      // setReserves(doc.docs.map((doc:any) => ({ ...doc.data() })));
-      // const docData = doc.data();
-      // const listC = [];
-      // listC.push(doc.data());
-      // setReserves(listC);
-      // });
     };
     documentFetch();
   };
-  // console.log("f",lodgeddocID);
 
   return (
     <>
       <Header />
-      <div className={ReservateHistoryStyles.historycontainer}>
-        <h1 className={ReservateHistoryStyles.reservatehistoryTitle}>
-          予約履歴確認
-        </h1>
+      <div className={ReservateHistoryStyles.HistoryContainer}>
+        <h1 className={ReservateHistoryStyles.HistoryTitle}>予約履歴確認</h1>
         <UnReserveTitle
           clickUnlodgeOpen={clickUnlodgeOpen}
           hideUnlodgeMessage={hideUnlodgeMessage}
         />
-        {/* <div> */}
         {openUnlodgeDisplay ? (
           <UnReserve
             lodgeFirstName={lodgeFirstName}
@@ -391,8 +225,6 @@ const ReservateHistory = () => {
             onChangeLast={onChangeLast}
             reserves={reserves}
             change={change}
-            onClickReserveChange={onClickReserveChange}
-            reservateChange={reservateChange}
             clickChange={clickChange}
             onClickCancel={onClickCancel}
             changeAfter={changeAfter}
@@ -418,58 +250,60 @@ const ReservateHistory = () => {
         ) : (
           ""
         )}
-        {/* {openContents ? <Contents reserves={reserves} /> : ""} */}
       </div>
-      {/* <footer> */}
       <Footer />
-      {/* </footer> */}
     </>
   );
 };
 
 export default ReservateHistory;
 
-// export const ChangeReservate = (props: any) => {
-//   const {
-//     reservateChange,
-//     onClickReserveChange,
-//     reserves,
-//     changeAfter,
-//     errorMessage,
-//   } = props;
+export const UnReserveTitle = (props: any) => {
+  const { clickUnlodgeOpen, hideUnlodgeMessage } = props;
+  return (
+    <div
+      style={{ display: hideUnlodgeMessage }}
+      className={ReservateHistoryStyles.unReserveTitle}
+    >
+      <h1>宿泊待ち予約</h1>
+      <button onClick={clickUnlodgeOpen}>
+        確認する
+      </button>
+    </div>
+  );
+};
 
-//   return (
-//     <div className={ReservateHistoryStyles.changeReservate}>
-//       <p className={ReservateHistoryStyles.subTitle}>変更可能項目</p>
-//       <ul>
-//         {reservateChange.map((change: any, index: number) => {
-//           return (
-//             <div key={index}>
-//               <li>
-//                 <span>{change.title}</span>
-//                 {change.contents}
-//               </li>
-//             </div>
-//           );
-//         })}
-//       </ul>
-//       <ChangeAfter reserves={reserves} changeAfter={changeAfter} />
-//       <button
-//         onClick={onClickReserveChange}
-//         className={ReservateHistoryStyles.changeReservateBtn}
-//       >
-//         予約内容を変更する
-//       </button>
-//       <p
-//         style={{ display: errorMessage }}
-//         className={ReservateHistoryStyles.changeReservateMessage}
-//       >
-//         <FiAlertTriangle />
-//         変更内容を入力してください
-//       </p>
-//     </div>
-//   );
-// };
+export const UnReserve = (props: any) => {
+  const {
+    clickChange,
+    unReserve,
+    UnReservateDetails,
+    clickUnReservateDetails,
+  } = props;
+
+  return (
+    <div className={ReservateHistoryStyles.unLodger}>
+      <h3 className={ReservateHistoryStyles.innerTitle}>宿泊待ち予約</h3>
+      <div className={ReservateHistoryStyles.unLodgerContents}>
+        <p className={ReservateHistoryStyles.subTitle}>予約内容</p>
+      </div>
+      <div className={ReservateHistoryStyles.unLodgerContentsList}>
+        {unReserve.map((unReserveItem: any) => {
+          return <p>{unReserveItem.plan}宿泊プラン名【】</p>;
+        })}
+        <button onClick={clickChange}>詳細を見る</button>
+      </div>
+      {clickUnReservateDetails ? (
+        <UnReservateDetails
+          unReserve={unReserve}
+          className={ReservateHistoryStyles.unReservateDetails}
+        />
+      ) : (
+        ""
+      )}
+    </div>
+  );
+};
 
 export const UnReservateDetails = ({ unReserve }: any) => {
   return (
@@ -479,38 +313,37 @@ export const UnReservateDetails = ({ unReserve }: any) => {
           return (
             <>
               <li>
-                <span>予約完了日</span>：{reserveItem.reservationDate}
+                <span>予約完了日</span>{reserveItem.reservationDate}
               </li>
               <li>
-                <span>宿泊プラン</span>：{reserveItem.plan}
+                <span>宿泊プラン</span>{reserveItem.plan}
               </li>
               <li>
-                <span>客室</span>：{reserveItem.roomType}
+                <span>客室</span>{reserveItem.roomType}
               </li>
               <li>
-                <span>宿泊日程</span>：{reserveItem.checkIn}〜
-                {reserveItem.checkOut}
+                <span>チェックイン日</span>{reserveItem.checkIn}
               </li>
               <li>
-                <span>宿泊数</span>：{reserveItem.lodgeNum}泊
+                <span>宿泊数</span>{reserveItem.lodgeNum}泊
               </li>
               {(function () {
                 let peopleNumber =
                   reserveItem.adultsNum + reserveItem.childrenNum;
                 return (
                   <li>
-                    <span>予約人数</span>：{peopleNumber}
+                    <span>予約人数</span>{peopleNumber}
                     名（内訳：大人{reserveItem.adultsNum}名、子ども
                     {reserveItem.childrenNum}名）
                   </li>
                 );
               })()}
               {/* {(function () {
-                      let totalday = reserveItem.checkIn - reserveItem.checkOut;
-                      console.log(reserveItem.checkIn);
-                      console.log(totalday);
-                      return <li>{totalday}</li>;
-                    })()} */}
+                        let totalday = reserveItem.checkIn - reserveItem.checkOut;
+                        console.log(reserveItem.checkIn);
+                        console.log(totalday);
+                        return <li>{totalday}</li>;
+                      })()} */}
               {(function () {
                 const reserveNumber =
                   reserveItem.adultsNum + reserveItem.childrenNum;
@@ -520,78 +353,7 @@ export const UnReservateDetails = ({ unReserve }: any) => {
                 return (
                   <div className={ReservateHistoryStyles.totalPrice}>
                     <li>
-                      <span>宿泊金額</span>：{reserveTotalPrice}円（税込）
-                    </li>
-                  </div>
-                );
-              })()}
-              {/* 複数予約ある場合
-                    <button onClick={clickChange}>変更</button>
-                    {change ? (
-                      <ChangeReservate
-                        reservateChange={reservateChange}
-                        onClickReserveChange={onClickReserveChange}
-                        clickChange={clickCancel}
-                        onClickCancel={onClickCancel}
-                        reserves={reserves}
-                        changeAfter={changeAfter}
-                        errorMessage={errorMessage}
-                      />
-                    ) : (
-                      ""
-                    )} */}
-            </>
-          );
-        })}
-      </ul>
-    </div>
-  );
-};
-
-export const ReservateDetails = ({ reserved }: any) => {
-  return (
-    <div className={ReservateHistoryStyles.reservateDetails}>
-      <ul>
-        {reserved?.map((reservedItem: any) => {
-          return (
-            <>
-              <li>
-                <span>予約完了日</span>：{reservedItem.reservationDate}
-              </li>
-              <li>
-                <span>宿泊プラン</span>：{reservedItem.plan}
-              </li>
-              <li>
-                <span>客室</span>：{reservedItem.roomType}
-              </li>
-              <li>
-                <span>宿泊日程</span>：{reservedItem.checkIn}〜
-                {reservedItem.checkOut}
-              </li>
-              <li>
-                <span>宿泊数</span>：{reservedItem.lodgeNum}泊
-              </li>
-              {(function () {
-                let peopleNumber =
-                  reservedItem.adultsNum + reservedItem.childrenNum;
-                return (
-                  <li>
-                    <span>予約人数</span>：{peopleNumber}
-                    名（内訳：大人{reservedItem.adultsNum}名、子ども
-                    {reservedItem.childrenNum}名）
-                  </li>
-                );
-              })()}
-              {(function () {
-                const reserveNumber =
-                  reservedItem.adultsNum + reservedItem.childrenNum;
-                let totalPrice = reservedItem.price * 1.1;
-                let reserveTotalPrice =
-                  reserveNumber * totalPrice * reservedItem.lodgeNum;
-                return (
-                  <div className={ReservateHistoryStyles.totalPrice}>
-                    <li>
-                      <span>宿泊金額</span>：{reserveTotalPrice}円（税込）
+                      <span>宿泊金額</span>{reserveTotalPrice}円（税込）
                     </li>
                   </div>
                 );
@@ -600,46 +362,6 @@ export const ReservateDetails = ({ reserved }: any) => {
           );
         })}
       </ul>
-    </div>
-  );
-};
-
-export const LodgerName = (props: any) => {
-  const { lodgeFirstName, lodgeLastName, onChangeFirst, onChangeLast } = props;
-
-  return (
-    <>
-      <br />
-      <input
-        type="text"
-        value={lodgeFirstName}
-        onChange={onChangeFirst}
-        placeholder="例）田中"
-        className={ReservateHistoryStyles.input}
-      />
-      <input
-        type="text"
-        value={lodgeLastName}
-        onChange={onChangeLast}
-        placeholder="例）太郎"
-        className={ReservateHistoryStyles.input}
-      />
-    </>
-  );
-};
-
-export const UnReserveTitle = (props: any) => {
-  const { clickUnlodgeOpen, hideUnlodgeMessage } = props;
-  return (
-    <div
-      className={ReservateHistoryStyles.UnReserveTitle}
-      style={{ display: hideUnlodgeMessage }}
-    >
-      <h1>宿泊待ち予約</h1>
-      <button onClick={clickUnlodgeOpen}>
-        確認する
-        {/* <GiClick /> */}
-      </button>
     </div>
   );
 };
@@ -654,65 +376,7 @@ export const ReservedTitle = (props: any) => {
       <h1>宿泊済み予約</h1>
       <button onClick={clickLodgedOpen}>
         確認する
-        {/* <GiClick /> */}
       </button>
-    </div>
-  );
-};
-
-export const UnReserve = (props: any) => {
-  const {
-    clickGet,
-    reserves,
-    clickChange,
-    change,
-    reservateChange,
-    onClickReserveChange,
-    clickCancel,
-    onClickCancel,
-    changeAfter,
-    errorMessage,
-    unReserve,
-    UnReservateDetails,
-    clickUnReservateDetails,
-  } = props;
-
-  return (
-    <div className={ReservateHistoryStyles.unLodger}>
-      <h3 className={ReservateHistoryStyles.innerTitle}>宿泊待ち予約</h3>
-      {/* <div className={ReservateHistoryStyles.unLodgerContentsTotal}> */}
-      <div className={ReservateHistoryStyles.unLodgerContents}>
-        <p className={ReservateHistoryStyles.subTitle}>予約内容</p>
-        {/* <button onClick={clickChange}>詳細を見る</button> */}
-        <div className={ReservateHistoryStyles.unLodgerContentsList}>
-          {unReserve.map((unReserveItem: any) => {
-            return <p>{unReserveItem.plan}宿泊プラン名【】</p>;
-          })}
-          <button onClick={clickChange}>詳細を見る</button>
-        </div>
-        {clickUnReservateDetails ? (
-          <UnReservateDetails
-            unReserve={unReserve}
-            className={ReservateHistoryStyles.unReservateDetails}
-          />
-        ) : (
-          ""
-        )}
-      </div>
-      {/* {change ? (
-          <ChangeReservate
-            reservateChange={reservateChange}
-            onClickReserveChange={onClickReserveChange}
-            clickChange={clickCancel}
-            onClickCancel={onClickCancel}
-            reserves={reserves}
-            changeAfter={changeAfter}
-            errorMessage={errorMessage}
-          />
-        ) : (
-          ""
-        )} */}
-      {/* </div> */}
     </div>
   );
 };
@@ -743,29 +407,95 @@ export const Reserved = (props: any) => {
   );
 };
 
-export const ChangeAfter = (props: any) => {
-  const { changeAfter } = props;
-
+export const ReservateDetails = ({ reserved }: any) => {
   return (
-    <>
-      <div>
-        <div className={ReservateHistoryStyles.changeAfter}>
-          変更後の金額：{changeAfter}円（税込）
-        </div>
-      </div>
-    </>
+    <div className={ReservateHistoryStyles.reservateDetails}>
+      <ul>
+        {reserved?.map((reservedItem: any) => {
+          return (
+            <>
+              <li>
+                <span>予約完了日</span>{reservedItem.reservationDate}
+              </li>
+              <li>
+                <span>宿泊プラン</span>{reservedItem.plan}
+              </li>
+              <li>
+                <span>客室</span>{reservedItem.roomType}
+              </li>
+              <li>
+                <span>チェックイン日</span>{reservedItem.checkIn}
+              </li>
+              <li>
+                <span>宿泊数</span>{reservedItem.lodgeNum}泊
+              </li>
+              {(function () {
+                let peopleNumber =
+                  reservedItem.adultsNum + reservedItem.childrenNum;
+                return (
+                  <li>
+                    <span>予約人数</span>{peopleNumber}
+                    名（内訳：大人{reservedItem.adultsNum}名、子ども
+                    {reservedItem.childrenNum}名）
+                  </li>
+                );
+              })()}
+              {(function () {
+                const reserveNumber =
+                  reservedItem.adultsNum + reservedItem.childrenNum;
+                let totalPrice = reservedItem.price * 1.1;
+                let reserveTotalPrice =
+                  reserveNumber * totalPrice * reservedItem.lodgeNum;
+                return (
+                  <div className={ReservateHistoryStyles.totalPrice}>
+                    <li>
+                      <span>宿泊金額</span>{reserveTotalPrice}円（税込）
+                    </li>
+                  </div>
+                );
+              })()}
+            </>
+          );
+        })}
+      </ul>
+    </div>
   );
 };
 
-// const q = query(collection(db, "reserved"), where("mail", "==", userEmail));
+// export const LodgerName = (props: any) => {
+//   const { lodgeFirstName, lodgeLastName, onChangeFirst, onChangeLast } = props;
 
-// const querySnapshot = await getDocs(q);
-// querySnapshot.forEach((doc) => {
-// doc.data() is never undefined for query doc snapshots
-// console.log(doc.id, " => ", doc.data());
-// const listC = [];
-// listC.push(doc.data());
-// setDocID(doc.id);
-// setReserves(listC);
-// console.log(doc.data());
-// });
+//   return (
+//     <>
+//       <br />
+//       <input
+//         type="text"
+//         value={lodgeFirstName}
+//         onChange={onChangeFirst}
+//         placeholder="例）田中"
+//         className={ReservateHistoryStyles.input}
+//       />
+//       <input
+//         type="text"
+//         value={lodgeLastName}
+//         onChange={onChangeLast}
+//         placeholder="例）太郎"
+//         className={ReservateHistoryStyles.input}
+//       />
+//     </>
+//   );
+// };
+
+// export const ChangeAfter = (props: any) => {
+//   const { changeAfter } = props;
+
+//   return (
+//     <>
+//       <div>
+//         <div className={ReservateHistoryStyles.changeAfter}>
+//           変更後の金額：{changeAfter}円（税込）
+//         </div>
+//       </div>
+//     </>
+//   );
+// };

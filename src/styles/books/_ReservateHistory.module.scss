@@ -24,15 +24,14 @@ $breakpoints: (
   }
 }
 
-
-.reservatehistoryTitle {
+.HistoryTitle {
   text-align: center;
   margin: 50px;
 }
 
-// 宿泊待ち予約
-
-.UnReserveTitle {
+//宿泊待ち予約
+.unReserveTitle {
+  background-color: pink;
   background-color: #ffffff;
   box-shadow: 0px 0px 8px -4px #777777;
   width: 500px;
@@ -51,23 +50,23 @@ $breakpoints: (
   }
 }
 
-.UnReserveTitle button:hover {
-  // color: #ffffff;
+.unReserveTitle button:hover {
   background-color: #ffffff;
   transition: 0.7s;
 }
 
 .unLodger {
   width: 800px;
-  max-height: 1150px;
   margin: 20px auto;
+  padding-bottom: 10px;
   background-color: $mainColor;
+  max-height: 900px;
   border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
     width: 300px;
     font-size: 10px;
-    margin: 0 auto;
+    margin: 10px auto;
   }
   @include mq(tab) {
     width: 300px;
@@ -79,55 +78,34 @@ $breakpoints: (
 .unLodgerContents {
   margin: 20px 20px 0 20px;
   display: flex;
-  @include mq(sp) {
-    display: block;
-  }
-}
-
-.unLodgerContents button {
-  width: 100px;
-  height: 30px;
-  margin: 10px auto;
-  text-align: center;
-  background-color: rgb(171, 171, 171);
-  border-radius: 10px;
-  color: #fff;
-  @include mq(sp) {
-    width: 50px;
-    font-size: 10px;
-  }
 }
 
 .unLodgerContentsList {
   display: flex;
   p {
-  margin: 15px 20px 0 20px;
-  width: 66%;
+    margin: 15px 20px 0 20px;
+    width: 66%;
   }
   button {
-  width: 100px;
-  height: 30px;
-  margin: 0 auto;
-  text-align: center;
-  background-color: rgb(171, 171, 171);
-  border-radius: 10px;
-  color: #fff;
+    width: 100px;
+    height: 30px;
+    margin: 0 auto;
+    text-align: center;
+    background-color: rgb(171, 171, 171);
+    border-radius: 10px;
+    color: #fff;
   }
-}
-
-.unLodgerContentsList button:hover {
-  opacity: 0.8;
 }
 
 .unReservateDetails {
   background-color: rgb(196, 196, 196);
   margin: 15px 20px 20px 20px;
-  width: 69%;
+  width: 95%;
   border-radius: 10px;
   span {
-  display: inline-block;
-  width: 100px;
-  margin-left: 10px;
+    display: inline-block;
+    width: 150px;
+    margin-left: 10px;
   }
   ul {
     line-height: 30px;
@@ -135,7 +113,6 @@ $breakpoints: (
 }
 
 //宿泊済み予約
-
 .ReservedTitle {
   background-color: #ffffff;
   box-shadow: 0px 0px 8px -4px #777777;
@@ -156,7 +133,6 @@ $breakpoints: (
 }
 
 .ReservedTitle button:hover {
-  // color: #ffffff;
   background-color: #ffffff;
   transition: 0.7s;
 }
@@ -183,7 +159,6 @@ $breakpoints: (
 
 .lodgedContents {
   margin: 20px 20px 0 20px;
-  // padding-bottom: 20px;
   display: flex;
 }
 
@@ -194,121 +169,36 @@ $breakpoints: (
     width: 66%;
   }
   button {
-  width: 100px;
-  height: 30px;
-  margin: 0 auto;
-  text-align: center;
-  background-color: rgb(171, 171, 171);
-  border-radius: 10px;
-  color: #fff;
+    width: 100px;
+    height: 30px;
+    margin: 0 auto;
+    text-align: center;
+    background-color: rgb(171, 171, 171);
+    border-radius: 10px;
+    color: #fff;
   }
-}
-
-.lodgedContentsList button:hover{
-  opacity: 0.8;
 }
 
 .reservateDetails {
   background-color: rgb(196, 196, 196);
   margin: 15px 20px 20px 20px;
-  width: 69%;
+  width: 95%;
   border-radius: 10px;
   span {
-  display: inline-block;
-  width: 100px;
-  margin-left: 10px;
+    display: inline-block;
+    width: 150px;
+    margin-left: 10px;
   }
   ul {
     line-height: 30px;
   }
 }
 
-// .unLodgerContents ul {
-//   margin: 15px 0;
-//   background-color: rgb(196, 196, 196);
-//   border-radius: 10px;
-// }
-
-// .unLodgerContents span {
-//   display: inline-block;
-//   width: 100px;
-//   margin-left: 10px;
-// }
-
-
-
-.unLodgerContents button:hover{
-  opacity: 0.8;
-}
-
-// .unLodgerContentsTotal {
-//   padding: 10px 5px;
-//   line-height: 20px;
-// }
-
-.changeReservateBtn {
-  // display: block;
-  width: 170px;
-  height: 40px;
-  margin: 10px auto;
-  text-align: center;
-  background-color: rgb(171, 171, 171);
-  border-radius: 5px;
-  color: #fff;
-  transition: 0.3s;
-}
-
-.changeReservate input {
-  margin-top: 5px;
-  margin-right: 5px;
-  background-color: $mainColor;
-  border: solid 2px #C0C0C0;
-  border-radius: 6px;
-  border-radius: 5px;
-  padding: 8px;
-  width: 180px;
-}
-
-input:hover {
-  border: solid 2px rgb(101, 109, 183);
-}
-
-.changeReservate ul{
-  margin: 15px ;
-  li {
-    padding-bottom: 15px;
-  }
-}
-
-.changeReservate button:hover {
-  opacity: 0.8;
-}
-
-.changeReservateMessage {
-  color: red;
-  font-size: 15px;
-}
-
-.changeReservateMessage svg {
-  stroke: red;
-  margin-right: 5px;
-}
-
+//2つの予約コンポーネント共通
 .innerTitle {
   display: inline-block;
   border-bottom: 3px solid #deb887;
   margin: 10px;
-}
-
-.innerMessage {
-  font-size: 13px;
-  margin: 5px 20px;
-  color: #deb887;
-}
-
-.unLodgerContentsTotal {
-  margin-left: 20px;
-  line-height: 30px;
 }
 
 .subTitle {
@@ -316,45 +206,3 @@ input:hover {
   width: 550px;
   padding-bottom: 13px;
 }
-
-.cancel ul{
-  padding: 5px 10px;
-  margin: 10px 0;
-  width: 65%;
-}
-
-.cancel span {
-  color: red;
-}
-
-.cancelBtn {
-  border-bottom: 2px solid #C0C0C0;
-  width: 65%;
-  text-align: left;
-  margin: 10px 0;
-}
-
-.changeAfter {
-  margin-left: 10px;
-  margin-bottom: 20px;
-  padding: 20px;
-  width: 50%;
-  background-color: rgb(247, 246, 234);
-  border-radius: 20px;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-
-
-
-.numMessage {
-  color: red;
-  font-size: 14px;
-}
-
-// footer {
-//   width: 100%;
-//   position: absolute;
-//   bottom: 0; 
-// }
