@@ -3,26 +3,20 @@ import React, { useState } from "react";
 import ReservateConfirmContentsStyles from "../../styles/books/_ReservateConfirmContents.module.scss";
 import { useNavigate } from "react-router-dom";
 import db from "../../Firebase.js";
-import {
-  collection,
-  doc,
-  setDoc,
-  getDocs,
-  query,
-  where,
-  deleteDoc,
-} from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { NameInput } from "../form/nameInput";
 import { TelInput } from "../form/telInput";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../Firebase";
 import { MailInput } from "../form/mailInput";
-import useSWR, { useSWRConfig } from "swr";
 import { FiAlertTriangle } from "react-icons/fi";
 import { ArrivalTime } from "./ArrivalTime";
 import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
 import NotFound from "../../pages/NotFound";
+import { useSelector, useDispatch } from "react-redux";
+import DeleteModal from "./DeleteModal";
+import { input } from "../../store/ReservateConfirmSlice";
+import { IoIosArrowUp } from "react-icons/io";
 
 export const ReservateConfirmContents = () => {
   const radioItem = [
@@ -40,12 +34,13 @@ export const ReservateConfirmContents = () => {
 
   const selectItem = ["--", 15, 16, 17, 18, 19, 20, 21, 22];
 
+  //redux
+  const contactInput = useSelector((state: any) => state.input.value);
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const [val, setVal] = useState(["check"]);
   const [click, setClick] = useState(false);
-
-  //(firebase)データベースを格納
-  const [reserves, setReserves] = useState<any>([]);
 
   //ログインしているユーザーのメールアドレス
   const [user] = useAuthState(auth);
@@ -74,50 +69,19 @@ export const ReservateConfirmContents = () => {
   const [contact, setContact] = useState<string>("");
   const [radioVal, setRadioVal] = useState("");
   const [selectVal, setSelectVal] = useState("--");
-  const [addLodgeNum, setAddLodgeNum] = useState();
   const [errorFlag, SetErrorFlag] = useState("false");
-  const [message, setMessage] = useState("");
 
-  const [error, setError] = useState(true);
-  const [confirmError, setConfirmError] = useState("none");
   const [confirmMessage, setConfirmMessage] = useState("none");
-
-  //プラン確認コンポーネントのボタン表示非表示
-  const [deleteButton, setDeleteButton] = useState("block");
-  const [confirmButton, setConfirmButton] = useState("block");
-
-  //ログインしているユーザーのIDが入る
-  const [docID, setDocID] = useState<any>("");
-
-  //firebaseから予約データ取得、予約確定時にfirebaseへ送信するためのデータ
-  const reserveItem = reserves.map((reserveItems: any) => reserveItems);
+  const [openModal, setOpenModal] = useState(false);
 
   //Arrival inputに入力された数字の型を数値に変換
   const arrivalTime = parseInt(selectVal);
 
-  
-
-  // データ受け取り
+  // 予約データ受け取り
   const location = useLocation();
-    const reserveData = location.state;
+  const reserveData = location.state;
 
-  // console.log(docID);
   console.log("s", reserveData);
-
-  const { mutate } = useSWRConfig();
-  const { data } = useSWR("/books/ReservateConfirm", getDocs);
-  console.log(data);
-
-  console.log(userEmail);
-  //プラン削除
-  const clickDelete = async () => {
-    await deleteDoc(doc(db, "reserve", docID));
-    alert("削除しました");
-    mutate("/books/ReservateConfirm");
-    // window.location.reload();
-    setError(false);
-    setMessage("選択中のプランがありません");
-  };
 
   const handleChange = (e: any) => {
     if (val.includes(e.target.value)) {
@@ -127,9 +91,12 @@ export const ReservateConfirmContents = () => {
     }
   };
 
-  const onChangeContact = (e: any) => {
-    setContact(e.target.value);
+  const onChangeContact = (e:any) => {
+    // setContact(e.target.value);
+    dispatch(input(e.target.value))
   };
+  console.log(contactInput);
+
 
   const valueChange = (e: any) => {
     setRadioVal(e.target.value);
@@ -147,6 +114,11 @@ export const ReservateConfirmContents = () => {
     }
   };
 
+  const clickModal = () => {
+    setOpenModal(true);
+  };
+
+  //現在日付を文字列に変換
   let dt = new Date();
   let y = dt.getFullYear();
   let m = ("00" + (dt.getMonth() + 1)).slice(-2);
@@ -173,14 +145,13 @@ export const ReservateConfirmContents = () => {
         lodgeLastName: lodgeLastNameValue,
         tel: telValue,
         mail: mailValue,
-        contact: contact,
+        contact: contactInput,
         payment: radioVal,
         adultsNum: reserveData.adultsNum,
         childrenNum: reserveData.childrenNum,
         roomType: reserveData.roomType,
-        // plan: reserveData.plan,
+        plan: reserveData.plan,
         checkIn: reserveData.checkIn,
-        // checkOut: reserveItem[0].checkOut,
         reservationDate: todayDate,
         price: reserveData.price,
         arrivalTime: arrivalTime,
@@ -190,9 +161,9 @@ export const ReservateConfirmContents = () => {
       navigate("/books/ReservateComplete");
     }
   };
-console.log("f",reserveData);
+  console.log("f", reserveData);
 
-//ログインしていたら表示、していなかったら404
+  //ログインしていたら表示、していなかったら404
   return (
     <div>
       {/* {userEmail ? (
@@ -203,38 +174,40 @@ console.log("f",reserveData);
             <h3 className={ReservateConfirmContentsStyles.innertitle}>
               予約者情報
             </h3>
-            <NameInput
-              lastNameValue={reserveLastNameValue}
-              SetLastNameValue={SetReserveLastNameValue}
-              firstNameValue={reserveFirstNameValue}
-              SetFirstNameValue={SetReserveFirstNameValue}
-              firstNameErrorState={reserveFirstNameErrorState}
-              SetFirstNameErrorState={SetReserveFirstNameErrorState}
-              lastNameErrorState={reserveLastNameErrorState}
-              SetLastNameErrorState={SetReserveLastNameErrorState}
-              errorFlag={errorFlag}
-            />
-            <TelInput
-              telValue={telValue}
-              SetTelValue={SetTelValue}
-              telErrorState={telErrorState}
-              SetTelErrorState={SetTelErrorState}
-              errorFlag={errorFlag}
-            />
-            <MailInput
-              mailValue={mailValue}
-              SetMailValue={SetMailValue}
-              mailErrorState={mailErrorState}
-              SetMailErrorState={SetMailErrorState}
-              errorFlag={errorFlag}
-              displayFlag={true}
-            />
+            <div className={ReservateConfirmContentsStyles.subscriberInfo}>
+              <NameInput
+                lastNameValue={reserveLastNameValue}
+                SetLastNameValue={SetReserveLastNameValue}
+                firstNameValue={reserveFirstNameValue}
+                SetFirstNameValue={SetReserveFirstNameValue}
+                firstNameErrorState={reserveFirstNameErrorState}
+                SetFirstNameErrorState={SetReserveFirstNameErrorState}
+                lastNameErrorState={reserveLastNameErrorState}
+                SetLastNameErrorState={SetReserveLastNameErrorState}
+                errorFlag={errorFlag}
+              />
+              <TelInput
+                telValue={telValue}
+                SetTelValue={SetTelValue}
+                telErrorState={telErrorState}
+                SetTelErrorState={SetTelErrorState}
+                errorFlag={errorFlag}
+              />
+              <MailInput
+                mailValue={mailValue}
+                SetMailValue={SetMailValue}
+                mailErrorState={mailErrorState}
+                SetMailErrorState={SetMailErrorState}
+                errorFlag={errorFlag}
+                displayFlag={true}
+              />
+            </div>
           </div>
           <div className={ReservateConfirmContentsStyles.lodger}>
             <h3 className={ReservateConfirmContentsStyles.innertitle}>
               宿泊者情報
             </h3>
-            <div>
+            <div className={ReservateConfirmContentsStyles.lodgerInfo}>
               <div className={ReservateConfirmContentsStyles.lodgerName}>
                 <p>宿泊者代表</p>
                 <input
@@ -267,20 +240,21 @@ console.log("f",reserveData);
                   markNone="ok"
                 />
               )}
-            </div>
-            <div className={ReservateConfirmContentsStyles.lodgerContents}>
-              <Content
-                contact={contact}
-                onChangeContact={onChangeContact}
-                selectValueChange={selectValueChange}
-                selectItem={selectItem}
-                selectVal={selectVal}
-                setSelectVal={setSelectVal}
-                click={click}
-                setClick={setClick}
-                accordionClick={accordionClick}
-                ArrivalTime={ArrivalTime}
-              />
+
+              <div className={ReservateConfirmContentsStyles.lodgerContents}>
+                <Content
+                  contact={contact}
+                  onChangeContact={onChangeContact}
+                  selectValueChange={selectValueChange}
+                  selectItem={selectItem}
+                  selectVal={selectVal}
+                  setSelectVal={setSelectVal}
+                  click={click}
+                  setClick={setClick}
+                  accordionClick={accordionClick}
+                  ArrivalTime={ArrivalTime}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -293,7 +267,11 @@ console.log("f",reserveData);
               <ul>
                 <li>
                   <span>宿泊プラン</span>
-                  {reserveData.plan}
+                  {reserveData.plan ? (
+                    <p>{reserveData.plan}</p>
+                  ) : (
+                    <p>プランなし</p>
+                  )}
                 </li>
                 <li>
                   <span>客室</span>
@@ -319,20 +297,28 @@ console.log("f",reserveData);
                     </li>
                   );
                 })()}
-                    <div className={ReservateConfirmContentsStyles.totalPrice}>
-                      <li>
-                        <span>宿泊金額</span>
-                        {reserveData.price}円（税込）
-                      </li>
-                    </div>
+                <div className={ReservateConfirmContentsStyles.totalPrice}>
+                  <li>
+                    <span>宿泊金額</span>
+                    {reserveData.price}円（税込）
+                  </li>
+                </div>
               </ul>
             </div>
-            {/* {<p className={ReservateConfirmContentsStyles.deleteMessage}>{message}</p>} */}
-            <Link to="/rooms/Gestroom">戻る</Link>
+            <button
+              onClick={clickModal}
+              className={ReservateConfirmContentsStyles.backBtn}
+            >
+              戻る
+            </button>
+            {openModal ? (
+              <DeleteModal setOpenModal={setOpenModal} openModal={openModal} />
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
-
       <div className={ReservateConfirmContentsStyles.payment}>
         <h3 className={ReservateConfirmContentsStyles.innertitle}>
           お支払い方法<span>必須</span>
@@ -364,7 +350,7 @@ console.log("f",reserveData);
       {/* </>
       ) : (<NotFound />)} */}
     </div>
-  )
+  );
 };
 
 export const Content = (props: any) => {
@@ -396,7 +382,7 @@ export const Content = (props: any) => {
         <div>
           <p>お問い合わせ・ご要望</p>
           <textarea
-            value={contact}
+            // value={contact}
             onChange={onChangeContact}
             placeholder="ここにお問合せやご要望をご入力ください"
             className={ReservateConfirmContentsStyles.input}
@@ -406,7 +392,7 @@ export const Content = (props: any) => {
           <ul className={ReservateConfirmContentsStyles.accordionMenu}>
             <li>
               <button type="button" onClick={accordionClick}>
-                キャンセルポリシー
+                キャンセルポリシー<span><IoIosArrowUp /></span>
               </button>
               {click ? <div>{cancel}</div> : ""}
             </li>
@@ -417,32 +403,9 @@ export const Content = (props: any) => {
   );
 };
 
-// export const ArrivalTime = (props: any) => {
-//   const { selectValueChange, selectItem, selectVal, setSelectVal } = props;
-
-//   return (
-//     <>
-//       <div className={ReservateConfirmContentsStyles.checkTime}>
-//         <label
-//           htmlFor="arrivalTime"
-//           className={ReservateConfirmContentsStyles.arrivalText}
-//         >
-//           到着時間
-//         </label>
-//         <span>必須</span>
-//         <select
-//           value={selectVal}
-//           onChange={selectValueChange}
-//           className={ReservateConfirmContentsStyles.input}
-//         >
-//           {selectItem.map((selects: any) => {
-//             return <option value={selects}>{selects}</option>;
-//           })}
-//         </select>
-//         時
-//       </div>
-//     </>
-//   );
+// const onChangeContact = (e: any) => {
+//   setContact(e.target.value);
+//   dispatch(input(contact))
 // };
 
 export const ClickCancelPolicy = (accordionClick: any, click: any) => {
@@ -468,9 +431,16 @@ const cancel = (
       キャンセル料がかかる場合がございます。
     </p>
     <ul className={ReservateConfirmContentsStyles.cancellist}>
-      <li>当日：宿泊料金の<span>80%</span></li>
-      <li>1日前：宿泊料金の<span>20%</span></li>
-      <li> 連絡なしキャンセル：宿泊料金の<span>100%</span></li>
+      <li>
+        当日：宿泊料金の<span>80%</span>
+      </li>
+      <li>
+        1日前：宿泊料金の<span>20%</span>
+      </li>
+      <li>
+        {" "}
+        連絡なしキャンセル：宿泊料金の<span>100%</span>
+      </li>
     </ul>
   </div>
 );

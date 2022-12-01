@@ -9,7 +9,7 @@
 
 //コンポーネント背景色
 // $mainColor: rgb(227, 227, 227);
-$mainColor: #ffffff;
+$mainColor: rgb(248, 248, 248);
 
 //レスポンシブ
 $breakpoints: (
@@ -27,11 +27,9 @@ $breakpoints: (
 .subscriber {
   background-color: $mainColor;
   margin-top: 30px;
-  // margin-left: 20px;
   padding: 10px;
   width: 550px;
   // width: 50%;
-  border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
     width: 420px;
@@ -49,6 +47,11 @@ $breakpoints: (
   margin-top: 10px;
 }
 
+.subscriberInfo {
+  width: 90%;
+  margin: 0 auto;
+}
+
 .lodger {
   background-color: $mainColor;
   margin-top: 30px;
@@ -57,7 +60,6 @@ $breakpoints: (
   padding: 10px;
   width: 550px;
   // width: 50%;
-  border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
     width: 420px;
@@ -75,6 +77,11 @@ $breakpoints: (
   list-style-type: none;
 }
 
+.lodgerInfo {
+  width: 90%;
+  margin: 0 auto;
+}
+
 .reservateplan {
   background-color: $mainColor;
   width: 550px;
@@ -84,7 +91,6 @@ $breakpoints: (
   // margin-left: 120px;
   margin-right: 20px;
   padding: 10px;
-  border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
   ul {
     list-style-type: none;
@@ -93,7 +99,7 @@ $breakpoints: (
   }
   span {
     display: inline-block;
-    width: 120px;
+    width: 140px;
     margin: 0 10px;
   }
   @include mq(sp) {
@@ -108,48 +114,55 @@ $breakpoints: (
   }
 }
 
-.reservePlanContents a{
-  display: block;
-  width: 200px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 10px 0;
-  font-size: 14px;
-  transition: 0.2s;
-}
-
-.reservePlanContents a:hover {
-  color: #deb887;
-  transition: 0.2s;
-}
-
 .reservateplan button {
-  border-radius: 5px;
-  color: #fff;
-  width: 170px;
-  height: 55px;
+  width: 45px;
   font-size: 14px;
   line-height: 1;
   text-decoration: none;
-  color: #ffffff;
-  font-size: 18px;
-  border-radius: 5px;
-  width: 150px;
-  height: 50px;
-  position: relative;
   transition: 0.3s;
-  background-color: rgb(171, 171, 171);
 }
 
-.reservateplan button:hover {
-  opacity: 0.8;
+.backBtn {
+  display: block;
+  width: 45px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.backBtn {
+  position: relative;
+}
+
+.reservePlanContents {
+  position: relative;
+  ul p {
+    display: inline;
+  }
+}
+
+.backBtn::after {
+  position: absolute;
+  left: 0;
+  content: "";
+  width: 100%;
+  height: 2px;
+  background: RGB(107, 1, 0);
+  bottom: -10px; /*アンダーラインがaタグの下端から現れる*/
+  transform: scale(0, 1); /*アンダーラインの縮尺比率。ホバー前はx方向に0*/
+  transform-origin: left top; /*変形（アンダーラインの伸長）の原点がaタグ（各メニュー）の左端*/
+  transition: transform 0.5s; /*変形の時間*/
+}
+
+.backBtn:hover::after {
+  transform: scale(1, 1); /*ホバー後、x軸方向に1（相対値）伸長*/
 }
 
 .payment {
   background-color: $mainColor;
   margin: 20px auto;
   padding: 10px;
-  border-radius: 20px;
   width: 71%;
   box-shadow: 0px 0px 8px -4px #777777;
   span {
@@ -162,7 +175,7 @@ $breakpoints: (
     margin: 20px 190px;
   }
   label {
-    padding: 5px;
+    padding: 5px 15px 5px 5px;
     font-size: 15px;
     @include mq(sp) {
       font-size: 10px;
@@ -177,7 +190,7 @@ $breakpoints: (
 }
 
 .paymentRadioBtn {
-  margin:  15px 20px 10px 20px;
+  margin: 15px 40px 10px 45px;
   @include mq(sp) {
     width: 500px;
     font-size: 10px;
@@ -187,26 +200,25 @@ $breakpoints: (
 .information {
   display: flex;
   justify-content: space-around;
-  // background-color: pink;
   max-width: 1600px;
   max-height: 2500px;
   margin: 0 auto;
   @include mq(sp) {
-  flex-direction: column;
-  margin: 0 10px;
+    flex-direction: column;
+    margin: 0 10px;
   }
   @include mq(tab) {
     width: 800px;
     display: block;
     margin: 0 auto;
-    }
+  }
 }
 
 .input {
   margin-top: 5px;
   margin-right: 5px;
   background-color: $mainColor;
-  border: solid 2px #C0C0C0;
+  border: solid 2px #c0c0c0;
   border-radius: 6px;
   padding: 8px;
   // @include mq(sp) {
@@ -219,20 +231,15 @@ $breakpoints: (
 }
 
 textarea {
-  width: 90%;
+  width: 97%;
   height: 5rem;
   margin-bottom: 10px;
 }
 
 .reservateButton {
-  // width: 170px;
-  // height: 50px;
-  margin: 10px auto;
+  margin: 40px auto 10px auto;
   text-align: center;
   padding: 15px;
-  // background-color: rgb(101, 109, 183);
-  // border-radius: 10px;
-  border-radius: 5px;
   color: #fff;
   width: 170px;
   height: 55px;
@@ -241,7 +248,6 @@ textarea {
   text-decoration: none;
   color: #ffffff;
   font-size: 18px;
-  border-radius: 5px;
   width: 180px;
   height: 50px;
   // border: 1.5px solid #6a6a6a;
@@ -258,7 +264,7 @@ textarea {
   color: #fff;
 }
 
-.reservateMessage p{
+.reservateMessage p {
   text-align: center;
   font-size: 15px;
   color: red;
@@ -276,13 +282,14 @@ textarea {
 
 .reservateButton:hover {
   opacity: 0.8;
+  cursor: pointer;
 }
 
 .accordionMenu button {
   text-align: left;
-  width: 90%;
+  width: 97%;
   padding: 10px 0;
-  border-bottom: 2px solid #C0C0C0;
+  border-bottom: 2px solid #c0c0c0;
 }
 
 .cancel {
@@ -310,13 +317,11 @@ textarea {
   width: 90px;
   height: 40px;
   font-size: 15px;
-  border-radius: 5px;
   color: #fff;
   line-height: 1;
   text-decoration: none;
   color: #ffffff;
   font-size: 18px;
-  border-radius: 5px;
   width: 150px;
   height: 50px;
   position: relative;
@@ -324,21 +329,19 @@ textarea {
   background-color: rgb(171, 171, 171);
 }
 
-
 .totalPrice {
-  background-color: rgb(227, 227, 227);
+  background-color: rgb(238, 238, 238);
+  border-radius: 5px;
   width: 100%;
   height: 100px;
   margin-top: 20px;
-  border-radius: 10px;
   font-size: 20px;
   li {
-    padding-top: 30px; 
+    padding-top: 30px;
   }
   @include mq(sp) {
     font-size: 15px;
   }
-  
 }
 
 .innertitle {
@@ -355,8 +358,7 @@ textarea {
   font-size: 14px;
   @include mq(sp) {
     font-size: 10px;
-    }
-  
+  }
 }
 
 .lodgerContents {
@@ -370,12 +372,10 @@ textarea {
 .checkTime span {
   font-size: 10px;
   padding: 5px;
-  border-radius: 6px;
   background-color: rgb(220 38 38);
   color: white;
   margin-right: 15px;
-  // transform: translateY(-2px) translateX(8px);
-  // position: absolute;
+  border-radius: 5px;
 }
 
 .arrivalText {
@@ -385,12 +385,12 @@ textarea {
 .payment span {
   font-size: 10px;
   padding: 5px;
-  border-radius: 6px;
   background-color: rgb(220 38 38);
   color: white;
   transform: translateY(-2px) translateX(8px);
   position: absolute;
-} 
+  border-radius: 5px;
+}
 
 .cancel {
   margin-top: 10px;
@@ -400,11 +400,9 @@ textarea {
 .cancellist {
   background-color: rgb(227, 227, 227);
   width: 90%;
-  border-radius: 10px;
   font-size: 14px;
   padding-left: 10px;
 }
-
 
 .reservateplanBtn button {
   display: block;
@@ -412,7 +410,6 @@ textarea {
   // width: 150px;
   // height: 50px;
   background-color: rgb(26, 89, 136);
-  border-radius: 5px;
   color: #fff;
   width: 170px;
   height: 55px;
@@ -421,7 +418,6 @@ textarea {
   text-decoration: none;
   color: #ffffff;
   font-size: 18px;
-  border-radius: 5px;
   width: 180px;
   height: 50px;
   // border: 1.5px solid #6a6a6a;
@@ -433,19 +429,3 @@ textarea {
 .deleteMessage {
   margin-top: 35px;
 }
-
-// #overlay{
-//   /*　画面全体を覆う設定　*/
-//     position:fixed;
-//     top:0;
-//     left:0;
-//     width:100%;
-//     height:100%;
-//     background-color:rgba(0,0,0,0.5);
-  
-//     /*　画面の中央に要素を表示させる設定　*/
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-  
-//   }

@@ -37,7 +37,6 @@ $breakpoints: (
   width: 500px;
   margin: 50px auto 30px auto;
   text-align: center;
-  border-radius: 20px;
   padding: 40px;
   line-height: 40px;
   button {
@@ -61,7 +60,6 @@ $breakpoints: (
   padding-bottom: 10px;
   background-color: $mainColor;
   max-height: 900px;
-  border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
     width: 300px;
@@ -92,16 +90,15 @@ $breakpoints: (
     margin: 0 auto;
     text-align: center;
     background-color: rgb(171, 171, 171);
-    border-radius: 10px;
     color: #fff;
   }
 }
 
 .unReservateDetails {
-  background-color: rgb(196, 196, 196);
+  background-color: rgb(227, 227, 227);
   margin: 15px 20px 20px 20px;
   width: 95%;
-  border-radius: 10px;
+  border-radius: 5px;
   span {
     display: inline-block;
     width: 150px;
@@ -119,7 +116,6 @@ $breakpoints: (
   width: 500px;
   margin: 20px auto;
   text-align: center;
-  border-radius: 20px;
   padding: 40px;
   line-height: 40px;
   button {
@@ -143,7 +139,6 @@ $breakpoints: (
   padding-bottom: 10px;
   background-color: $mainColor;
   max-height: 900px;
-  border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
     width: 300px;
@@ -174,16 +169,15 @@ $breakpoints: (
     margin: 0 auto;
     text-align: center;
     background-color: rgb(171, 171, 171);
-    border-radius: 10px;
     color: #fff;
   }
 }
 
 .reservateDetails {
-  background-color: rgb(196, 196, 196);
+  background-color: rgb(227, 227, 227);
   margin: 15px 20px 20px 20px;
   width: 95%;
-  border-radius: 10px;
+  border-radius: 5px;
   span {
     display: inline-block;
     width: 150px;

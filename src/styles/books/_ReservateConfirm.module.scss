@@ -24,6 +24,13 @@ $breakpoints: (
   }
 }
 
+.confirmMessage {
+  display: block;
+  width: 400px;
+  text-align: center;
+  margin: 0 auto 20px auto;
+  color: #deb887;
+}
 
 .registerComplete {
     width: 500px;
@@ -43,9 +50,9 @@ $breakpoints: (
     display: flex;
 }
 
-.reservateconfirmTitle {
+.reservateConfirmTitle {
     text-align: center;
-    margin: 50px 0;
+    margin: 50px 0 25px 0;
     @include mq(sp) {
         width: 500px;
         margin: 50px 180px;

@@ -173,13 +173,6 @@ const ReservateHistory = () => {
       reserved.push(reserveItems);
     }
   });
-  const unReserveItem = unReserve.map((reserveItems: any) => reserveItems);
-  // console.log(unReserve);
-  // console.log(reserved);
-  // unReserve.forEach((element:any) => {
-  //   const checkOutDays = element.checkOut;
-  //   console.log(checkOutDays)
-  // });
 
   const clickLodgedOpen = async () => {
     setOpenLodgedDisplay(true);
@@ -461,41 +454,3 @@ export const ReservateDetails = ({ reserved }: any) => {
     </div>
   );
 };
-
-// export const LodgerName = (props: any) => {
-//   const { lodgeFirstName, lodgeLastName, onChangeFirst, onChangeLast } = props;
-
-//   return (
-//     <>
-//       <br />
-//       <input
-//         type="text"
-//         value={lodgeFirstName}
-//         onChange={onChangeFirst}
-//         placeholder="例）田中"
-//         className={ReservateHistoryStyles.input}
-//       />
-//       <input
-//         type="text"
-//         value={lodgeLastName}
-//         onChange={onChangeLast}
-//         placeholder="例）太郎"
-//         className={ReservateHistoryStyles.input}
-//       />
-//     </>
-//   );
-// };
-
-// export const ChangeAfter = (props: any) => {
-//   const { changeAfter } = props;
-
-//   return (
-//     <>
-//       <div>
-//         <div className={ReservateHistoryStyles.changeAfter}>
-//           変更後の金額：{changeAfter}円（税込）
-//         </div>
-//       </div>
-//     </>
-//   );
-// };

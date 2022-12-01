@@ -1,13 +1,25 @@
-const DeleteModal = () => {
+import { useNavigate } from "react-router-dom";
+
+const DeleteModal = (props:any) => {
+  const {setOpenModal} = props;
+
+  const navigate = useNavigate();
+
+  const clickYes = () => {
+    navigate("/rooms/GestRoom");
+  }
+
+  const clickNo = () => {
+    setOpenModal(false);
+  }
+
   return (
     <div style={modalStyle}>
       <div style={modalContent}>
-        <p>あいうえお</p>
-        <button>yes</button>
-        <button>no</button>
-      </div>
-      <div>
-        <button>閉じる</button>
+        <p>予約せずに戻ります。よろしいですか？</p>
+        <p>※仮予約中の内容は保存されず削除されます</p>
+        <button onClick={clickYes}>はい</button>
+        <button onClick={clickNo}>いいえ</button>
       </div>
     </div>
   );
@@ -15,11 +27,10 @@ const DeleteModal = () => {
 
 const modalContent: React.CSSProperties = {
     background: "white",
-    width: "600px",
-    height: "750px",
+    width: "700px",
+    height: "300px",
     padding: "50px",
     borderRadius: "3px",
-    
   };
   
   const modalStyle: React.CSSProperties = {

@@ -30,7 +30,6 @@ $breakpoints: (
   padding: 20px;
   background-color: $mainColor;
   width: 80%;
-  border-radius: 20px;
   box-shadow: 0px 0px 8px -4px #777777;
   h1 {
     display: inline-block;
@@ -54,12 +53,28 @@ $breakpoints: (
 }
 
 .link {
-  margin-top: 50px;
+  margin: 50px auto 0 auto;
+  position: relative;
+  width: 10%;
 }
 
-.link a:hover {
-  color: #777777;
-}
+
+.link a::after {
+  position: absolute;
+  left: 0;
+  content: "";
+  width: 100%;
+  height: 2px;
+  background: RGB(107, 1, 0);
+  bottom: -10px;               /*アンダーラインがaタグの下端から現れる*/
+  transform: scale(0, 1);     /*アンダーラインの縮尺比率。ホバー前はx方向に0*/
+  transform-origin: left top; /*変形（アンダーラインの伸長）の原点がaタグ（各メニュー）の左端*/
+  transition: transform 0.5s; /*変形の時間*/
+  }
+
+  .link a:hover::after {
+    transform: scale(1, 1);     /*ホバー後、x軸方向に1（相対値）伸長*/
+  }
 
 footer {
   width: 100%;

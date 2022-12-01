@@ -150,7 +150,7 @@ const PlanDetails = () => {
         // gestId:
       };
       addDoc(reserveData, data);
-      navigate("/books/ReservateConfirm");
+      navigate("/books/ReservateConfirm", { state: data });
     } else {
       const reserveData = collection(db, "reserve");
       const data = {
