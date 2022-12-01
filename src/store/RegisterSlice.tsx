@@ -15,25 +15,25 @@ export const registerSlice = createSlice({
   },
   reducers:{
     lastNameInput: (state,action) => {
-      state.lastName += action.payload;
+      state.lastName = action.payload;
     },
     firstNameInput: (state,action) => {
-      state.firstName += action.payload;
+      state.firstName = action.payload;
     },
     mailInput: (state,action) => {
-      state.mail += action.payload;
+      state.mail = action.payload;
     },
     addressInput: (state,action) => {
-      state.address += action.payload;
+      state.address = action.payload;
     },
     telInput: (state,action) => {
-      state.tel += action.payload;
+      state.tel = action.payload;
     },
     passwordInput: (state,action) => {
-      state.password += action.payload;
+      state.password = action.payload;
     },
     confirmPasswordInput: (state,action) => {
-      state.confirmPassword += action.payload;
+      state.confirmPassword = action.payload;
     }
   }
 })

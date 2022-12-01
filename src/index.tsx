@@ -9,6 +9,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
+import reginsterReducer from "./store/RegisterSlice"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -31,7 +32,7 @@ const analytics = getAnalytics(app);
 // redux store
 const store = configureStore({
   reducer: {
-
+    registerInput:reginsterReducer
   }
 })
 

@@ -22,13 +22,14 @@ import { useNavigate } from 'react-router-dom';
 import { useAuthState } from "react-firebase-hooks/auth"
 import Header from '../../components/layout/Header'
 import Footer from '../../components/layout/footer'
-
+import { useSelector } from 'react-redux'
 
 
 
 export const Registered = () => {
   const [user] = useAuthState(auth);
-  // console.log(user)
+  const firstname = useSelector((state:any) => state.registerInput.firstName)
+  const lastname = useSelector((state:any) => state.registerInput.lastName)
   // const router = useRouter();
 
   const [lastNameValue, SetLastNameValue] = useState("");
@@ -108,8 +109,10 @@ export const Registered = () => {
           // Cloud Firestore user新規登録
           const colRef = collection(db, "user");
           const data = {
-            firstname: firstNameValue,
-            lastname: lastNameValue,
+            // firstname: firstNameValue,
+            firstname: firstname,
+            // lastname: lastNameValue,
+            lastname: lastname,
             mail: mailValue,
             zip: zipValue,
             address: addressValue,
