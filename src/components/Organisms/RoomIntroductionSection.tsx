@@ -46,15 +46,19 @@ export const RoomsIntroduction = () => {
   Aos.init();
   return (
     <>
+    <div className={style.test2wrapper}>
         <section className={style.test2}  >
+          <div className={style.roomsImagePicWrapper}>
+        <img className={style.roomsImagePic} width={300} height={300} src="/topImage/flower2.png" alt="flowerPicture" />
           <h2 >お部屋紹介</h2>
+          </div>
           {posts.map((data: any, index: number) => {
             if (index % 2 === 0) {
               return (
                 <div className={style.roomsIntroductionCols} 
                 data-aos="zoom-out-right"
                 data-aos-easing="linear"
-                data-aos-duration="1500"
+                data-aos-duration="1000"
                 data-aos-anchor-placement="bottom-bottom"
                 key={index}
                 >
@@ -62,7 +66,6 @@ export const RoomsIntroduction = () => {
                   <div className={style.roomsIntroductionSentence}>
                     <h3 className={style.roomsIntroductionTitle}>{data.area}</h3>
                     <p className={style.roomsIntroductionInformation}>{data.bedType}</p>
-                    <p className={style.roomsIntroductionInformation}>{data.capacity}</p>
                     <p className={style.roomsIntroductionInformation}>{data.roomFacility}</p>
                   </div>
                 </div>
@@ -72,14 +75,13 @@ export const RoomsIntroduction = () => {
                 <div className={style.roomsIntroductionCols}
                 data-aos="zoom-out-left"
                 data-aos-easing="linear"
-                data-aos-duration="1500"
+                data-aos-duration="1000"
                 data-aos-anchor-placement="bottom-bottom"
                 key={index}
                 >
                   <div className={style.roomsIntroductionSentence}>
                     <h3 className={style.roomsIntroductionTitle}>{data.area}</h3>
                     <p className={style.roomsIntroductionInformation}>{data.bedType}</p>
-                    <p className={style.roomsIntroductionInformation}>{data.capacity}</p>
                     <p className={style.roomsIntroductionInformation}>{data.roomFacility}</p>
                   </div>
                   <img src={data.image} alt="" className={style.roomsIntroductionImgae} />
@@ -88,6 +90,7 @@ export const RoomsIntroduction = () => {
             }
           })}
         </section>
+    </div>
 
     </>
   )

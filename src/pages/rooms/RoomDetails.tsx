@@ -25,6 +25,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigation } from "react-router-dom";
 import { HiOutlineChevronLeft } from "react-icons/hi";
 import PlanRecomendSwiper from "../../components/Organisms/PlanRecomendSwiper";
+import { RecomendRoom } from "./PlanDetails";
 
 // const status = 404;
 // if (status === 404) {
@@ -244,16 +245,8 @@ const RoomDetails = () => {
                 </p>
               </div>
 
-              <PlanRecomendSwiper />
-              <div className={RoomDetailStyle.recomend}></div>
-              <p className={RoomDetailStyle.detail}>お部屋の詳細</p>
-              <p className={RoomDetailStyle.detailStyle}>
-                {" "}
-                32～40インチテレビ / 竹製 歯ブラシ / 歯磨き粉 / シャンプー /
-                コンディショナー ボディーソープ / ハンドソープ / パジャマ /
-                スリッパ アロマディフューザー / ヘアドライヤー / 空気清浄機 /
-                冷蔵庫 金庫 / 電気ケトル / Wi-Fi
-              </p>
+              <RecomendRoom />
+             
               <Link
                 to={"/rooms/Gestroom"}
                 className={RoomDetailStyle.detaillink}

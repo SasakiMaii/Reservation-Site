@@ -24,12 +24,12 @@ $breakpoints: (
     margin-right: 45px;
     @include mq(tab2){
       margin: 0 auto;
-      font-size: 30px;
+      font-size: 25px;
     }
   }
     @include mq(sp){
       margin: 0 auto;
-      font-size: 18px;
+      font-size: 25px;
       width: 100%;
     }
 }

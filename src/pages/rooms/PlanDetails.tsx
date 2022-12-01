@@ -353,7 +353,7 @@ const PlanDetails = () => {
                   冷蔵庫 金庫 / 電気ケトル / Wi-Fi
                 </p>
               </div>
-              <PlanRecomendSwiper />
+              <RecomendRoom />
             </div>
           );
         })}
@@ -367,11 +367,22 @@ export const RecomendRoom = () => {
   const PlanData = collection(db, "Plan");
   const detailPlan = query(PlanData, limit(3));
   const [plans, setPlans] = useState<any>([]);
+  const[posts,SetPosts]=useState<any>([])
+ 
   useEffect(() => {
     getDocs(detailPlan).then((snapShot) => {
       setPlans(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
   }, []);
+
+  // const getRoomData = () => {
+  //   const postDate = collection(db, "Plan");
+  //   getDocs(postDate).then((snapShot) => {
+  //     SetPosts(snapShot.docs.map((doc) => ({ ...doc.data() })))
+  //   })
+  //   const pathList: any = []
+    
+
   return (
     <>
       <p className={RoomDetailStyle.recomendName}>お客さまにおすすめのプラン</p>
