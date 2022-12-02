@@ -6,6 +6,22 @@
   align-items: center !important;
 }
 
+$breakpoints: (
+  display: "screen and (min-width:1920px)",
+  pc: "screen and (min-width:1200px)",
+  surface:"screen and (min-width:912px)",
+  nest:"screen and (max-width:1024px)",
+  tab: "screen and (max-width:610px)",
+  sp: "screen and (max-width:414px)",
+  galaxy: "screen and (max-width:280px)",
+);
+
+@mixin mq($breakpoint: pc) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
 
 
 // swiper のナビゲーションアイコンのスタイル変更
@@ -13,9 +29,15 @@
   :global(.swiper-button-prev) {
     @extend %swiperNavigationStyle;
     padding: 40px 43px 40px 40px !important;
+    @include mq(sp){
+      padding: 27px 27px 27px 27px !important;
+    }
   }
   :global(.swiper-button-next) {
     @extend %swiperNavigationStyle;
     padding: 40px 40px 40px 43px !important;
+    @include mq(sp){
+      padding: 27px 27px 27px 27px !important;
+    }
   }
 }

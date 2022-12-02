@@ -54,7 +54,10 @@ export const PlanRecomendSwiper = () => {
   return (
     <>
         <section className={style.recommendPlanSection} id="concept">
+        <div className={style.roomsImagePicWrapper}>
+        <img className={style.roomsImagePic} width={300} height={300} src="topImage/flower1.png" alt="flowerPicture" />
           <h2>おすすめプラン</h2>
+        </div>
           <div
             className={style.swiperBody}
           >

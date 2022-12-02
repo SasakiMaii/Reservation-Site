@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Shippori+Mincho&display=swap");
 
 $breakpoints: (
   pc: "screen and (min-width:1200px)",
@@ -23,7 +23,6 @@ $breakpoints: (
 
 .detailcontainers {
   padding: 4%;
-  
 }
 
 .discountPrev {
@@ -58,7 +57,7 @@ $breakpoints: (
   }
 }
 
-.detailwrapper{
+.detailwrapper {
   @include mq(sp) {
     margin: 0 auto;
   }
@@ -67,12 +66,11 @@ $breakpoints: (
   }
 }
 
-.detailplan{
+.detailplan {
   margin-top: 90px;
   margin-left: 60px;
   @include mq(sp) {
     margin: 0 auto;
-
   }
   @include mq(tab) {
     margin: 0 auto;
@@ -80,12 +78,12 @@ $breakpoints: (
   }
 }
 
-.containerAllDetail{
+.containerAllDetail {
   @include mq(sp) {
-    overflow:hidden;
+    overflow: hidden;
   }
   @include mq(tab) {
-    overflow:hidden;
+    overflow: hidden;
   }
 }
 
@@ -120,7 +118,6 @@ $breakpoints: (
   margin-top: 40px;
 }
 
-
 .RoomName {
   margin-bottom: 40px;
   font-size: 40px;
@@ -128,12 +125,12 @@ $breakpoints: (
   color: #494949; /*文字色*/
   background: transparent; /*背景透明に*/
   border-left: solid 7px RGB(107, 1, 0); /*左線*/
-  @include mq(sp){
+  @include mq(sp) {
     font-size: 30px;
     background-color: rgb(239, 239, 239);
     text-align: center;
   }
-  @include mq(tab){
+  @include mq(tab) {
     font-size: 30px;
     // background-color: rgb(231, 231, 231);
     text-align: center;
@@ -178,7 +175,6 @@ $breakpoints: (
   @include mq(sp) {
     flex-direction: column;
   }
-
 }
 
 .detaildate {
@@ -240,6 +236,7 @@ $breakpoints: (
   width: 300px;
   height: 200px;
   margin-right: 20px;
+  padding: 2%;
 }
 
 .recomendName {
@@ -257,12 +254,25 @@ $breakpoints: (
   p {
     width: 300px;
     font-size: 20px;
+    @include mq(sp) {
+      margin-top: 20px;
+      margin: 0 auto;
+    }
+    @include mq(tab) {
+      
+      width: 400px;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      margin: 0 auto;
+    }
   }
   @include mq(sp) {
     flex-direction: column;
+    text-align: center;
   }
   @include mq(tab) {
     flex-direction: column;
+    text-align: center;
   }
 }
 

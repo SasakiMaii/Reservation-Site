@@ -8,7 +8,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import PrimaryButton from "../../components/button/PrimaryButton";
+import PrimaryButton from "../../components/Atoms/button/PrimaryButton";
 import db, { auth } from "../../Firebase";
 import RoomDetailStyle from "../../styles/rooms/_RoomDetails.module.scss";
 import Header from "../../components/layout/Header";
@@ -135,6 +135,8 @@ const PlanDetails = () => {
     //   plan: roomtype || roomtype2 || roomtype3 || roomtype4,
     // };
     // addDoc(reserveData, data);
+
+    console.log(datetext)
     if (user) {
       console.log(user.email);
       const reserveData = collection(db, "reserve");
@@ -149,6 +151,7 @@ const PlanDetails = () => {
         mail: user.email,
         // gestId:
       };
+      console.log(datetext)
       addDoc(reserveData, data);
       navigate("/books/ReservateConfirm", { state: data });
     } else {
@@ -353,7 +356,7 @@ const PlanDetails = () => {
                   冷蔵庫 金庫 / 電気ケトル / Wi-Fi
                 </p>
               </div>
-              <PlanRecomendSwiper />
+              <RecomendRoom />
             </div>
           );
         })}
@@ -367,11 +370,22 @@ export const RecomendRoom = () => {
   const PlanData = collection(db, "Plan");
   const detailPlan = query(PlanData, limit(3));
   const [plans, setPlans] = useState<any>([]);
+  const[posts,SetPosts]=useState<any>([])
+ 
   useEffect(() => {
     getDocs(detailPlan).then((snapShot) => {
       setPlans(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
   }, []);
+
+  // const getRoomData = () => {
+  //   const postDate = collection(db, "Plan");
+  //   getDocs(postDate).then((snapShot) => {
+  //     SetPosts(snapShot.docs.map((doc) => ({ ...doc.data() })))
+  //   })
+  //   const pathList: any = []
+    
+
   return (
     <>
       <p className={RoomDetailStyle.recomendName}>お客さまにおすすめのプラン</p>

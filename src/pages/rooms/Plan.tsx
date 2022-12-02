@@ -13,7 +13,7 @@ import {
   endBefore,
 } from "firebase/firestore";
 import PlanStyle from "../../styles/rooms/_Gestroom.module.scss";
-import PrimaryButton from "../../components/button/PrimaryButton";
+import PrimaryButton from "../../components/Atoms/button/PrimaryButton";
 import { Link } from "react-router-dom";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
@@ -21,7 +21,7 @@ import RoomSearchSoart from "../../components/Organisms/rooms/RoomSearchSoart";
 import Pageing from "../../components/Organisms/rooms/Pageing";
 import PagingStyle from "../../styles/rooms/_Paging.module.scss";
 import RoomPlanSearch from "../../components/Templates/Search";
-import SecondryButton from "../../components/button/SecondryButton";
+import SecondryButton from "../../components/Atoms/button/SecondryButton";
 
 //プラン
 const Plan = () => {

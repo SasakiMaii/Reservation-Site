@@ -96,6 +96,7 @@ const ReservateHistory = () => {
 
   return (
     <>
+
       <div className={ReservateHistoryStyles.HistoryContainer}>
         <Header />
 
