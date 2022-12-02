@@ -9,7 +9,7 @@ import { PasswordInput } from '../../components/form/passwordInput'
 import { NameInput } from '../../components/form/nameInput'
 import { ConfirmPasswordInput } from '../../components/form/confirmPassword'
 import { GenderInput } from '../../components/form/genderInput'
-import PrimaryButton from '../../components/button/PrimaryButton'
+import PrimaryButton from '../../components/Atoms/button/PrimaryButton'
 // import { useRouter } from 'next/router'
 import SearchStyle from "../../styles/rooms/_Search.module.scss";
 import RegisterStyle from "../../styles/users/_Registered.module.scss"

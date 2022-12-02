@@ -8,7 +8,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import PrimaryButton from "../../components/button/PrimaryButton";
+import PrimaryButton from "../../components/Atoms/button/PrimaryButton";
 import db, { auth } from "../../Firebase";
 import RoomDetailStyle from "../../styles/rooms/_RoomDetails.module.scss";
 import Header from "../../components/layout/Header";
@@ -135,6 +135,8 @@ const PlanDetails = () => {
     //   plan: roomtype || roomtype2 || roomtype3 || roomtype4,
     // };
     // addDoc(reserveData, data);
+
+    console.log(datetext)
     if (user) {
       console.log(user.email);
       const reserveData = collection(db, "reserve");
@@ -149,6 +151,7 @@ const PlanDetails = () => {
         mail: user.email,
         // gestId:
       };
+      console.log(datetext)
       addDoc(reserveData, data);
       navigate("/books/ReservateConfirm");
     } else {
@@ -236,7 +239,7 @@ const PlanDetails = () => {
                       plugins={[dayGridPlugin, interactionPlugin]}
                       locale="ja"
                       initialView="dayGridMonth"
-                      dateClick={() => handleDateClick}
+                      dateClick={handleDateClick}
                       selectable={true}
                       selectMirror={true}
                       businessHours={true}

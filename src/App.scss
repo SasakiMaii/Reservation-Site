@@ -1,3 +1,16 @@
+$breakpoints: (
+  pc: "screen and (min-width:1200px)",
+  tab2: "screen and (max-width:923px)",
+  tab: "screen and (max-width:760px)",
+  sp: "screen and (max-width:375px)",
+);
+
+@mixin mq($breakpoint: pc) {
+  @media #{map-get($breakpoints, $breakpoint)} {
+    @content;
+  }
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho&display=swap');
 
 body,html{
@@ -18,6 +31,7 @@ body,html{
     animation: App-logo-spin infinite 20s linear;
   }
 }
+
 
 .App-header {
   background-color: #282c34;
@@ -42,3 +56,9 @@ body,html{
     transform: rotate(360deg);
   }
 }
+
+// .hamburger-react{
+//   @include mq(sp){
+//     display: none;
+//   }
+// }

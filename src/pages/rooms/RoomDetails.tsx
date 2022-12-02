@@ -9,7 +9,7 @@ import {
   where,
 } from "firebase/firestore";
 import { useEffect } from "react";
-import PrimaryButton from "../../components/button/PrimaryButton";
+import PrimaryButton from "../../components/Atoms/button/PrimaryButton";
 import db, { auth } from "../../Firebase";
 import RoomDetailStyle from "../../styles/rooms/_RoomDetails.module.scss";
 import Header from "../../components/layout/Header";
@@ -40,6 +40,8 @@ const RoomDetails = () => {
   const [roomsId, setRoomsId] = useState<any>([]);
   const [inputDate, setInputDate] = useState(false);
   const [datetext, setDatetext] = useState("");
+
+
   // const location =useLocation()
   // const [selectId,setSelectId]=useState<{id:number}>(location.state as {id:number})
 

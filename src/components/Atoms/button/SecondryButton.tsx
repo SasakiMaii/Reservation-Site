@@ -1,4 +1,4 @@
-import SearchStyle from "../../styles/rooms/_Search.module.scss";
+import SearchStyle from "../../../styles/rooms/_Search.module.scss";
 
 const SecondryButton = ({ children,onClick }:any) => {
   return (

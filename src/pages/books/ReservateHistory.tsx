@@ -210,6 +210,7 @@ const ReservateHistory = () => {
 
   return (
     <>
+    <div className={ReservateHistoryStyles.Historywrapper}>
       <Header />
       <div className={ReservateHistoryStyles.HistoryContainer}>
         <h1 className={ReservateHistoryStyles.HistoryTitle}>予約履歴確認</h1>
@@ -252,6 +253,7 @@ const ReservateHistory = () => {
         )}
       </div>
       <Footer />
+    </div>
     </>
   );
 };
