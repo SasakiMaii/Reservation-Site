@@ -12,7 +12,7 @@ export const registerSlice = createSlice({
     tel: "",
     zip: "",
     password: "",
-    gender: "",
+    gender: "男性",
     confirmPassword: ""
   },
   reducers:{

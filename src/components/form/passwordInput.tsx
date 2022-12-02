@@ -91,7 +91,7 @@ export const PasswordInput = (props: any) => {
   const confirmPassword = useSelector((state:any) => state.registerInput.confirmPassword);
   const dispatch = useDispatch();
   const onChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
-    props.SetPasswordValue(ev.target.value);
+    // props.SetPasswordValue(ev.target.value);
     dispatch(passwordInput(ev.target.value));
 
     if (!(ev.target.value)) {
