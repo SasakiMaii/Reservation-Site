@@ -1,5 +1,7 @@
 import React, { ChangeEvent } from 'react'
 import FormStyle from "../../styles/users/_Form.module.scss"
+import { useDispatch , useSelector} from 'react-redux'
+import {firstNameInput, lastNameInput} from "../../store/RegisterSlice"
 
 const Error = (props: any) => {
   if (props.errorFlag === "true") {
@@ -21,8 +23,14 @@ const Error = (props: any) => {
 
 
 export const NameInput = (props: any) => {
+  const firstname = useSelector((state:any) => state.registerInput.firstName)
+  const lastname = useSelector((state:any) => state.registerInput.lastName)
+  
+  // console.log("名", firstname, "姓", lastname);
+  const dispatch = useDispatch();
   const onChangeHandlerLast = (ev: ChangeEvent<HTMLInputElement>) => {
-    props.SetLastNameValue(ev.target.value);
+    // props.SetLastNameValue(ev.target.value);
+    dispatch(lastNameInput(ev.target.value));
 
     if (!(ev.target.value)) {
       props.SetLastNameErrorState("empty");
@@ -32,7 +40,8 @@ export const NameInput = (props: any) => {
   }
 
   const onChangeHandlerFirst = (ev: ChangeEvent<HTMLInputElement>) => {
-    props.SetFirstNameValue(ev.target.value);
+    // props.SetFirstNameValue(ev.target.value);
+    dispatch(firstNameInput(ev.target.value));
 
     if (!(ev.target.value)) {
       props.SetFirstNameErrorState("empty");
@@ -82,6 +91,7 @@ export const NameInput = (props: any) => {
             placeholder="例）太郎" 
              
             onChange={onChangeHandlerFirst} 
+
             autoComplete="given-name"
             />
         </div>
