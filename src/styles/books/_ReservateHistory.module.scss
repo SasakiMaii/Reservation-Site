@@ -41,7 +41,6 @@ $breakpoints: (
   line-height: 40px;
   button {
     padding: 0 10px;
-    border-radius: 50px;
     margin-top: 10px;
     border: 2px solid #deb887;
     background-color: #deb887;
@@ -59,7 +58,7 @@ $breakpoints: (
   margin: 20px auto;
   padding-bottom: 10px;
   background-color: $mainColor;
-  max-height: 900px;
+  max-height: 2500px;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
     width: 300px;
@@ -79,7 +78,6 @@ $breakpoints: (
 }
 
 .unLodgerContentsList {
-  display: flex;
   p {
     margin: 15px 20px 0 20px;
     width: 66%;
@@ -92,6 +90,11 @@ $breakpoints: (
     background-color: rgb(171, 171, 171);
     color: #fff;
   }
+}
+
+.unLodgerContentsLists {
+  display: flex;
+  margin-top: 10px;
 }
 
 .unReservateDetails {
@@ -120,7 +123,6 @@ $breakpoints: (
   line-height: 40px;
   button {
     padding: 0 10px;
-    border-radius: 50px;
     margin-top: 10px;
     border: 2px solid #deb887;
     background-color: #deb887;
@@ -158,7 +160,6 @@ $breakpoints: (
 }
 
 .lodgedContentsList {
-  display: flex;
   p {
     margin: 15px 20px 0 20px;
     width: 66%;
@@ -171,6 +172,10 @@ $breakpoints: (
     background-color: rgb(171, 171, 171);
     color: #fff;
   }
+}
+
+.lodgedContentsLists {
+  display: flex;
 }
 
 .reservateDetails {

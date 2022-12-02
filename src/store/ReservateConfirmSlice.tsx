@@ -1,16 +1,58 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const reservateConfirmSlice = createSlice({
-    name: "contact",
+const radioItem = [
+    {
+      id: "localpay",
+      title: "現地にて精算（現金・クレジット）",
+      value: "cash",
+    },
+    {
+      id: "creditpay",
+      title: "オンラインでのクレジット精算",
+      value: "credit",
+    },
+  ];
+
+
+const reservateConfirmContactSlice = createSlice({
+  name: "contact",
+  initialState: {
+    value: "",
+  },
+  reducers: {
+    input: (state, action) => {
+      state.value = action.payload;
+    },
+  },
+});
+
+const reservateConfirmPaymentItemSlice = createSlice({
+    name: "paymentItem",
     initialState: {
-        value: "",
+        value: radioItem,
     },
     reducers: {
-        input: (state,action) => {
-            state.value = action.payload;
+        addPayment: (state,action) => {
+            state.value.push(action.payload)
         }
     }
 })
 
-export const {input} = reservateConfirmSlice.actions;
-export default reservateConfirmSlice.reducer;
+const reservateConfirmPaymentSlice = createSlice({
+  name: "payment",
+  initialState: {
+    value: radioItem,
+  },
+  reducers: {
+    select: (state, action) => {
+      state.value = action.payload;
+    },
+  },
+});
+
+export const { input } = reservateConfirmContactSlice.actions;
+export const { select } = reservateConfirmPaymentSlice.actions;
+export const { addPayment } = reservateConfirmPaymentItemSlice.actions;
+export const reservateConfirmContactReducer = reservateConfirmContactSlice.reducer;
+export const reservateConfirmPaymentReducer = reservateConfirmPaymentSlice.reducer;
+export const reservateConfirmPaymentItemReducer = reservateConfirmPaymentItemSlice.reducer;

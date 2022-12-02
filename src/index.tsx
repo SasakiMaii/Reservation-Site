@@ -1,14 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.scss';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import 'ress';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.scss";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import "ress";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
+import { configureStore } from "@reduxjs/toolkit";
+import { Provider } from "react-redux";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,30 +21,36 @@ const firebaseConfig = {
   storageBucket: "tough-shelter-363703.appspot.com",
   messagingSenderId: "313227634415",
   appId: "1:313227634415:web:aa487c82faeddcfb5e1d1a",
-  measurementId: "G-VP442568LF"
+  measurementId: "G-VP442568LF",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 // eslint-disable-next-line import/first
-import reservateConfirmReducer from "./store/ReservateConfirmSlice";
+import {
+  reservateConfirmContactReducer,
+  reservateConfirmPaymentReducer,
+  reservateConfirmPaymentItemReducer,
+} from "./store/ReservateConfirmSlice";
 
 // redux store
 const store = configureStore({
   reducer: {
-    input: reservateConfirmReducer,
-  }
-})
+    input: reservateConfirmContactReducer,
+    addPayment: reservateConfirmPaymentItemReducer,
+    select: reservateConfirmPaymentReducer,
+  },
+});
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById("root") as HTMLElement
 );
 
 // 全てのコンポーネントでstoreを共有
 root.render(
   <React.StrictMode>
-    <Provider store={store}> 
+    <Provider store={store}>
       <App />
     </Provider>
   </React.StrictMode>

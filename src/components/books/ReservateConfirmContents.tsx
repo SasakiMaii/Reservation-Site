@@ -12,35 +12,25 @@ import { MailInput } from "../form/mailInput";
 import { FiAlertTriangle } from "react-icons/fi";
 import { ArrivalTime } from "./ArrivalTime";
 import { useLocation } from "react-router-dom";
-import NotFound from "../../pages/NotFound";
 import { useSelector, useDispatch } from "react-redux";
 import DeleteModal from "./DeleteModal";
-import { input } from "../../store/ReservateConfirmSlice";
-import { IoIosArrowUp } from "react-icons/io";
+import { input,select } from "../../store/ReservateConfirmSlice";
+
 
 export const ReservateConfirmContents = () => {
-  const radioItem = [
-    {
-      id: "localpay",
-      title: "現地にて精算",
-      value: "cash",
-    },
-    {
-      id: "creditpay",
-      title: "クレジット精算",
-      value: "credit",
-    },
-  ];
 
   const selectItem = ["--", 15, 16, 17, 18, 19, 20, 21, 22];
 
   //redux
   const contactInput = useSelector((state: any) => state.input.value);
+  const paymentItem = useSelector((state:any) => state.addPayment.value);
+  const payment = useSelector((state:any) => state.select.value);
+  // const arrivalItem = useSelector((state:any) => state.addArrival.value);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-  const [val, setVal] = useState(["check"]);
-  const [click, setClick] = useState(false);
+  const [val, setVal] = useState<string[]>(["check"]);
+  const [click, setClick] = useState<boolean>(false);
 
   //ログインしているユーザーのメールアドレス
   const [user] = useAuthState(auth);
@@ -52,27 +42,25 @@ export const ReservateConfirmContents = () => {
   //入力フォームの値
   const [reserveFirstNameValue, SetReserveFirstNameValue] = useState("");
   const [reserveFirstNameErrorState, SetReserveFirstNameErrorState] =
-    useState("init");
+    useState<string>("init");
   const [reserveLastNameValue, SetReserveLastNameValue] = useState("");
   const [reserveLastNameErrorState, SetReserveLastNameErrorState] =
-    useState("init");
+    useState<string>("init");
   const [lodgeFirstNameValue, SetLodgeFirstNameValue] = useState("");
   const [lodgeFirstNameErrorState, SetLodgeFirstNameErrorState] =
-    useState("init");
+    useState<string>("init");
   const [lodgeLastNameValue, SetLodgeLastNameValue] = useState("");
   const [lodgeLastNameErrorState, SetLodgeLastNameErrorState] =
-    useState("init");
+    useState<string>("init");
   const [telValue, SetTelValue] = useState("");
-  const [telErrorState, SetTelErrorState] = useState("init");
+  const [telErrorState, SetTelErrorState] = useState<string>("init");
   const [mailValue, SetMailValue] = useState("");
-  const [mailErrorState, SetMailErrorState] = useState("init");
-  const [contact, setContact] = useState<string>("");
-  const [radioVal, setRadioVal] = useState("");
-  const [selectVal, setSelectVal] = useState("--");
-  const [errorFlag, SetErrorFlag] = useState("false");
+  const [mailErrorState, SetMailErrorState] = useState<string>("init");
+  const [selectVal, setSelectVal] = useState<string>("--");
+  const [errorFlag, SetErrorFlag] = useState<string>("false");
 
-  const [confirmMessage, setConfirmMessage] = useState("none");
-  const [openModal, setOpenModal] = useState(false);
+  const [confirmMessage, setConfirmMessage] = useState<string>("none");
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   //Arrival inputに入力された数字の型を数値に変換
   const arrivalTime = parseInt(selectVal);
@@ -81,7 +69,7 @@ export const ReservateConfirmContents = () => {
   const location = useLocation();
   const reserveData = location.state;
 
-  console.log("s", reserveData);
+  const noPlan = "プランなし";
 
   const handleChange = (e: any) => {
     if (val.includes(e.target.value)) {
@@ -91,18 +79,7 @@ export const ReservateConfirmContents = () => {
     }
   };
 
-  const onChangeContact = (e:any) => {
-    // setContact(e.target.value);
-    dispatch(input(e.target.value))
-  };
-  console.log(contactInput);
-
-
-  const valueChange = (e: any) => {
-    setRadioVal(e.target.value);
-  };
-
-  const selectValueChange = (e: any) => {
+  const selectValueChange = (e:any) => {
     setSelectVal(e.target.value);
   };
 
@@ -132,7 +109,7 @@ export const ReservateConfirmContents = () => {
       !reserveLastNameValue ||
       !telValue ||
       !mailValue ||
-      !radioVal ||
+      !payment ||
       !arrivalTime
     ) {
       setConfirmMessage("block");
@@ -146,28 +123,26 @@ export const ReservateConfirmContents = () => {
         tel: telValue,
         mail: mailValue,
         contact: contactInput,
-        payment: radioVal,
+        payment: payment,
         adultsNum: reserveData.adultsNum,
         childrenNum: reserveData.childrenNum,
         roomType: reserveData.roomType,
-        plan: reserveData.plan,
+        plan: reserveData.plan || noPlan,
         checkIn: reserveData.checkIn,
         reservationDate: todayDate,
         price: reserveData.price,
         arrivalTime: arrivalTime,
         lodgeNum: reserveData.totalDate,
+        loginMail: userEmail,
       };
       await setDoc(newCityRef, data);
       navigate("/books/ReservateComplete");
     }
   };
-  console.log("f", reserveData);
+  console.log(reserveData);
 
-  //ログインしていたら表示、していなかったら404
   return (
     <div>
-      {/* {userEmail ? (
-        <> */}
       <div className={ReservateConfirmContentsStyles.information}>
         <div className={ReservateConfirmContentsStyles.personInformation}>
           <div className={ReservateConfirmContentsStyles.subscriber}>
@@ -240,11 +215,8 @@ export const ReservateConfirmContents = () => {
                   markNone="ok"
                 />
               )}
-
               <div className={ReservateConfirmContentsStyles.lodgerContents}>
                 <Content
-                  contact={contact}
-                  onChangeContact={onChangeContact}
                   selectValueChange={selectValueChange}
                   selectItem={selectItem}
                   selectVal={selectVal}
@@ -270,7 +242,7 @@ export const ReservateConfirmContents = () => {
                   {reserveData.plan ? (
                     <p>{reserveData.plan}</p>
                   ) : (
-                    <p>プランなし</p>
+                    <p>{noPlan}</p>
                   )}
                 </li>
                 <li>
@@ -324,14 +296,14 @@ export const ReservateConfirmContents = () => {
           お支払い方法<span>必須</span>
         </h3>
         <div className={ReservateConfirmContentsStyles.paymentRadioBtn}>
-          {radioItem.map((radioItems) => (
+          {paymentItem.map((radioItems:any) => (
             <React.Fragment key={radioItems.title}>
               <input
                 type="radio"
                 id={radioItems.id}
                 name="payment"
                 value={radioItems.value}
-                onChange={valueChange}
+                onChange={(e:any) => dispatch(select(e.target.value))}
               />
               <label htmlFor={radioItems.id}>{radioItems.title}</label>
             </React.Fragment>
@@ -347,16 +319,14 @@ export const ReservateConfirmContents = () => {
           必須項目を入力してください
         </p>
       </div>
-      {/* </>
-      ) : (<NotFound />)} */}
     </div>
   );
 };
 
-export const Content = (props: any) => {
+
+export const Content = (props:any) => {
+
   const {
-    contact,
-    onChangeContact,
     selectValueChange,
     selectItem,
     selectVal,
@@ -366,10 +336,8 @@ export const Content = (props: any) => {
     ArrivalTime,
   } = props;
 
-  let result = 0;
-  for (let i = 9; i <= 22; i++) {
-    result += i;
-  }
+  const dispatch = useDispatch();
+
   return (
     <>
       <div className={ReservateConfirmContentsStyles.accordionContents}>
@@ -382,8 +350,7 @@ export const Content = (props: any) => {
         <div>
           <p>お問い合わせ・ご要望</p>
           <textarea
-            // value={contact}
-            onChange={onChangeContact}
+            onChange={(e:any) => dispatch(input(e.target.value))}
             placeholder="ここにお問合せやご要望をご入力ください"
             className={ReservateConfirmContentsStyles.input}
           ></textarea>
@@ -392,7 +359,7 @@ export const Content = (props: any) => {
           <ul className={ReservateConfirmContentsStyles.accordionMenu}>
             <li>
               <button type="button" onClick={accordionClick}>
-                キャンセルポリシー<span><IoIosArrowUp /></span>
+                キャンセルポリシー
               </button>
               {click ? <div>{cancel}</div> : ""}
             </li>
@@ -403,20 +370,21 @@ export const Content = (props: any) => {
   );
 };
 
-// const onChangeContact = (e: any) => {
-//   setContact(e.target.value);
-//   dispatch(input(contact))
-// };
 
-export const ClickCancelPolicy = (accordionClick: any, click: any) => {
+type ClickCancelPolicy = {
+  accordionClick: () => void
+  click: boolean
+}
+
+export const ClickCancelPolicy = (props:ClickCancelPolicy) => {
   return (
     <div>
       <ul className={ReservateConfirmContentsStyles.accordionMenu}>
         <li>
-          <button type="button" onClick={accordionClick}>
+          <button type="button" onClick={props.accordionClick}>
             キャンセルポリシー
           </button>
-          {click ? <div>{cancel}</div> : ""}
+          {props.click ? <div>{cancel}</div> : ""}
         </li>
       </ul>
     </div>
