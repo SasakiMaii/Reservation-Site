@@ -139,8 +139,8 @@ const PlanDetails = () => {
       console.log(user.email);
       const reserveData = collection(db, "reserve");
       const data = {
-        adultsNum: adult,
-        childrenNum: children,
+        adultsNum: Number(adult),
+        childrenNum: Number(children),
         checkIn: datetext,
         price: result,
         roomType: String(room),
@@ -150,7 +150,7 @@ const PlanDetails = () => {
         // gestId:
       };
       addDoc(reserveData, data);
-      navigate("/books/ReservateConfirm");
+      navigate("/books/ReservateConfirm", { state: data });
     } else {
       const reserveData = collection(db, "reserve");
       const data = {
@@ -236,7 +236,7 @@ const PlanDetails = () => {
                       plugins={[dayGridPlugin, interactionPlugin]}
                       locale="ja"
                       initialView="dayGridMonth"
-                      dateClick={() => handleDateClick}
+                      dateClick={handleDateClick}
                       selectable={true}
                       selectMirror={true}
                       businessHours={true}
