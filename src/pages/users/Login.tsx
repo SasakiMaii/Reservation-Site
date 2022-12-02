@@ -14,6 +14,7 @@ import Footer from "../../components/layout/footer";
 import { useLocation } from "react-router-dom";
 import { addDoc, collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import db from "../../Firebase";
+import { useSelector } from "react-redux";
 
 export const Login = () => {
   // ログインのstatus管理
@@ -23,11 +24,14 @@ export const Login = () => {
     const navigation = useNavigate();
   // const router = useRouter();
 
-  const [mailValue, SetMailValue] = useState("");
+  // const [mailValue, SetMailValue] = useState("");
   const [mailErrorState, SetMailErrorState] = useState("init");
 
-  const [passwordValue, SetPasswordValue] = useState("");
+  // const [passwordValue, SetPasswordValue] = useState("");
   const [passwordErrorState, SetPasswordErrorState] = useState("init");
+
+  const password = useSelector((state:any) => state.registerInput.password);
+  const mail = useSelector((state:any) => state.registerInput.mail);
 
   const [errorFlag, SetErrorFlag] = useState("false");
 
@@ -60,13 +64,13 @@ export const Login = () => {
   const login = () => {
     // 仮予約データ受け取り
     const data = location.state;
-    console.log("j",data)
+    // console.log("j",data)
   
     if (mailErrorState === "ok" && passwordErrorState === "ok") {
       // ログインしているか判定
       if (!user) {
         // react-hook ログイン関数
-        signInWithEmailAndPassword(auth, mailValue, passwordValue).then(
+        signInWithEmailAndPassword(auth, mail, password).then(
           (user) => {
             if(cookie === "confirm"){
               alert("ログイン成功");
@@ -78,7 +82,7 @@ export const Login = () => {
 
             }else{
               alert("ログイン成功");
-              navigate("/");
+              navigation("/");
             }
             
           },
@@ -113,14 +117,14 @@ export const Login = () => {
           <hr />
 
           <PasswordInput
-            passwordValue={passwordValue}
-            SetPasswordValue={SetPasswordValue}
+            // passwordValue={passwordValue}
+            // SetPasswordValue={SetPasswordValue}
             passwordErrorState={passwordErrorState}
             SetPasswordErrorState={SetPasswordErrorState}
             errorFlag={errorFlag}
             displayFlag={true}
             page="login"
-            confirmPasswordValue={passwordValue}
+            // confirmPasswordValue={passwordValue}
             SetConfirmPasswordErrorState={SetPasswordErrorState}
           />
           <hr />
