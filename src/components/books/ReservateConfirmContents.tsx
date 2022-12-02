@@ -25,6 +25,11 @@ export const ReservateConfirmContents = () => {
   const contactInput = useSelector((state: any) => state.input.value);
   const paymentItem = useSelector((state:any) => state.addPayment.value);
   const payment = useSelector((state:any) => state.select.value);
+  const reserveFirstName = useSelector((state:any) => state.registerInput.firstName);
+  const reserveLastName = useSelector((state:any) => state.registerInput.lastName);
+  const telValue = useSelector((state:any) => state.registerInput.tel);
+  const mailValue = useSelector((state:any) => state.registerInput.mail);
+
   // const arrivalItem = useSelector((state:any) => state.addArrival.value);
   const dispatch = useDispatch();
 
@@ -40,10 +45,8 @@ export const ReservateConfirmContents = () => {
   }
 
   //入力フォームの値
-  const [reserveFirstNameValue, SetReserveFirstNameValue] = useState("");
   const [reserveFirstNameErrorState, SetReserveFirstNameErrorState] =
     useState<string>("init");
-  const [reserveLastNameValue, SetReserveLastNameValue] = useState("");
   const [reserveLastNameErrorState, SetReserveLastNameErrorState] =
     useState<string>("init");
   const [lodgeFirstNameValue, SetLodgeFirstNameValue] = useState("");
@@ -52,9 +55,7 @@ export const ReservateConfirmContents = () => {
   const [lodgeLastNameValue, SetLodgeLastNameValue] = useState("");
   const [lodgeLastNameErrorState, SetLodgeLastNameErrorState] =
     useState<string>("init");
-  const [telValue, SetTelValue] = useState("");
   const [telErrorState, SetTelErrorState] = useState<string>("init");
-  const [mailValue, SetMailValue] = useState("");
   const [mailErrorState, SetMailErrorState] = useState<string>("init");
   const [selectVal, setSelectVal] = useState<string>("--");
   const [errorFlag, SetErrorFlag] = useState<string>("false");
@@ -105,8 +106,8 @@ export const ReservateConfirmContents = () => {
   const clickReservate = async () => {
     //必須項目の入力確認
     if (
-      !reserveFirstNameValue ||
-      !reserveLastNameValue ||
+      !reserveFirstName ||
+      !reserveLastName ||
       !telValue ||
       !mailValue ||
       !payment ||
@@ -116,8 +117,8 @@ export const ReservateConfirmContents = () => {
     } else {
       const newCityRef = doc(collection(db, "reserved"));
       const data = {
-        reserveFirstName: reserveFirstNameValue,
-        reserveLastName: reserveLastNameValue,
+        reserveFirstName: reserveFirstName,
+        reserveLastName: reserveLastName,
         lodgeFirstName: lodgeFirstNameValue,
         lodgeLastName: lodgeLastNameValue,
         tel: telValue,
@@ -151,10 +152,10 @@ export const ReservateConfirmContents = () => {
             </h3>
             <div className={ReservateConfirmContentsStyles.subscriberInfo}>
               <NameInput
-                lastNameValue={reserveLastNameValue}
-                SetLastNameValue={SetReserveLastNameValue}
-                firstNameValue={reserveFirstNameValue}
-                SetFirstNameValue={SetReserveFirstNameValue}
+                // lastNameValue={reserveLastNameValue}
+                // SetLastNameValue={SetReserveLastNameValue}
+                // firstNameValue={reserveFirstNameValue}
+                // SetFirstNameValue={SetReserveFirstNameValue}
                 firstNameErrorState={reserveFirstNameErrorState}
                 SetFirstNameErrorState={SetReserveFirstNameErrorState}
                 lastNameErrorState={reserveLastNameErrorState}
@@ -162,15 +163,15 @@ export const ReservateConfirmContents = () => {
                 errorFlag={errorFlag}
               />
               <TelInput
-                telValue={telValue}
-                SetTelValue={SetTelValue}
+                // telValue={telValue}
+                // SetTelValue={SetTelValue}
                 telErrorState={telErrorState}
                 SetTelErrorState={SetTelErrorState}
                 errorFlag={errorFlag}
               />
               <MailInput
-                mailValue={mailValue}
-                SetMailValue={SetMailValue}
+                // mailValue={mailValue}
+                // SetMailValue={SetMailValue}
                 mailErrorState={mailErrorState}
                 SetMailErrorState={SetMailErrorState}
                 errorFlag={errorFlag}
