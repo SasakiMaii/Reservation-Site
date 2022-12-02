@@ -4,16 +4,19 @@ import FormStyle from "../../styles/users/_Form.module.scss"
 import { IconContext } from 'react-icons'
 import { ImCheckmark } from "react-icons/im";
 import { ImCheckmark2 } from "react-icons/im";
+import {mailInput} from "../../store/RegisterSlice"
+import { useSelector, useDispatch } from 'react-redux';
 
 const Navigation = (props: any) => {
-
-  if (props.value.length > 0) {
+  const mail = useSelector((state:any) => state.registerInput.mail);
+  // if (props.value.length > 0) {
+  if (mail.length > 0) {
     return (
       <>
         <div className="py-2 text-gray-500 text-sm mb-8">
           <p>
             {(() => {
-              if (props.value.includes("@")) {
+              if (mail.includes("@")) {
                 return (
                   <>
                     <span className={`${FormStyle.NavigationIcons}`}>
@@ -70,10 +73,14 @@ const Error = (props: any) => {
 
 
 
-export const MailInput = (props: { SetMailErrorState: any, SetMailValue: any, errorFlag: any, mailErrorState: any, mailValue: any, displayFlag: boolean }) => {
+export const MailInput = (props:any) => {
+  // { SetMailErrorState: any,  errorFlag: any, mailErrorState: any, displayFlag: boolean }
 
+  const mail = useSelector((state:any) => state.registerInput.mail);
+  const dispatch = useDispatch();
   const onChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
-    props.SetMailValue(ev.target.value);
+    // props.SetMailValue(ev.target.value);
+    dispatch(mailInput(ev.target.value));
 
     if (!(ev.target.value)) {
       props.SetMailErrorState("empty");
@@ -88,7 +95,8 @@ export const MailInput = (props: { SetMailErrorState: any, SetMailValue: any, er
     if (props.displayFlag === true) {
       return (
         <>
-          <Navigation value={props.mailValue} text="@を含む形式" />
+          {/* <Navigation value={props.mailValue} text="@を含む形式" /> */}
+          <Navigation  text="@を含む形式" />
         </>
       )
     } else {
@@ -121,7 +129,7 @@ export const MailInput = (props: { SetMailErrorState: any, SetMailValue: any, er
         </div>
 
     <div className={FormStyle.nae}>
-        <NavigationDisplay displayFlag={props.displayFlag} mailValue={props.mailValue} />
+        <NavigationDisplay displayFlag={props.displayFlag}  />
     </div>
 
       </div>

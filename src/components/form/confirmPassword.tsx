@@ -1,5 +1,7 @@
 import { ChangeEvent } from "react";
 import FormStyle from "../../styles/users/_Form.module.scss"
+import {confirmPasswordInput} from "../../store/RegisterSlice"
+import { useSelector, useDispatch } from 'react-redux';
 
 const ConfirmPasswordError = (props: any) => {
   if ( props.errorFlag === "true" ) {
@@ -26,15 +28,17 @@ const ConfirmPasswordError = (props: any) => {
 }
 
 export const ConfirmPasswordInput = (props: any) => {
-  
-  const onChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
-    props.SetConfirmPasswordValue(ev.target.value);
+  const dispatch = useDispatch();
+  const password = useSelector((state:any) => state.registerInput.password);
 
+  const onChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
+    // props.SetConfirmPasswordValue(ev.target.value);
+    dispatch(confirmPasswordInput(ev.target.value));
     if (!(ev.target.value)) {
       props.SetConfirmPasswordErrorState("empty")
-    } else if (ev.target.value !== props.passwordValue) {
+    } else if (ev.target.value !== password) {
       props.SetConfirmPasswordErrorState("mismatch")
-    } else if(ev.target.value === props.passwordValue){
+    } else if(ev.target.value === password){
       props.SetConfirmPasswordErrorState("ok")
     }else{
       props.SetConfirmPasswordErrorState("ok")

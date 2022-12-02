@@ -4,16 +4,20 @@ import FormStyle from "../../styles/users/_Form.module.scss"
 import { IconContext } from 'react-icons'
 import { ImCheckmark } from "react-icons/im";
 import { ImCheckmark2 } from "react-icons/im";
+import {telInput} from "../../store/RegisterSlice"
+import { useSelector, useDispatch } from 'react-redux';
+
 
 const Navigation = (props: any) => {
+  const tel = useSelector((state:any) => state.registerInput.tel);
 
-  if (props.value.length > 0) {
+  if (tel.length > 0) {
     return (
       <>
         <div className="py-2 text-gray-500 text-sm mb-8">
           <p>
             {(() => {
-              if (props.value.includes("-")) {
+              if (tel.includes("-")) {
                 return (
                   <>
                     <span className={`${FormStyle.NavigationIcons}`}>
@@ -69,10 +73,13 @@ const Error = (props: any) => {
 }
 
 export const TelInput = (props: any) => {
-
+  const dispatch = useDispatch();
+  const tel = useSelector((state:any) => state.registerInput.tel);
+  
   const onChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
-    props.SetTelValue(ev.target.value);
-    
+    // props.SetTelValue(ev.target.value);
+    dispatch(telInput(ev.target.value));
+
     if(!(ev.target.value)){
       props.SetTelErrorState("empty");  
     }else if(!(ev.target.value.includes("-"))){
@@ -106,7 +113,7 @@ export const TelInput = (props: any) => {
             autoComplete="tel"
           />
         </div>
-        <Navigation text="-（ハイフン）を含む形式" value={props.telValue} />
+        <Navigation text="-（ハイフン）を含む形式" />
 
       </div>
     </>

@@ -23,38 +23,55 @@ $breakpoints: (
   }
 }
 
+.confirmMessage {
+  display: block;
+  width: 400px;
+  text-align: center;
+  margin: 0 auto 20px auto;
+  color: #deb887;
+  @include mq(sp) {
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+  }
+  @include mq(tab) {
+    display: block;
+    width: 250px;
+    margin: 0 auto;
+  }
+}
 
 .registerComplete {
-    width: 500px;
-    height: 400px;
-    background-color: #C0C0C0;
-    margin: 30px auto;
+  width: 500px;
+  height: 400px;
+  background-color: #c0c0c0;
+  margin: 30px auto;
 }
 
 .registerIncomplete {
-    width: 500px;
-    height: 400px;
-    background-color: beige;
-    margin: 30px auto;
+  width: 500px;
+  height: 400px;
+  background-color: beige;
+  margin: 30px auto;
 }
 
 .reservateLogin {
-    display: flex;
+  display: flex;
 }
 
-.reservateconfirmTitle {
-    text-align: center;
-    margin: 50px 0;
-    @include mq(sp) {
-        width: 500px;
-        margin: 50px 180px;
-    }
+.reservateConfirmTitle {
+  text-align: center;
+  margin: 50px 0 25px 0;
+  @include mq(sp) {
+    width: 500px;
+    margin: 50px 180px;
+  }
 }
 
 .reservateGuide {
-    text-align: center;
+  text-align: center;
 }
 
 .reservateGuide button {
-    color: crimson;
+  color: crimson;
 }

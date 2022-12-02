@@ -141,8 +141,8 @@ const PlanDetails = () => {
       console.log(user.email);
       const reserveData = collection(db, "reserve");
       const data = {
-        adultsNum: adult,
-        childrenNum: children,
+        adultsNum: Number(adult),
+        childrenNum: Number(children),
         checkIn: datetext,
         price: result,
         roomType: String(room),
@@ -153,7 +153,7 @@ const PlanDetails = () => {
       };
       console.log(datetext)
       addDoc(reserveData, data);
-      navigate("/books/ReservateConfirm");
+      navigate("/books/ReservateConfirm", { state: data });
     } else {
       const reserveData = collection(db, "reserve");
       const data = {
