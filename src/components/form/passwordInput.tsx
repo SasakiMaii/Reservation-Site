@@ -3,16 +3,18 @@ import FormStyle from "../../styles/users/_Form.module.scss"
 import { IconContext } from 'react-icons'
 import { ImCheckmark } from "react-icons/im";
 import { ImCheckmark2 } from "react-icons/im";
+import {passwordInput} from "../../store/RegisterSlice"
+import { useSelector, useDispatch } from 'react-redux';
 
 const Navigation = (props: any) => {
-
-  if (props.value.length > 0) {
+  const password = useSelector((state:any) => state.registerInput.password);
+  if (password.length > 0) {
     return (
       <>
         <div className="py-2 text-gray-500 text-sm ">
           <p>
             {(() => {
-              if (props.value.length >= 8 && props.value.length <= 12) {
+              if (password.length >= 8 && password.length <= 12) {
                 return (
                   <>
                     <span className={`${FormStyle.NavigationIcons}`}>
@@ -74,18 +76,23 @@ const Error = (props: any) => {
   }
 }
 
-export const PasswordInput = (props: {
-  SetPasswordValue: any, SetPasswordErrorState: any, confirmPasswordValue: any,
-  SetConfirmPasswordErrorState: any,
-  passwordErrorState: any,
-  passwordValue: any,
-  errorFlag: any,
-  displayFlag: boolean,
-  page:string
-}) => {
+// {
+//   SetPasswordValue: any, SetPasswordErrorState: any, confirmPasswordValue: any,
+//   SetConfirmPasswordErrorState: any,
+//   passwordErrorState: any,
+//   passwordValue: any,
+//   errorFlag: any,
+//   displayFlag: boolean,
+//   page:string
+// }
 
+export const PasswordInput = (props: any) => {
+
+  const confirmPassword = useSelector((state:any) => state.registerInput.confirmPassword);
+  const dispatch = useDispatch();
   const onChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
     props.SetPasswordValue(ev.target.value);
+    dispatch(passwordInput(ev.target.value));
 
     if (!(ev.target.value)) {
       props.SetPasswordErrorState("empty")
@@ -96,22 +103,22 @@ export const PasswordInput = (props: {
     }
 
     if (props.displayFlag == true) {
-      if (ev.target.value !== props.confirmPasswordValue) {
+      if (ev.target.value !== confirmPassword) {
         if (props.page === "register") {
           props.SetConfirmPasswordErrorState("mismatch")
         } 
       
-      } else if (ev.target.value === props.confirmPasswordValue) {
+      } else if (ev.target.value === confirmPassword) {
         props.SetConfirmPasswordErrorState("ok")
       }
     }
   }
 
   const NavigationDisplay = (props: any) => {
-    if (props.displayFlag === "true") {
+    if (props.displayFlag === true) {
       return (
         <>
-          <Navigation text="8文字以上16文字以内" value={props.passwordValue} />
+          <Navigation text="8文字以上16文字以内"  />
         </>
       )
     } else {

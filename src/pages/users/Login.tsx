@@ -99,12 +99,12 @@ export const Login = () => {
       <Header />
       <div className={`${LoginStyle.main} `}>
         <form className={` ${LoginStyle.form}`}>
-          <h2 className="my-5 ml-5 ">ログイン</h2>
-          <hr className="border border-1 border-gray-300 bg-gray-300" />
+          <h2 >ログイン</h2>
+          <hr  />
 
           <MailInput
-            mailValue={mailValue}
-            SetMailValue={SetMailValue}
+            // mailValue={mailValue}
+            // SetMailValue={SetMailValue}
             mailErrorState={mailErrorState}
             SetMailErrorState={SetMailErrorState}
             errorFlag={errorFlag}
@@ -125,8 +125,10 @@ export const Login = () => {
           />
           <hr />
 
+          <a className={LoginStyle.Link} href="/users/Register"><span className={LoginStyle.headerspan}>新規登録はこちら</span></a>
+
           <div
-            className={`items-center justify-center flex flex-wrap my-4 ${LoginStyle.buttonGroup}`}
+            className={` ${LoginStyle.buttonGroup}`}
           >
             {/* Primary Button */}
             <button

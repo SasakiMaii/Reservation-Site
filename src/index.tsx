@@ -7,8 +7,14 @@ import "ress";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { configureStore } from "@reduxjs/toolkit";
-import { Provider } from "react-redux";
+import { configureStore } from '@reduxjs/toolkit';
+import { Provider } from 'react-redux';
+import reginsterReducer from "./store/RegisterSlice"
+import {
+  reservateConfirmContactReducer,
+  reservateConfirmPaymentReducer,
+  reservateConfirmPaymentItemReducer,
+} from "./store/ReservateConfirmSlice";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -28,11 +34,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 // eslint-disable-next-line import/first
-import {
-  reservateConfirmContactReducer,
-  reservateConfirmPaymentReducer,
-  reservateConfirmPaymentItemReducer,
-} from "./store/ReservateConfirmSlice";
+
 
 // redux store
 const store = configureStore({
@@ -40,9 +42,10 @@ const store = configureStore({
     input: reservateConfirmContactReducer,
     addPayment: reservateConfirmPaymentItemReducer,
     select: reservateConfirmPaymentReducer,
+    registerInput:reginsterReducer
   },
 });
-
+    
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

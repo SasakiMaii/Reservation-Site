@@ -1,10 +1,16 @@
 import React, { ChangeEvent } from 'react'
 import FormStyle from "../../styles/users/_Form.module.scss"
+import {genderInput} from "../../store/RegisterSlice"
+import { useSelector, useDispatch } from 'react-redux';
+
 
 export const GenderInput = (props: any) => {
+  const dispatch = useDispatch();
+
   const onChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
-    props.SetGenderValue(ev.target.value);
-    console.log(ev.target.value)
+    // props.SetGenderValue(ev.target.value);
+    dispatch(genderInput(ev.target.value));
+    // console.log(ev.target.value)
   }
 
   return (

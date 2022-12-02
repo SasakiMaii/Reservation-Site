@@ -1,15 +1,17 @@
 import React, { ChangeEvent } from 'react'
 import FormStyle from "../../styles/users/_Form.module.scss"
+import {addressInput} from "../../store/RegisterSlice"
+import { useSelector, useDispatch } from 'react-redux';
 
 const Navigation = (props: any) => {
-
-  if (props.value.length > 0) {
+  const address = useSelector((state:any) => state.registerInput.address);
+  if (address.length > 0) {
     return (
       <>
         <div className="py-2 text-gray-500 text-sm mb-8">
           <p>
             {(() => {
-              if (props.value.includes("-")) {
+              if (address.includes("-")) {
                 return (
                   <>
                     <span className="material-symbols-outlined 
@@ -66,10 +68,11 @@ const Error = (props: any) => {
 }
 
 export const AddressInput = (props: any) => {
- 
+  const address = useSelector((state:any) => state.registerInput.address);
+  const dispatch = useDispatch();
   const onChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
-    props.SetAddressValue(ev.target.value);
-    
+    // props.SetAddressValue(ev.target.value);
+    dispatch(addressInput(ev.target.value));
     if(!(ev.target.value)){
       props.SetAddressErrorState("empty");  
     }else{
@@ -92,14 +95,11 @@ export const AddressInput = (props: any) => {
               <input 
                type="text" 
                className={`${FormStyle.input}  ${FormStyle.widthInput} `}
-               id="street-address" 
-                
+               id="street-address"                 
                onChange={onChangeHandler}
                placeholder="例）東京都中央区"
                autoComplete='street-address'
               />
-              
-
             </div>
           </div>
     </>
