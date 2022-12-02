@@ -1,5 +1,5 @@
 /* eslint-disable valid-typeof */
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import ReservateConfirmContentsStyles from "../../styles/books/_ReservateConfirmContents.module.scss";
 import { useNavigate } from "react-router-dom";
 import db from "../../Firebase.js";
@@ -71,7 +71,7 @@ export const ReservateConfirmContents = () => {
 
   const noPlan = "プランなし";
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (val.includes(e.target.value)) {
       setVal(val.filter((item) => item !== e.target.value));
     } else {
@@ -79,7 +79,7 @@ export const ReservateConfirmContents = () => {
     }
   };
 
-  const selectValueChange = (e:any) => {
+  const selectValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSelectVal(e.target.value);
   };
 
