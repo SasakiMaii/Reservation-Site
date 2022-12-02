@@ -30,37 +30,26 @@ export const Registered = () => {
   const [user] = useAuthState(auth);
   const firstname = useSelector((state:any) => state.registerInput.firstName)
   const lastname = useSelector((state:any) => state.registerInput.lastName)
+  const mail = useSelector((state:any) => state.registerInput.mail);
+  const gender = useSelector((state:any) => state.registerInput.gender);
+  const zip = useSelector((state:any) => state.registerInput.zip);
+  const tel = useSelector((state:any) => state.registerInput.tel);
+  const confirmPassword = useSelector((state:any) => state.registerInput.confirmPassword);
+  const password = useSelector((state:any) => state.registerInput.password);
+  const address = useSelector((state:any) => state.registerInput.address);
+
+  console.log("last",lastname,"first",firstname,"mail",mail,"gender",gender,"zip",zip,"tel",tel,"confirm",confirmPassword,"pass",password,"address",address)
+
   // const router = useRouter();
 
-  const [lastNameValue, SetLastNameValue] = useState("");
   const [lastNameErrorState, SetLastNameErrorState] = useState("init");
-
-  const [firstNameValue, SetFirstNameValue] = useState("");
   const [firstNameErrorState, SetFirstNameErrorState] = useState("init");
-
-
-  const [mailValue, SetMailValue] = useState("");
   const [mailErrorState, SetMailErrorState] = useState("init");
-
-  const [telValue, SetTelValue] = useState("");
   const [telErrorState, SetTelErrorState] = useState("init");
-
-  const [zipValue, SetZipValue] = useState("");
   const [zipErrorState, SetZipErrorState] = useState("init");
-
-  const [addressValue, SetAddressValue] = useState("");
   const [addressErrorState, SetAddressErrorState] = useState("init");
-
-  const [passwordValue, SetPasswordValue] = useState("");
   const [passwordErrorState, SetPasswordErrorState] = useState("init");
-
-  const [confirmPasswordValue, SetConfirmPasswordValue] = useState("");
   const [confirmPasswordErrorState, SetConfirmPasswordErrorState] = useState("init");
-
-  // デフォルトが男性のため（ラジオボタン）
-  const [genderValue, SetGenderValue] = useState("男性");
-
-
   const [errorFlag, SetErrorFlag] = useState("false");
 
   const navigate = useNavigate();
@@ -74,17 +63,6 @@ export const Registered = () => {
     SetAddressErrorState("init")
     SetPasswordErrorState("init")
     SetConfirmPasswordErrorState("init")
-
-    SetLastNameValue("")
-    SetFirstNameValue("")
-    SetMailValue("")
-    SetTelValue("")
-    SetZipValue("")
-    SetAddressValue("")
-    SetPasswordValue("")
-    SetConfirmPasswordValue("")
-    SetGenderValue("")
-
 
     SetErrorFlag("false");
   }
@@ -104,21 +82,19 @@ export const Registered = () => {
     ) {
 
       // Authentication 新規登録
-      createUserWithEmailAndPassword(auth, mailValue, passwordValue)
+      createUserWithEmailAndPassword(auth, mail, password)
         .then((user) => {
           // Cloud Firestore user新規登録
           const colRef = collection(db, "user");
           const data = {
-            // firstname: firstNameValue,
             firstname: firstname,
-            // lastname: lastNameValue,
             lastname: lastname,
-            mail: mailValue,
-            zip: zipValue,
-            address: addressValue,
-            gender: genderValue,
-            tel: telValue,
-            password: passwordValue,
+            mail: mail,
+            zip: zip,
+            address: address,
+            gender: gender,
+            tel: tel,
+            password: password,
           };
           // collection　usersにデータを追加
           addDoc(colRef, data);
@@ -146,10 +122,6 @@ export const Registered = () => {
           <hr className="border border-1 border-gray-300 bg-gray-300" />
 
           <NameInput
-            lastNameValue={lastNameValue} SetLastNameValue={SetLastNameValue}
-            firstNameValue={firstNameValue}
-            SetFirstNameValue={SetFirstNameValue}
-
             firstNameErrorState={firstNameErrorState}
             SetFirstNameErrorState={SetFirstNameErrorState}
             lastNameErrorState={lastNameErrorState}
@@ -158,13 +130,11 @@ export const Registered = () => {
           />
           <hr />
 
-          <GenderInput SetGenderValue={SetGenderValue} />
+          <GenderInput  />
 
           <hr />
 
           <MailInput
-            mailValue={mailValue}
-            SetMailValue={SetMailValue}
             mailErrorState={mailErrorState} SetMailErrorState={SetMailErrorState}
             errorFlag={errorFlag}
             displayFlag={true}
@@ -172,8 +142,6 @@ export const Registered = () => {
           <hr />
 
           <TelInput
-            telValue={telValue}
-            SetTelValue={SetTelValue}
             telErrorState={telErrorState}
             SetTelErrorState={SetTelErrorState}
             errorFlag={errorFlag}
@@ -181,34 +149,29 @@ export const Registered = () => {
           <hr />
 
           <ZipInput
-            zipValue={zipValue} SetZipValue={SetZipValue} zipErrorState={zipErrorState} SetZipErrorState={SetZipErrorState}
+            zipErrorState={zipErrorState} SetZipErrorState={SetZipErrorState}
             errorFlag={errorFlag}
           />
           <hr />
 
           <AddressInput
-            addressValue={addressValue}
-            SetAddressValue={SetAddressValue} addressErrorState={addressErrorState} SetAddressErrorState={SetAddressErrorState}
+            addressErrorState={addressErrorState} SetAddressErrorState={SetAddressErrorState}
             errorFlag={errorFlag}
           />
           <hr />
 
           <PasswordInput
-            passwordValue={passwordValue} SetPasswordValue={SetPasswordValue}
             passwordErrorState={passwordErrorState} SetPasswordErrorState={SetPasswordErrorState}
             errorFlag={errorFlag}
             displayFlag={true}
             page="register"
-            confirmPasswordValue={confirmPasswordValue}
             SetConfirmPasswordErrorState={SetConfirmPasswordErrorState}
           />
           <hr />
 
           <ConfirmPasswordInput
-            confirmPasswordValue={confirmPasswordValue} SetConfirmPasswordValue={SetConfirmPasswordValue} confirmPasswordErrorState={confirmPasswordErrorState} SetConfirmPasswordErrorState={SetConfirmPasswordErrorState}
+            confirmPasswordErrorState={confirmPasswordErrorState} SetConfirmPasswordErrorState={SetConfirmPasswordErrorState}
             errorFlag={errorFlag}
-
-            passwordValue={passwordValue}
           />
 
           <hr />

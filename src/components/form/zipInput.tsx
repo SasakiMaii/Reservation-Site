@@ -3,16 +3,18 @@ import FormStyle from "../../styles/users/_Form.module.scss"
 import { IconContext } from 'react-icons'
 import { ImCheckmark } from "react-icons/im";
 import { ImCheckmark2 } from "react-icons/im";
+import {zipInput} from "../../store/RegisterSlice"
+import { useSelector, useDispatch } from 'react-redux';
 
 const Navigation = (props: any) => {
-
-  if (props.value.length > 0) {
+  const zip = useSelector((state:any) => state.registerInput.zip);
+  if (zip.length > 0) {
     return (
       <>
         <div className="py-2 text-gray-500 text-sm mb-8">
           <p>
             {(() => {
-              if (props.value.includes("-")) {
+              if (zip.includes("-")) {
                 return (
                   <>
                     <span className={`${FormStyle.NavigationIcons}`}>
@@ -72,10 +74,12 @@ const Error = (props: any) => {
 }
 
 export const ZipInput = (props: any) => {
+  const zip = useSelector((state:any) => state.registerInput.zip);
+  const dispatch = useDispatch();
 
-  
   const onChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
-    props.SetZipValue(ev.target.value);
+    // props.SetZipValue(ev.target.value);
+    dispatch(zipInput(ev.target.value));
     
     if(!(ev.target.value)){
       props.SetZipErrorState("empty")    
@@ -115,7 +119,7 @@ export const ZipInput = (props: any) => {
           />
         </div>
 
-        <Navigation text="-（ハイフン）を含む形式" value={props.zipValue} />
+        <Navigation text="-（ハイフン）を含む形式" />
 
 
       </div>

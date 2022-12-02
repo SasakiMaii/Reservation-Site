@@ -10,7 +10,9 @@ export const registerSlice = createSlice({
     mail: "",
     address: "",
     tel: "",
+    zip: "",
     password: "",
+    gender: "",
     confirmPassword: ""
   },
   reducers:{
@@ -29,6 +31,12 @@ export const registerSlice = createSlice({
     telInput: (state,action) => {
       state.tel = action.payload;
     },
+    zipInput: (state,action) => {
+      state.zip = action.payload;
+    },
+    genderInput: (state,action) => {
+      state.gender = action.payload;
+    },
     passwordInput: (state,action) => {
       state.password = action.payload;
     },
@@ -38,5 +46,5 @@ export const registerSlice = createSlice({
   }
 })
 
-export const {lastNameInput,firstNameInput,mailInput,addressInput,telInput,passwordInput,confirmPasswordInput} = registerSlice.actions;
+export const {lastNameInput,firstNameInput,mailInput,addressInput,telInput,passwordInput,confirmPasswordInput,zipInput,genderInput} = registerSlice.actions;
 export default registerSlice.reducer;
