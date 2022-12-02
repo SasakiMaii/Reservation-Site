@@ -45,7 +45,7 @@ const GestroomPlan = () => {
 
   const chilrdInputEl: any = useRef(null);
   const adultInputEl: any = useRef(null);
-
+//---------------------------
   //日付が一致（予約確認のDBと入力値）
   const noemptyDates = reserved.filter((x: any) => {
     return String(x.checkIn) === datetext;
@@ -56,10 +56,8 @@ const GestroomPlan = () => {
     return x.roomType === roomChange;
   });
 
-  // console.log(noemptyRoom)
-
-  const count = Number(adultInput) + Number(chilrdInput) <= 3;
   //人数が合わせて３人以上だったらtrue
+  const count = Number(adultInput) + Number(chilrdInput) <= 3;
 
   // const noemptyRoom = room.filter((x: any) => {
   //   return String(x.roomType) === roomChange;
@@ -437,7 +435,7 @@ export const RoomCard = (prps: any) => {
                 {/* <hr /> */}
 
                 <div className={RoomStyle.roomplanCards}>
-                  <img width={200} src={room.image} alt="roompicture" />
+                  <img width={200} src="/gestroomPlan/4.png" alt="roompicture" />
                   <div className={RoomStyle.roomplanContainer}>
                     <p className={RoomStyle.roomplantext}>{room.plan1}</p>
                     <div className={RoomStyle.roomplanButton}>
@@ -455,7 +453,7 @@ export const RoomCard = (prps: any) => {
                 {showPlan ? (
                   <div>
                     <div className={RoomStyle.roomplanCards}>
-                      <img width={200} src={room.image} alt="roompicture" />
+                      <img width={200} src="/gestroomPlan/フリーWi-Fi.jpg" alt="roompicture" />
                       <div className={RoomStyle.roomplanContainer}>
                         <p className={RoomStyle.roomplantext}>{room.plan2}</p>
                         <div className={RoomStyle.roomplanButton}>
@@ -473,7 +471,7 @@ export const RoomCard = (prps: any) => {
                     </div>
                     {room.plan3 ? (
                       <div className={RoomStyle.roomplanCards}>
-                        <img width={200} src={room.image} alt="roompicture" />
+                        <img width={200} height={165} src={room.image}alt="roompicture" />
                         <div className={RoomStyle.roomplanContainer}>
                           <p className={RoomStyle.roomplantext}>{room.plan3}</p>
                           <div className={RoomStyle.roomplanButton}>
@@ -494,7 +492,7 @@ export const RoomCard = (prps: any) => {
                     )}
                     {room.plan4 ? (
                       <div className={RoomStyle.roomplanCards}>
-                        <img width={200} src={room.image} alt="roompicture" />
+                        <img width={200} height={200} src="/gestroomPlan/breakfast-1.jpg" alt="roompicture" />
                         <div className={RoomStyle.roomplanContainer}>
                           <p className={RoomStyle.roomplantext}>{room.plan4}</p>
                           <div className={RoomStyle.roomplanButton}>

@@ -90,7 +90,9 @@ const Header = () => {
                 <PrimaryButton>ご予約</PrimaryButton>
               </Link>
               </ul>
+              {/* <div className={headerStyle.ham}> */}
             <Hamburger toggled={isOpen} toggle={setOpen} size={30} onToggle={flagChange}/>
+              {/* </div> */}
             </div>
         
         ) : (

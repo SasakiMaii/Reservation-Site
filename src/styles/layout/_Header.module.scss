@@ -34,7 +34,18 @@ $breakpoints: (
     }
 }
 
+.ham{
 
+display: none;
+
+@include mq(sp){
+visibility: hidden;
+}
+
+@include mq(tab){
+  visibility: hidden;
+  }
+}
 
 .headerspan {
   position: relative;
