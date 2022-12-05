@@ -7,13 +7,11 @@
   </div>
 
 ## ✽ Description ✽
-ユーザー登録・ログインをし、空室を検索、予約が確定できるようにしたホテルの予約サイトの構築</br>
-
-・オンラインホワイトボードを使った認識共有</br>
-・アーキテクチャー図</br>
+・ユーザー登録・ログインをし、空室を検索、予約が確定できるようにしたホテルの予約サイトの構築</br>
+<img width="500" alt="TOP" src="https://user-images.githubusercontent.com/110379185/205537441-baf48695-8f64-40c2-9d90-bd7b74e8c171.png"></br>
+・オンラインホワイトボードを使ったチームでの認識共有</br>
 ・XD（レイアウト）</br>
-<img width="300" alt="TOP" src="https://user-images.githubusercontent.com/110379185/205537373-6fea90cd-7b0d-493e-8523-2deff114b185.png">
-<img width="500" alt="TOP" src="https://user-images.githubusercontent.com/110379185/205537441-baf48695-8f64-40c2-9d90-bd7b74e8c171.png">
+<img width="300" alt="TOP" src="https://user-images.githubusercontent.com/110379185/205537373-6fea90cd-7b0d-493e-8523-2deff114b185.png"></br>
 <img width="300" alt="TOP" src="https://user-images.githubusercontent.com/110379185/205537547-9ea839e2-9c89-4b2d-971c-abef49871539.png">
 
 ## ✽ Requirement ✽
