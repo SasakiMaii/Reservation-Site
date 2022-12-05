@@ -106,10 +106,9 @@ const Modal = ({
 const modalContent: React.CSSProperties = {
   background: "white",
   width: "600px",
-  height: "750px",
-  padding: "50px",
+  height: "800px",
+  padding: "60px",
   borderRadius: "3px",
-  
 };
 
 const modalStyle: React.CSSProperties = {

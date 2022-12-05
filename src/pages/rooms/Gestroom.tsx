@@ -39,6 +39,7 @@ const GestroomPlan = () => {
   const [upChange, setUpChange] = useState<any>("");
   const [datetext, setDatetext] = useState("");
   const [err, setErr] = useState([]); //検索のバリデーション
+  const [info ,setInfo]=useState([]);
 
   // const {upPrice}=useSelector((state:any)=>state.upchangePrice)
   // const dispatch =useDispatch();
@@ -86,12 +87,18 @@ const GestroomPlan = () => {
     return room;
   }); //全部を表示
 
+  const reset =rooms.filter((room: any) => {
+    return room.area===datetext;
+  });
+
   // console.log(resRoom)
 
   //検索ボタン・検索バリデーション
   const dateChoice = () => {
     setErr([]);
+    setInfo([]);
     const errorMsg: any = [];
+    const infoMsg:any=[];
     if (adultInput === "" || datetext === "") {
       errorMsg.push("チェックイン日と大人の宿泊人数は入力必須項目です");
     }
@@ -107,18 +114,19 @@ const GestroomPlan = () => {
     }
 
     //予約している部屋と一致、日付も一致
-
-    console.log(noemptyRoom.length>=1)
   
     if (noemptyRoom.length>=1 && noemptyDates.length === 1) {
       errorMsg.push(
         "上記の条件で空室はございません。条件を変更して検索しなおしてください。"
       );
-      console.log("aaa");
+      // console.log("aaa");
+      SetRooms(reset);
+    } else if (noemptyDates.length===0 && noemptyRoom<1) {
+      //日付も部屋もdbと一致しない場合は全件データ表示
       SetRooms(resRoom);
-    } else if (noemptyDates.length< 1 && !noemptyRoom) {
-      SetRooms(resRoom);
-      console.log("b");
+      infoMsg.push(
+        `現在、下記の5つの部屋が空室です`
+      );
       // Rooms.push(roomPick)
     }
 
@@ -147,6 +155,7 @@ const GestroomPlan = () => {
     // 宿泊数に対して空いているか（できていない）
 
     setErr(errorMsg);
+    setInfo(infoMsg)
   };
 
   return (
@@ -164,6 +173,13 @@ const GestroomPlan = () => {
           return (
             <p key={err[0]} className={RoomStyle.err}>
               ※{error}
+            </p>
+          );
+        })}
+        {info.map((i: any) => {
+          return (
+            <p key={i[0]} className={RoomStyle.info}>
+              ※{i}
             </p>
           );
         })}
@@ -202,6 +218,13 @@ const GestroomPlan = () => {
           return (
             <p key={err[0]} className={RoomStyle.err}>
               ※{error}
+            </p>
+          );
+        })}
+         {info.map((information: any) => {
+          return (
+            <p key={info[0]} className={RoomStyle.info}>
+              ※{information}
             </p>
           );
         })}
@@ -246,14 +269,6 @@ export const RoomCard = (prps: any) => {
     renderFlag.current = true;
   }
 
-  // useEffect(() => {
-  //   const roomDate = query(soartData, orderBy("price"), limit(3));
-  //   getDocs(roomDate).then((snapShot) => {
-  //     setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
-  //   });
-  // }, []);
-
-  //ソート関数
   const onAscSort = async () => {
     const priceAsc = query(soartData, orderBy("price"), limit(3));
     const data = await getDocs(priceAsc);
@@ -277,13 +292,17 @@ export const RoomCard = (prps: any) => {
     setAscClick(false);
     setRooms(newDescData);
   };
+  // useEffect(() => {
+  //   const roomDate = query(soartData, orderBy("price"), limit(3));
+  //   getDocs(roomDate).then((snapShot) => {
+  //     setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+  //   });
+  // }, []);
+
+  //ソート関数
 
   //予約ボタン
   const navigate = useNavigate();
-  const handleResarvedRoomBtn = () => {
-    // rooms.filter((room:any)=>{room.id})
-    navigate(`/rooms/RoomDetails`);
-  };
 
   //次のページへ進むボタン。ソートボタンがクリックされていた場合は、料金順でページングになるように。
   const handleNextPage = async () => {
