@@ -537,21 +537,13 @@ align-items: right;
 //error
 .err{
   text-align: center;
-  margin-top: 20px;
+  margin-top: 30px;
   color: red;
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 
-.reservedCheck {
-  font-size: 13px;
-  display: block;
-  text-align: center;
-  margin: 10px 0 10px 0;
-  border-bottom: 1px solid #000;
-  display: inline-block;
-  @include mq(sp){
-    margin-left: 70px;
-  }
-}
+
 
 .info{
   text-align: center;

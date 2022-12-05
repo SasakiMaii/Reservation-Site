@@ -21,11 +21,15 @@ import {
 import RoomPlanSearch from "../../components/Templates/Search";
 import SecondryButton from "../../components/Atoms/button/SecondryButton";
 import { useDispatch, useSelector } from "react-redux";
-// import { setUpPrice } from "../../store/SearchSlice";
+import { GestRoom } from "../../types/Types";
+
+// type Props={
+//   gestroom:GestRoom;
+// }
 
 // const Rooms: any[]=[];
 // console.log(Rooms)
-const GestroomPlan = () => {
+const GestroomPlan: React.FC = () => {
   const [rooms, SetRooms] = useState<any>([]);
   const [descClick, setDescClick] = useState(false);
   const [ascClick, setAscClick] = useState(false);
@@ -39,14 +43,14 @@ const GestroomPlan = () => {
   const [upChange, setUpChange] = useState<any>("");
   const [datetext, setDatetext] = useState("");
   const [err, setErr] = useState([]); //検索のバリデーション
-  const [info ,setInfo]=useState([]);
+  const [info, setInfo] = useState([]);
 
   // const {upPrice}=useSelector((state:any)=>state.upchangePrice)
   // const dispatch =useDispatch();
 
   const chilrdInputEl: any = useRef(null);
   const adultInputEl: any = useRef(null);
-//---------------------------
+  //---------------------------
   //日付が一致（予約確認のDBと入力値）
   const noemptyDates = reserved.filter((x: any) => {
     return String(x.checkIn) === datetext;
@@ -77,7 +81,7 @@ const GestroomPlan = () => {
 
   //roomChangeで指定された部屋の表示
   const roomPick = room.filter((r: any) => {
-    return r.area === roomChange ;
+    return r.area === roomChange;
   });
 
   // console.log(roomPick)
@@ -87,8 +91,8 @@ const GestroomPlan = () => {
     return room;
   }); //全部を表示
 
-  const reset =rooms.filter((room: any) => {
-    return room.area===datetext;
+  const reset = rooms.filter((room: any) => {
+    return room.area === datetext;
   });
 
   // console.log(resRoom)
@@ -98,55 +102,95 @@ const GestroomPlan = () => {
     setErr([]);
     setInfo([]);
     const errorMsg: any = [];
-    const infoMsg:any=[];
+    const infoMsg: any = [];
+    const errorInfo:any=[]
+console.log(errorInfo)
     if (adultInput === "" || datetext === "") {
-      errorMsg.push("チェックイン日と大人の宿泊人数は入力必須項目です");
+      if (roomChange.length >= 1) {
+        console.log("input");
+        errorMsg.push("チェックイン日と大人の宿泊人数は入力必須項目です");
+        SetRooms(resRoom);
+        errorInfo.push("エラー")
+      } else {
+        errorMsg.push("チェックイン日と大人の宿泊人数は入力必須項目です");
+        SetRooms(resRoom);
+        errorInfo.push("エラー")
+      }
     }
-    if (count === false) {
-      errorMsg.push("一部屋に対しての人数が超過しています");
-    }
+
     if (new Date(datetext) <= new Date(new Date().toString())) {
-      errorMsg.push("今日以降の日付を入れてください");
+      if (roomChange.length >= 1) {
+        SetRooms(resRoom);
+        errorMsg.push("今日以降の日付を入れてください");
+        errorInfo.push("エラー")
+      } else {
+        errorMsg.push("今日以降の日付を入れてください");
+        SetRooms(resRoom);
+        errorInfo.push("エラー")
+      }
     }
-    // console.log(roomPick)
+
     if (priceFilter === false) {
-      errorMsg.push("金額の入力を確認してください");
+      if (roomChange.length >= 1) {
+        SetRooms(resRoom);
+        errorMsg.push("金額の入力を確認してください");errorInfo.push("エラー")
+      } else {
+        errorMsg.push("金額の入力を確認してください");
+        SetRooms(resRoom);
+        errorInfo.push("エラー")
+      }
     }
 
     //予約している部屋と一致、日付も一致
-  
-    if (noemptyRoom.length>=1 && noemptyDates.length === 1) {
+console.log(noemptyDates.length >=1)
+    if (noemptyRoom.length >= 1 && noemptyDates.length >= 1) {
       errorMsg.push(
         "上記の条件で空室はございません。条件を変更して検索しなおしてください。"
       );
-      // console.log("aaa");
+      console.log("aaa");
       SetRooms(reset);
-    } else if (noemptyDates.length===0 && noemptyRoom<1) {
+    } else {
+      if(noemptyRoom.length===0 && noemptyDates.length >=1){
+SetRooms(roomPick)
+console.log("部屋表示")
+      }
       //日付も部屋もdbと一致しない場合は全件データ表示
-      SetRooms(resRoom);
-      infoMsg.push(
-        `現在、下記の5つの部屋が空室です`
-      );
+      if (roomChange.length >= 1) {
+        if(errorInfo.length>=1){
+          console.log("エラーあり")
+          SetRooms(resRoom)
+        }else{
+          console.log("www");
+          console.log("エラーなし")
+          infoMsg.push(`現在、${roomChange}は空室です`);
+          SetRooms(roomPick);
+
+        }
+      } else if (roomChange.length <= 1) {
+        if(errorInfo.length>=1){
+          console.log("エラーあり")
+          SetRooms(resRoom)
+        }else{
+          console.log("エラーなし")
+          infoMsg.push(`現在、5つのお部屋が空室です`);
+          SetRooms(resRoom);
+        }
+      }
+
       // Rooms.push(roomPick)
     }
 
-    // if (
-    //   (noemptyDate.length === 0 && roomPick) ||
-    //   (noemptyDates.length === 0 && roomPick)
-    // ) {
-    //   console.log("www")
+    //予約の日付が一致して予約の部屋は一致しない
+    // if (noemptyDates.length === 1 && noemptyRoom.length === 0) {
+    //   console.log("ccc");
+    //   // infoMsg.push(`現在、下記のお部屋が空室です`);
     //   SetRooms(roomPick);
     // }
 
-    //予約の日付が一致して予約の部屋は一致しない
-    if (noemptyDates.length === 1 && noemptyRoom.length === 0) {
-      console.log("ccc");
-      SetRooms(roomPick);
-    }
-
-    if (datetext && roomChange === "") {
-      SetRooms(resRoom);
-    }
+    // if (datetext && roomChange === "") {
+    //   infoMsg.push(`現在、下記のお部屋が空室です`);
+    //   SetRooms(resRoom);
+    // }
 
     // console.log(roomPick);
 
@@ -155,7 +199,8 @@ const GestroomPlan = () => {
     // 宿泊数に対して空いているか（できていない）
 
     setErr(errorMsg);
-    setInfo(infoMsg)
+    setInfo(infoMsg);
+    // SetRooms("")
   };
 
   return (
@@ -166,20 +211,10 @@ const GestroomPlan = () => {
           <IoSearchOutline size={28} />
           空室検索
         </p>
-        <Link to={"/"} className={RoomStyle.reservedCheck}>
-          ご予約内容の確認・変更・取り消しはこちら
-        </Link>
         {err.map((error: any) => {
           return (
             <p key={err[0]} className={RoomStyle.err}>
               ※{error}
-            </p>
-          );
-        })}
-        {info.map((i: any) => {
-          return (
-            <p key={i[0]} className={RoomStyle.info}>
-              ※{i}
             </p>
           );
         })}
@@ -221,7 +256,7 @@ const GestroomPlan = () => {
             </p>
           );
         })}
-         {info.map((information: any) => {
+        {info.map((information: any) => {
           return (
             <p key={info[0]} className={RoomStyle.info}>
               ※{information}
@@ -454,7 +489,11 @@ export const RoomCard = (prps: any) => {
                 {/* <hr /> */}
 
                 <div className={RoomStyle.roomplanCards}>
-                  <img width={200} src="/gestroomPlan/4.png" alt="roompicture" />
+                  <img
+                    width={200}
+                    src="/gestroomPlan/4.png"
+                    alt="roompicture"
+                  />
                   <div className={RoomStyle.roomplanContainer}>
                     <p className={RoomStyle.roomplantext}>{room.plan1}</p>
                     <div className={RoomStyle.roomplanButton}>
@@ -472,7 +511,11 @@ export const RoomCard = (prps: any) => {
                 {showPlan ? (
                   <div>
                     <div className={RoomStyle.roomplanCards}>
-                      <img width={200} src="/gestroomPlan/フリーWi-Fi.jpg" alt="roompicture" />
+                      <img
+                        width={200}
+                        src="/gestroomPlan/フリーWi-Fi.jpg"
+                        alt="roompicture"
+                      />
                       <div className={RoomStyle.roomplanContainer}>
                         <p className={RoomStyle.roomplantext}>{room.plan2}</p>
                         <div className={RoomStyle.roomplanButton}>
@@ -490,7 +533,12 @@ export const RoomCard = (prps: any) => {
                     </div>
                     {room.plan3 ? (
                       <div className={RoomStyle.roomplanCards}>
-                        <img width={200} height={165} src={room.image}alt="roompicture" />
+                        <img
+                          width={200}
+                          height={165}
+                          src={room.image}
+                          alt="roompicture"
+                        />
                         <div className={RoomStyle.roomplanContainer}>
                           <p className={RoomStyle.roomplantext}>{room.plan3}</p>
                           <div className={RoomStyle.roomplanButton}>
@@ -511,7 +559,12 @@ export const RoomCard = (prps: any) => {
                     )}
                     {room.plan4 ? (
                       <div className={RoomStyle.roomplanCards}>
-                        <img width={200} height={200} src="/gestroomPlan/breakfast-1.jpg" alt="roompicture" />
+                        <img
+                          width={200}
+                          height={200}
+                          src="/gestroomPlan/breakfast-1.jpg"
+                          alt="roompicture"
+                        />
                         <div className={RoomStyle.roomplanContainer}>
                           <p className={RoomStyle.roomplantext}>{room.plan4}</p>
                           <div className={RoomStyle.roomplanButton}>
