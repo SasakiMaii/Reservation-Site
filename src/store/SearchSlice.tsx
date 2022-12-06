@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+// import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
 
@@ -8,7 +8,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 //     upPrice:[]
 //   }, //初期値
 //   reducers: {
-//     setUpPrice: (state, action) => {
+//     setUpPrice: (state, action:PayloadAction<[]>) => {
 //       state.upPrice=action.payload
 //     },
 //   },

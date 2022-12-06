@@ -283,7 +283,7 @@ export const RoomCard = (prps: any) => {
   const { descClick, setDescClick, rooms, setRooms, ascClick, setAscClick } =
     prps;
   const soartData = collection(db, "gestRoomType");
-  const planData = collection(db, "Plan");
+  // const planData = collection(db, "Plan");
   const [showPlan, setShowPlan] = useState(false);
 
   const showPlanChange = () => {
@@ -303,6 +303,7 @@ export const RoomCard = (prps: any) => {
     });
     renderFlag.current = true;
   }
+
 
   const onAscSort = async () => {
     const priceAsc = query(soartData, orderBy("price"), limit(3));
