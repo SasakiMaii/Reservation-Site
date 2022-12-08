@@ -21,6 +21,7 @@ import {
 } from "firebase/firestore";
 import SecondryButton from "../../components/Atoms/button/SecondryButton";
 import EmptyRoomConditions from "../../components/Templates/EmptyRoomConditions";
+import Head from "../../components/layout/Head";
 
 const GestroomPlan: React.FC = () => {
   const [descClick, setDescClick] = useState(false);
@@ -35,7 +36,8 @@ const GestroomPlan: React.FC = () => {
 
   return (
     <>
-      <Header />
+    <Head title="PrinceViewHotel-客室・プラン" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
+      <Header/>
       <div className={RoomStyle.hidden}>
         <p className={RoomStyle.pageTitle}>
           <IoSearchOutline size={28} />

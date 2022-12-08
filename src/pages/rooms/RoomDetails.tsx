@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAdultCount, setChildInput } from "../../store/SearchSlice";
 import Stays from "../../components/Organisms/rooms/Stays";
 import Calender from "../../components/Atoms/Calender";
+import Head from "../../components/layout/Head";
 
 const RoomDetails = () => {
   const [num, setNum] = useState(1);
@@ -130,6 +131,7 @@ const RoomDetails = () => {
 
   return (
     <>
+    <Head title="PrinceViewHotel-客室" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
       <Header />
       <div className={RoomDetailStyle.containerAllDetail}>
         <Link to={"/rooms/Gestroom"} className={RoomDetailStyle.detaillink}>

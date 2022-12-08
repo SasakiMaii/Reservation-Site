@@ -23,6 +23,7 @@ import { HiOutlineChevronLeft } from "react-icons/hi";
 import PlanRecomendSwiper from "../../components/Organisms/PlanRecomendSwiper";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Calender from "../../components/Atoms/Calender";
+import Head from "../../components/layout/Head";
 
 // const status = 404;
 // if (status === 404) {
@@ -193,6 +194,7 @@ const PlanDetails = () => {
 
   return (
     <>
+    <Head title="PrinceViewHotel-プラン" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
       <Header />
       <>
         <Link to={"/rooms/Gestroom"} className={RoomDetailStyle.detaillink}>

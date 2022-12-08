@@ -15,6 +15,7 @@ import { useLocation } from "react-router-dom";
 import { addDoc, collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import db from "../../Firebase";
 import { useSelector } from "react-redux";
+import Head from "../../components/layout/Head";
 
 export const Login = () => {
   // ログインのstatus管理
@@ -100,6 +101,7 @@ export const Login = () => {
 
   return (
     <>
+      <Head title="PrinceViewHotel-ログイン" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
       <Header />
       <div className={`${LoginStyle.main} `}>
         <form className={` ${LoginStyle.form}`}>

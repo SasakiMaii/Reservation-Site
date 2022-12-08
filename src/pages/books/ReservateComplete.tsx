@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
 import DeleteModal from "../../components/books/DeleteModal";
+import Head from "../../components/layout/Head";
 
 const ReservateComplete = () => {
   return (
     <>
+      <Head title="PrinceViewHotel-予約完了" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
       <Header />
       <div className={ReservateCompleteStyles.reservateComplete}>
         <h1>予約完了しました</h1>
