@@ -14,23 +14,32 @@ import { ArrivalTime } from "./ArrivalTime";
 import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import DeleteModal from "./DeleteModal";
-import { input,select } from "../../store/ReservateConfirmSlice";
-
+import {
+  contactInput,
+  select,
+  lodgeFirstName,
+  lodgeLastName,
+} from "../../store/ReservateConfirmSlice";
+import PrimaryButton from "../Atoms/button/PrimaryButton";
 
 export const ReservateConfirmContents = () => {
-
   const selectItem = ["--", 15, 16, 17, 18, 19, 20, 21, 22];
 
   //redux
-  const contactInput = useSelector((state: any) => state.input.value);
-  const paymentItem = useSelector((state:any) => state.addPayment.value);
-  const payment = useSelector((state:any) => state.select.value);
-  const reserveFirstName = useSelector((state:any) => state.registerInput.firstName);
-  const reserveLastName = useSelector((state:any) => state.registerInput.lastName);
-  const telValue = useSelector((state:any) => state.registerInput.tel);
-  const mailValue = useSelector((state:any) => state.registerInput.mail);
+  const contactInput = useSelector((state: any) => state.inputValue.contact);
+  const paymentItem = useSelector((state: any) => state.inputValue.paymentItem);
+  const payment = useSelector((state: any) => state.inputValue.payment);
+  const reserveFirstName = useSelector(
+    (state: any) => state.registerInput.firstName
+  );
+  const reserveLastName = useSelector(
+    (state: any) => state.registerInput.lastName
+  );
+  // const lodgeFirstName = useSelector((state:any) => state.inputValue.lodgeFirstName);
+  // const lodgeLastName = useSelector((state:any) => state.inputValue.lodgeLastName);
+  const telValue = useSelector((state: any) => state.registerInput.tel);
+  const mailValue = useSelector((state: any) => state.registerInput.mail);
 
-  // const arrivalItem = useSelector((state:any) => state.addArrival.value);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -49,10 +58,10 @@ export const ReservateConfirmContents = () => {
     useState<string>("init");
   const [reserveLastNameErrorState, SetReserveLastNameErrorState] =
     useState<string>("init");
-  const [lodgeFirstNameValue, SetLodgeFirstNameValue] = useState("");
+  const [lodgeFirstName, SetLodgeFirstName] = useState("");
   const [lodgeFirstNameErrorState, SetLodgeFirstNameErrorState] =
     useState<string>("init");
-  const [lodgeLastNameValue, SetLodgeLastNameValue] = useState("");
+  const [lodgeLastName, SetLodgeLastName] = useState("");
   const [lodgeLastNameErrorState, SetLodgeLastNameErrorState] =
     useState<string>("init");
   const [telErrorState, SetTelErrorState] = useState<string>("init");
@@ -119,8 +128,8 @@ export const ReservateConfirmContents = () => {
       const data = {
         reserveFirstName: reserveFirstName,
         reserveLastName: reserveLastName,
-        lodgeFirstName: lodgeFirstNameValue,
-        lodgeLastName: lodgeLastNameValue,
+        lodgeFirstName: lodgeFirstName,
+        lodgeLastName: lodgeLastName,
         tel: telValue,
         mail: mailValue,
         contact: contactInput,
@@ -140,7 +149,8 @@ export const ReservateConfirmContents = () => {
       navigate("/books/ReservateComplete");
     }
   };
-  console.log(reserveData);
+  console.log(lodgeFirstName);
+  console.log(lodgeLastName);
 
   return (
     <div>
@@ -152,26 +162,19 @@ export const ReservateConfirmContents = () => {
             </h3>
             <div className={ReservateConfirmContentsStyles.subscriberInfo}>
               <NameInput
-                // lastNameValue={reserveLastNameValue}
-                // SetLastNameValue={SetReserveLastNameValue}
-                // firstNameValue={reserveFirstNameValue}
-                // SetFirstNameValue={SetReserveFirstNameValue}
                 firstNameErrorState={reserveFirstNameErrorState}
                 SetFirstNameErrorState={SetReserveFirstNameErrorState}
                 lastNameErrorState={reserveLastNameErrorState}
                 SetLastNameErrorState={SetReserveLastNameErrorState}
                 errorFlag={errorFlag}
+                
               />
               <TelInput
-                // telValue={telValue}
-                // SetTelValue={SetTelValue}
                 telErrorState={telErrorState}
                 SetTelErrorState={SetTelErrorState}
                 errorFlag={errorFlag}
               />
               <MailInput
-                // mailValue={mailValue}
-                // SetMailValue={SetMailValue}
                 mailErrorState={mailErrorState}
                 SetMailErrorState={SetMailErrorState}
                 errorFlag={errorFlag}
@@ -204,10 +207,9 @@ export const ReservateConfirmContents = () => {
                 ""
               ) : (
                 <NameInput
-                  lastNameValue={lodgeLastNameValue}
-                  SetLastNameValue={SetLodgeLastNameValue}
-                  firstNameValue={lodgeFirstNameValue}
-                  SetFirstNameValue={SetLodgeFirstNameValue}
+                  lodgeName="ok"
+                  SetLodgeLastName={SetLodgeLastName}
+                  SetLodgeFirstName={SetLodgeFirstName}
                   firstNameErrorState={lodgeFirstNameErrorState}
                   SetFirstNameErrorState={SetLodgeFirstNameErrorState}
                   lastNameErrorState={lodgeLastNameErrorState}
@@ -265,7 +267,7 @@ export const ReservateConfirmContents = () => {
                     <li>
                       <span>予約人数</span>
                       {peopleNumber}
-                      名（内訳：大人{reserveData.adultsNum}名、子ども
+                      名（内訳：大人{reserveData.adultsNum}名、子供
                       {reserveData.childrenNum}名）
                     </li>
                   );
@@ -294,25 +296,28 @@ export const ReservateConfirmContents = () => {
       </div>
       <div className={ReservateConfirmContentsStyles.payment}>
         <h3 className={ReservateConfirmContentsStyles.innertitle}>
-          お支払い方法<span>必須</span>
+          お支払い方法
         </h3>
-        <div className={ReservateConfirmContentsStyles.paymentRadioBtn}>
-          {paymentItem.map((radioItems:any) => (
-            <React.Fragment key={radioItems.title}>
-              <input
-                type="radio"
-                id={radioItems.id}
-                name="payment"
-                value={radioItems.value}
-                onChange={(e:any) => dispatch(select(e.target.value))}
-              />
-              <label htmlFor={radioItems.id}>{radioItems.title}</label>
-            </React.Fragment>
-          ))}
+        <div className={ReservateConfirmContentsStyles.paymentContents}>
+          <span>必須</span>
+          <div className={ReservateConfirmContentsStyles.paymentRadioBtn}>
+            {paymentItem.map((radioItems: any) => (
+              <React.Fragment key={radioItems.title}>
+                <input
+                  type="radio"
+                  id={radioItems.id}
+                  name="payment"
+                  value={radioItems.value}
+                  onChange={(e: any) => dispatch(select(e.target.value))}
+                />
+                <label htmlFor={radioItems.id}>{radioItems.title}</label>
+              </React.Fragment>
+            ))}
+          </div>
         </div>
       </div>
       <div className={ReservateConfirmContentsStyles.reservateButton}>
-        <button onClick={clickReservate}>予約する</button>
+        <PrimaryButton onClick={clickReservate}>予約する</PrimaryButton>
       </div>
       <div className={ReservateConfirmContentsStyles.reservateMessage}>
         <p style={{ display: confirmMessage }}>
@@ -324,9 +329,7 @@ export const ReservateConfirmContents = () => {
   );
 };
 
-
-export const Content = (props:any) => {
-
+export const Content = (props: any) => {
   const {
     selectValueChange,
     selectItem,
@@ -351,7 +354,7 @@ export const Content = (props:any) => {
         <div>
           <p>お問い合わせ・ご要望</p>
           <textarea
-            onChange={(e:any) => dispatch(input(e.target.value))}
+            onChange={(e: any) => dispatch(contactInput(e.target.value))}
             placeholder="ここにお問合せやご要望をご入力ください"
             className={ReservateConfirmContentsStyles.input}
           ></textarea>
@@ -371,13 +374,12 @@ export const Content = (props:any) => {
   );
 };
 
-
 type ClickCancelPolicy = {
-  accordionClick: () => void
-  click: boolean
-}
+  accordionClick: () => void;
+  click: boolean;
+};
 
-export const ClickCancelPolicy = (props:ClickCancelPolicy) => {
+export const ClickCancelPolicy = (props: ClickCancelPolicy) => {
   return (
     <div>
       <ul className={ReservateConfirmContentsStyles.accordionMenu}>

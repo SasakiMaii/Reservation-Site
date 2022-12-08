@@ -12,6 +12,7 @@ import { useState } from "react";
 //yarn add react-helmet-async
 import { useEffect } from "react";
 import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isOpen, setOpen] = useState(false);
@@ -71,8 +72,12 @@ const Header = () => {
                 </Link>
               </li>
               <li className={headerStyle.headerlist}>
-                <Link to={"/books/ReservateHistory"}>
-                  <span className={headerStyle.headerspan}> 予約内容確認</span>
+                <Link to={"/books/Contact"}>
+                  {" "}
+                  <span className={headerStyle.headerspan}>
+                    {" "}
+                    よくあるご質問
+                  </span>
                 </Link>
               </li>
               {/* <li>
@@ -110,6 +115,7 @@ const Header = () => {
 // ログインログアウト判定
 const Certification = () => {
   const [user] = useAuthState(auth);
+  const navigate = useNavigate();
 
   if (!user) {
     return (
@@ -125,12 +131,18 @@ const Certification = () => {
   } else {
     return (
       <>
+        <li className={headerStyle.headerlist}>
+          <Link to={"/books/ReservateHistory"}>
+            <span className={headerStyle.headerspan}> 予約内容確認</span>
+          </Link>
+        </li>
         <li>
           <button
             className={headerStyle.headerspan}
             onClick={() => {
               auth.signOut().then(() => {
                 alert("ログアウトしました。");
+                navigate("/");
               });
             }}
           >

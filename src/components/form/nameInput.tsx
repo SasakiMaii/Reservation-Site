@@ -30,7 +30,11 @@ export const NameInput = (props: any) => {
   const dispatch = useDispatch();
   const onChangeHandlerLast = (ev: ChangeEvent<HTMLInputElement>) => {
     // props.SetLastNameValue(ev.target.value);
-    dispatch(lastNameInput(ev.target.value));
+    if(props.lodgeName && props.lodgeName === "ok") {
+      props.SetLodgeLastName(ev.target.value)
+    } else {
+      dispatch(lastNameInput(ev.target.value));
+    }
 
     if (!(ev.target.value)) {
       props.SetLastNameErrorState("empty");
@@ -41,7 +45,11 @@ export const NameInput = (props: any) => {
 
   const onChangeHandlerFirst = (ev: ChangeEvent<HTMLInputElement>) => {
     // props.SetFirstNameValue(ev.target.value);
-    dispatch(firstNameInput(ev.target.value));
+    if(props.lodgeName && props.lodgeName === "ok") {
+      props.SetLodgeFirstName(ev.target.value)
+    } else {
+      dispatch(firstNameInput(ev.target.value));
+    }
 
     if (!(ev.target.value)) {
       props.SetFirstNameErrorState("empty");
@@ -51,12 +59,14 @@ export const NameInput = (props: any) => {
   }
 
   const Mark = () => {
-    if(!props.markNone) {
-      return (
-        <span className={`${FormStyle.mark}`}>必須</span>
+    if(props.markNone && props.markNone === "ok") {
+      console.log(1);
+      return ( <></>
+        
       )
     } else {
-      return <></>
+      console.log(2);
+      return <span className={`${FormStyle.mark}`}>必須</span>
     }
   }
 
@@ -65,7 +75,6 @@ export const NameInput = (props: any) => {
       <div className={`${FormStyle.formMain}`}>
         <div className={` ${FormStyle.labelGroup}`}>
           <label htmlFor="family-name">お名前 </label>
-          <span className={`${FormStyle.mark}`} >必須</span>
           <Mark />
           <Error
             text="名前を入力してください"

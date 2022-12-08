@@ -13,46 +13,35 @@ const radioItem = [
     },
   ];
 
-
-const reservateConfirmContactSlice = createSlice({
-  name: "contact",
-  initialState: {
-    value: "",
-  },
-  reducers: {
-    input: (state, action) => {
-      state.value = action.payload;
-    },
-  },
-});
-
-const reservateConfirmPaymentItemSlice = createSlice({
-    name: "paymentItem",
+  const reservateConfirmSlice = createSlice({
+    name: "inputValue",
     initialState: {
-        value: radioItem,
+      contact: "",
+      paymentItem: radioItem,
+      payment: radioItem,
+      lodgeFirstName: "",
+      lodgeLastName: ""
     },
     reducers: {
-        addPayment: (state,action) => {
-            state.value.push(action.payload)
-        }
+      contactInput: (state,action) => {
+        state.contact = action.payload;
+      },
+      addPayment: (state,action) => {
+        state.paymentItem.push(action.payload)
+      },
+      select: (state,action) => {
+        state.payment = action.payload;
+      },
+      lodgeFirstName: (state,action) => {
+        state.lodgeFirstName = action.payload;
+      },
+      lodgeLastName: (state,action) => {
+        state.lodgeLastName = action.payload;
+      }
     }
-})
+  })
 
-const reservateConfirmPaymentSlice = createSlice({
-  name: "payment",
-  initialState: {
-    value: radioItem,
-  },
-  reducers: {
-    select: (state, action) => {
-      state.value = action.payload;
-    },
-  },
-});
 
-export const { input } = reservateConfirmContactSlice.actions;
-export const { select } = reservateConfirmPaymentSlice.actions;
-export const { addPayment } = reservateConfirmPaymentItemSlice.actions;
-export const reservateConfirmContactReducer = reservateConfirmContactSlice.reducer;
-export const reservateConfirmPaymentReducer = reservateConfirmPaymentSlice.reducer;
-export const reservateConfirmPaymentItemReducer = reservateConfirmPaymentItemSlice.reducer;
+
+export const { contactInput,select,addPayment,lodgeFirstName,lodgeLastName } = reservateConfirmSlice.actions;
+export default reservateConfirmSlice.reducer;

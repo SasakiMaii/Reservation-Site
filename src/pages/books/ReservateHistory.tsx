@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ReservateHistoryStyles from "../../styles/books/_ReservateHistory.module.scss";
 import db from "../../Firebase";
 import { auth } from "../../Firebase";
@@ -8,6 +8,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
 import Head from "../../components/layout/Head";
+
 
 const ReservateHistory = () => {
   //(firebase)データベースを格納
@@ -19,8 +20,13 @@ const ReservateHistory = () => {
   const [openLodgedDisplay, setOpenLodgedDisplay] = useState<boolean>(false);
   const [hideLodgedMessage, setHideLodgedMessage] = useState<string>("block");
 
-  const [clickReservateDetails, setClickReservateDetails] = useState<boolean>(false);
-  const [clickUnReservateDetails, setClickUnReservateDetails] = useState<boolean>(false);
+  //アコーディオンメニュー
+  const [openUnReseveAnswer, setUnReserveOpenAnswer] = useState<any>({
+    0: false,
+  });
+  const [openResevedAnswer, setReservedOpenAnswer] = useState<any>({
+    0: false,
+  });
 
   let dt = new Date();
   let y = dt.getFullYear();
@@ -37,21 +43,23 @@ const ReservateHistory = () => {
     // console.log(user.email);
   }
 
-  const clickChange = () => {
-    if (clickUnReservateDetails === false) {
-      setClickUnReservateDetails(true);
-    } else {
-      setClickUnReservateDetails(false);
-    }
+  const clickChange = (index: number) => {
+    console.log(index);
+    setUnReserveOpenAnswer((prevState: any) => ({
+      ...prevState,
+      [index]: !prevState[index],
+    }));
+    
   };
 
-  const clickDetails = () => {
-    if (clickReservateDetails === false) {
-      setClickReservateDetails(true);
-    } else {
-      setClickReservateDetails(false);
-    }
+  const clickDetails = (index: any) => {
+    setReservedOpenAnswer((prevState: any) => ({
+      ...prevState,
+      [index]: !prevState[index],
+    }));
   };
+  console.log("f",openUnReseveAnswer)
+  console.log("j",openResevedAnswer)
 
   const clickUnlodgeOpen = async () => {
     setOpenUnlodgeDisplay(true);
@@ -60,7 +68,7 @@ const ReservateHistory = () => {
     //firebaseから、ログインしているユーザーメールアドレスと一致する予約データを取得する
     const reserveData = query(
       collection(db, "reserved"),
-      where("mail", "==", userEmail)
+      where("loginMail", "==", userEmail)
     );
     getDocs(reserveData).then((reserveItem) => {
       setReserves(reserveItem.docs.map((doc) => ({ ...doc.data() })));
@@ -83,8 +91,8 @@ const ReservateHistory = () => {
 
   // checkOutの日付が過去か未来か判別
   // eslint-disable-next-line array-callback-return
-  const unReserve: any = [];
-  const reserved: any = [];
+  let unReserve: any = [];
+  let reserved: any = [];
   // eslint-disable-next-line array-callback-return
   reserves.map((reserveItems: any) => {
     const abc = Date.parse(reserveItems.checkIn);
@@ -94,6 +102,7 @@ const ReservateHistory = () => {
       reserved.push(reserveItems);
     }
   });
+  console.log("j",reserves);
 
   return (
     <>
@@ -108,11 +117,10 @@ const ReservateHistory = () => {
         />
         {openUnlodgeDisplay ? (
           <UnReserve
-            reserves={reserves}
             clickChange={clickChange}
             UnReservateDetails={UnReservateDetails}
-            clickUnReservateDetails={clickUnReservateDetails}
             unReserve={unReserve}
+            openUnReseveAnswer={openUnReseveAnswer}
           />
         ) : (
           ""
@@ -124,9 +132,8 @@ const ReservateHistory = () => {
         {openLodgedDisplay ? (
           <Reserved
             clickDetails={clickDetails}
-            clickReservateDetails={clickReservateDetails}
-            reserves={reserves}
             reserved={reserved}
+            openResevedAnswer={openResevedAnswer}
           />
         ) : (
           ""
@@ -139,7 +146,7 @@ const ReservateHistory = () => {
 
 export default ReservateHistory;
 
-export const UnReserveTitle = (props:any) => {
+export const UnReserveTitle = (props: any) => {
   const { clickUnlodgeOpen, hideUnlodgeMessage } = props;
   return (
     <div
@@ -153,12 +160,8 @@ export const UnReserveTitle = (props:any) => {
 };
 
 export const UnReserve = (props: any) => {
-  const {
-    clickChange,
-    unReserve,
-    UnReservateDetails,
-    clickUnReservateDetails,
-  } = props;
+  const { clickChange, unReserve, UnReservateDetails, openUnReseveAnswer } =
+    props;
 
   return (
     <div className={ReservateHistoryStyles.unLodger}>
@@ -168,22 +171,21 @@ export const UnReserve = (props: any) => {
       </div>
       <div>
         <div className={ReservateHistoryStyles.unLodgerContentsList}>
-          {unReserve.map((unReserveItem: any,index:any) => {
+          {unReserve.map((unReserveItem: any, index: number) => {
             return (
               <>
                 <div className={ReservateHistoryStyles.unLodgerContentsLists}>
-                  <p>・{unReserveItem.plan}</p>
-                  <button onClick={clickChange}>詳細を見る</button>
+                  <p>
+                    ・{unReserveItem.checkIn}〜&nbsp;&nbsp;{unReserveItem.plan}
+                  </p>
+                  <button onClick={() => clickChange(index)}>詳細を見る</button>
+                  {unReserveItem.question}
                 </div>
+                
                 <div>
-                  {clickUnReservateDetails ? (
-                    <UnReservateDetails
-                      unReserve={unReserve}
-                      className={ReservateHistoryStyles.unReservateDetails}
-                    />
-                  ) : (
-                    ""
-                  )}
+                  {openUnReseveAnswer[index] && unReserve ? (
+                    <UnReservateDetails unReserveItem={unReserveItem}/>
+                  ) : undefined}
                 </div>
               </>
             );
@@ -194,52 +196,47 @@ export const UnReserve = (props: any) => {
   );
 };
 
-export const UnReservateDetails = ({ unReserve }: any) => {
+export const UnReservateDetails = ({unReserveItem} :any) => {
   return (
     <div className={ReservateHistoryStyles.unReservateDetails}>
       <ul>
-        {unReserve.map((reserveItem: any) => {
+        {" "}
+        <li>
+          <span>予約完了日</span>
+          {unReserveItem.reservationDate}
+        </li>
+        <li>
+          <span>宿泊プラン</span>
+          {unReserveItem.plan}
+        </li>
+        <li>
+          <span>客室</span>
+          {unReserveItem.roomType}
+        </li>
+        <li>
+          <span>チェックイン日</span>
+          {unReserveItem.checkIn}
+        </li>
+        <li>
+          <span>宿泊数</span>
+          {unReserveItem.lodgeNum}泊
+        </li>
+        {(function () {
+          let peopleNumber =
+            unReserveItem.adultsNum + unReserveItem.childrenNum;
           return (
-            <>
-              <li>
-                <span>予約完了日</span>
-                {reserveItem.reservationDate}
-              </li>
-              <li>
-                <span>宿泊プラン</span>
-                {reserveItem.plan}
-              </li>
-              <li>
-                <span>客室</span>
-                {reserveItem.roomType}
-              </li>
-              <li>
-                <span>チェックイン日</span>
-                {reserveItem.checkIn}
-              </li>
-              <li>
-                <span>宿泊数</span>
-                {reserveItem.lodgeNum}泊
-              </li>
-              {(function () {
-                let peopleNumber =
-                  reserveItem.adultsNum + reserveItem.childrenNum;
-                return (
-                  <li>
-                    <span>予約人数</span>
-                    {peopleNumber}
-                    名（内訳：大人{reserveItem.adultsNum}名、子ども
-                    {reserveItem.childrenNum}名）
-                  </li>
-                );
-              })()}
-              <li>
-                <span>宿泊金額</span>
-                {reserveItem.price}円（税込）
-              </li>
-            </>
+            <li>
+              <span>予約人数</span>
+              {peopleNumber}
+              名（内訳：大人{unReserveItem.adultsNum}名、子供
+              {unReserveItem.childrenNum}名）
+            </li>
           );
-        })}
+        })()}
+        <li>
+          <span>宿泊金額</span>
+          {unReserveItem.price}円（税込）
+        </li>
       </ul>
     </div>
   );
@@ -259,7 +256,7 @@ export const ReservedTitle = (props: any) => {
 };
 
 export const Reserved = (props: any) => {
-  const { clickDetails, clickReservateDetails, reserved } = props;
+  const { clickDetails, reserved, openResevedAnswer } = props;
   return (
     <div className={ReservateHistoryStyles.lodged}>
       <h3 className={ReservateHistoryStyles.innerTitle}>宿泊済み予約</h3>
@@ -267,22 +264,20 @@ export const Reserved = (props: any) => {
         <p className={ReservateHistoryStyles.subTitle}>予約内容</p>
       </div>
       <div className={ReservateHistoryStyles.lodgedContentsList}>
-        {reserved.map((reservedItem: any) => {
+        {reserved.map((reservedItem: any, index: any) => {
           return (
             <>
               <div className={ReservateHistoryStyles.lodgedContentsLists}>
-                <p>・{reservedItem.plan}</p>
-                <button onClick={clickDetails}>詳細を見る</button>
+                <p>
+                  ・{reservedItem.checkIn}〜&nbsp;&nbsp;{reservedItem.plan}
+                </p>
+                <button onClick={() => clickDetails(index)}>詳細を見る</button>
+                {reservedItem.question}
               </div>
               <div>
-                {clickReservateDetails && reserved ? (
-                  <ReservateDetails
-                    reserved={reserved}
-                    className={ReservateHistoryStyles.reservateDetails}
-                  />
-                ) : (
-                  ""
-                )}
+                {openResevedAnswer[index] ? (
+                  <ReservateDetails reservedItem={reservedItem} />
+                ) : undefined}
               </div>
             </>
           );
@@ -292,52 +287,45 @@ export const Reserved = (props: any) => {
   );
 };
 
-export const ReservateDetails = ({ reserved }: any) => {
+export const ReservateDetails = ({ reservedItem }: any) => {
   return (
     <div className={ReservateHistoryStyles.reservateDetails}>
       <ul>
-        {reserved?.map((reservedItem: any) => {
+        <li>
+          <span>予約完了日</span>
+          {reservedItem.reservationDate}
+        </li>
+        <li>
+          <span>宿泊プラン</span>
+          {reservedItem.plan}
+        </li>
+        <li>
+          <span>客室</span>
+          {reservedItem.roomType}
+        </li>
+        <li>
+          <span>チェックイン日</span>
+          {reservedItem.checkIn}
+        </li>
+        <li>
+          <span>宿泊数</span>
+          {reservedItem.lodgeNum}泊
+        </li>
+        {(function () {
+          let peopleNumber = reservedItem.adultsNum + reservedItem.childrenNum;
           return (
-            <>
-              <li>
-                <span>予約完了日</span>
-                {reservedItem.reservationDate}
-              </li>
-              <li>
-                <span>宿泊プラン</span>
-                {reservedItem.plan}
-              </li>
-              <li>
-                <span>客室</span>
-                {reservedItem.roomType}
-              </li>
-              <li>
-                <span>チェックイン日</span>
-                {reservedItem.checkIn}
-              </li>
-              <li>
-                <span>宿泊数</span>
-                {reservedItem.lodgeNum}泊
-              </li>
-              {(function () {
-                let peopleNumber =
-                  reservedItem.adultsNum + reservedItem.childrenNum;
-                return (
-                  <li>
-                    <span>予約人数</span>
-                    {peopleNumber}
-                    名（内訳：大人{reservedItem.adultsNum}名、子ども
-                    {reservedItem.childrenNum}名）
-                  </li>
-                );
-              })()}
-              <li>
-                <span>宿泊金額</span>
-                {reservedItem.price}円（税込）
-              </li>
-            </>
+            <li>
+              <span>予約人数</span>
+              {peopleNumber}
+              名（内訳：大人{reservedItem.adultsNum}名、子供
+              {reservedItem.childrenNum}名）
+            </li>
           );
-        })}
+        })()}
+        <li>
+          <span>宿泊金額</span>
+          {reservedItem.price}円（税込）
+        </li>
       </ul>
     </div>
   );

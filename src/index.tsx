@@ -10,26 +10,15 @@ import { getAnalytics } from "firebase/analytics";
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import reginsterReducer from "./store/RegisterSlice"
-import {
-  reservateConfirmContactReducer,
-  reservateConfirmPaymentReducer,
-  reservateConfirmPaymentItemReducer,
-} from "./store/ReservateConfirmSlice";
+import 
+  reservateConfirmReducer
+ from "./store/ReservateConfirmSlice";
+
 import searchReducer from "./store/SearchSlice"
 import gestroomReducer from "./store/GestroomSlice"
 import { HelmetProvider } from 'react-helmet-async';
 
 // redux store
-const store = configureStore({
-  reducer: {
-    input: reservateConfirmContactReducer,
-    addPayment: reservateConfirmPaymentItemReducer,
-    select: reservateConfirmPaymentReducer,
-    registerInput:reginsterReducer,
-    searchInput:searchReducer,
-    gestroom:gestroomReducer,
-  },
-});
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -51,6 +40,17 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 // eslint-disable-next-line import/first
 
+
+// redux store
+const store = configureStore({
+  reducer: {
+    inputValue: reservateConfirmReducer,
+    registerInput:reginsterReducer,
+    searchInput:searchReducer,
+    gestroom:gestroomReducer,
+  },
+});
+    
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

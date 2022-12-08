@@ -1,0 +1,89 @@
+//共通
+
+* {
+    color: rgb(65, 65, 65);
+    max-width: 100%;
+  }
+    
+  //レスポンシブ
+  $breakpoints: (
+    pc: "screen and (min-width:1200px)",
+    tab: "screen and (max-width:610px)",
+    sp: "screen and (max-width:414px)",
+  );
+  
+  @mixin mq($breakpoint: pc) {
+    @media #{map-get($breakpoints, $breakpoint)} {
+      @content;
+    }
+  }
+
+
+.contactContainer {
+    width: 1400px;
+    margin: 0 auto;
+}
+
+.contactContainer h1 {
+    text-align: center;
+    margin: 50px;
+}
+
+.contactSubTitle {
+    margin: 50px 70px 30px 70px;
+    position: relative;
+    padding: 1rem;
+    span {
+        position: relative;
+        z-index: 2;
+        margin-left: 12px;
+    }
+}
+
+.contactSubTitle::before {
+    content: attr(data-number);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: rgba(229 192 70 / .5);
+    z-index: 1;
+    font-size: 40px;
+}
+
+.contactBtn {
+    display: flex;
+}
+
+.contactContainer button {
+    width: 320px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid black;
+    transition: 0.3s;
+}
+
+.contactContainer button:hover {
+    cursor: pointer;
+    background-color: rgb(238, 238, 238);
+    transition: 0.3s;
+}
+
+.contactQuestion {
+    margin: 30px auto;
+    width: 1250px;
+    padding: 20px 0;
+    font-size: 18px;
+    // border-top: 1px solid #deb887;
+    border-bottom: 1px solid #deb887;
+}
+
+.contactQuestion:hover {
+    cursor: pointer;
+}
+
+.contactAnswer {
+    margin: 20px auto;
+    width: 1250px;
+}

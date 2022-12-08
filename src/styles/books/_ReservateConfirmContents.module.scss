@@ -8,7 +8,6 @@
 }
 
 //コンポーネント背景色
-// $mainColor: rgb(227, 227, 227);
 $mainColor: rgb(248, 248, 248);
 
 //レスポンシブ
@@ -29,17 +28,15 @@ $breakpoints: (
   margin-top: 30px;
   padding: 10px;
   width: 550px;
-  // width: 50%;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
-    width: 420px;
+    width: 300px;
     font-size: 10px;
-    margin: 0 auto;
   }
   @include mq(tab) {
-    width: 500px;
+    width: 350px;
     font-size: 12px;
-    margin: 40px auto;
+    margin: 10px;
   }
 }
 
@@ -55,21 +52,19 @@ $breakpoints: (
 .lodger {
   background-color: $mainColor;
   margin-top: 30px;
-  // margin-left: 20px;
   margin-bottom: 30px;
   padding: 10px;
   width: 550px;
-  // width: 50%;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
-    width: 420px;
+    width: 300px;
     font-size: 10px;
     margin: 10px auto;
   }
   @include mq(tab) {
-    width: 500px;
+    width: 350px;
     font-size: 12px;
-    margin: 40px auto;
+    margin: 10px;
   }
 }
 
@@ -85,10 +80,8 @@ $breakpoints: (
 .reservateplan {
   background-color: $mainColor;
   width: 550px;
-  // width: 50%;
   max-height: 460px;
   margin-top: 30px;
-  // margin-left: 120px;
   margin-right: 20px;
   padding: 10px;
   box-shadow: 0px 0px 8px -4px #777777;
@@ -103,14 +96,14 @@ $breakpoints: (
     margin: 0 10px;
   }
   @include mq(sp) {
-    width: 420px;
+    width: 300px;
     font-size: 10px;
     margin: 10px auto;
   }
   @include mq(tab) {
-    width: 500px;
+    width: 350px;
     font-size: 12px;
-    margin: 40px auto;
+    margin: 10px;
   }
 }
 
@@ -169,10 +162,12 @@ $breakpoints: (
     color: red;
   }
   @include mq(sp) {
-    width: 500px;
+    width: 300px;
     font-size: 10px;
-    //autoが効かない
-    margin: 20px 190px;
+    margin: 10px auto;
+  }
+  input {
+    flex-direction: column;
   }
   label {
     padding: 5px 15px 5px 5px;
@@ -182,18 +177,18 @@ $breakpoints: (
     }
   }
   @include mq(tab) {
-    width: 500px;
+    width: 350px;
     font-size: 12px;
-    //autoが効かない
-    margin: 40px 220px;
+    margin: 10px;
   }
 }
 
 .paymentRadioBtn {
   margin: 15px 40px 10px 45px;
   @include mq(sp) {
-    width: 500px;
+    width: 200px;
     font-size: 10px;
+    display: inline-block;
   }
 }
 
@@ -221,13 +216,10 @@ $breakpoints: (
   border: solid 2px #c0c0c0;
   border-radius: 6px;
   padding: 8px;
-  // @include mq(sp) {
-  //   width: 150px;
-  // }
 }
 
 .input:hover {
-  border: solid 2px rgb(101, 109, 183);
+  border: solid 2px rgb(205, 176, 109);
 }
 
 textarea {
@@ -238,11 +230,6 @@ textarea {
 
 .reservateButton {
   margin: 40px auto 10px auto;
-  text-align: center;
-  padding: 15px;
-  color: #fff;
-  width: 170px;
-  height: 55px;
   font-size: 18px;
   line-height: 1;
   text-decoration: none;
@@ -256,7 +243,7 @@ textarea {
   background-color: rgb(137, 0, 0);
   @include mq(sp) {
     display: block;
-    margin: 0 300px;
+    margin: 20px auto;
   }
 }
 
@@ -382,9 +369,14 @@ textarea {
   margin-right: 10px;
 }
 
+.paymentContents {
+  margin: 20px 0 0 35px;
+}
+
 .payment span {
   font-size: 10px;
   padding: 5px;
+  margin-left: 0;
   background-color: rgb(220 38 38);
   color: white;
   transform: translateY(-2px) translateX(8px);
@@ -407,8 +399,6 @@ textarea {
 .reservateplanBtn button {
   display: block;
   margin: 50px auto;
-  // width: 150px;
-  // height: 50px;
   background-color: rgb(26, 89, 136);
   color: #fff;
   width: 170px;
@@ -420,7 +410,6 @@ textarea {
   font-size: 18px;
   width: 180px;
   height: 50px;
-  // border: 1.5px solid #6a6a6a;
   position: relative;
   transition: 0.3s;
   background-color: rgb(171, 171, 171);

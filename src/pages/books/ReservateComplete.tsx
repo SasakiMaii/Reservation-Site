@@ -19,13 +19,10 @@ const ReservateComplete = () => {
           詳細につきましては、ご予約時のメールアドレスにお送りいたします。
         </p>
         <div className={ReservateCompleteStyles.link}>
-          <Link to="/rooms/Gestroom">お買い物を続ける</Link>
+          <Link to="/rooms/Gestroom">客室・プラン検索に戻る</Link>
         </div>
       </div>
-      {/* <DeleteModal /> */}
-      <footer>
-        <Footer />
-      </footer>
+      <Footer />
     </>
   );
 };
