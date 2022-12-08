@@ -158,7 +158,7 @@ const GestroomPlan = () => {
           空室検索
         </p>
         <Link to={"/"} className={RoomStyle.reservedCheck}>
-          ご予約内容の確認・変更・取り消しはこちら
+          ご予約内容の確認はこちら
         </Link>
         {err.map((error: any) => {
           return (

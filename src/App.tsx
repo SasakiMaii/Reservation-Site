@@ -13,6 +13,7 @@ import RoomDetails from './pages/rooms/RoomDetails';
 import NotFound from './pages/NotFound';
 import Header from "../src/components/layout/Header";
 import PlanDetails from './pages/rooms/PlanDetails';
+import Contact from './pages/books/Contact';
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Route path='/books/ReservateConfirm' element={<ReservateConfirm />}></Route>
           <Route path='/books/ReservateComplete' element={<ReservateComplete />}></Route>
           <Route path='/books/ReservateHistory' element={<ReservateHistory />}></Route>
+          <Route path='/books/Contact' element={<Contact />}></Route>
           <Route path='/' element={<Top />}></Route>        
           <Route path='/rooms/RoomPlanSearch' element={<RoomSearch />}></Route>
           <Route path='/rooms/Gestroom' element={<Gestroom />}></Route>

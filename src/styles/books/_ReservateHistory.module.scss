@@ -30,6 +30,12 @@ $breakpoints: (
   margin: 50px;
 }
 
+.LoginMessage {
+  text-align: center;
+  font-size: 18px;
+  color: rgb(137, 0, 0);
+}
+
 //宿泊待ち予約
 .unReserveTitle {
   background-color: pink;
@@ -56,10 +62,10 @@ $breakpoints: (
 
 .unLodger {
   width: 800px;
-  margin: 20px auto;
+  margin: 40px auto;
   padding-bottom: 10px;
   background-color: $mainColor;
-  max-height: 2500px;
+  max-height: 5000px;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
     width: 300px;
@@ -88,7 +94,8 @@ $breakpoints: (
     height: 30px;
     margin: 0 auto;
     text-align: center;
-    background-color: rgb(171, 171, 171);
+    background-color: rgb(130, 130, 130);
+    border-radius: 5px;
     color: #fff;
   }
 }
@@ -142,7 +149,7 @@ $breakpoints: (
   margin: 20px auto;
   padding-bottom: 10px;
   background-color: $mainColor;
-  max-height: 900px;
+  max-height: 5000px;
   box-shadow: 0px 0px 8px -4px #777777;
   @include mq(sp) {
     width: 300px;
@@ -171,7 +178,8 @@ $breakpoints: (
     height: 30px;
     margin: 0 auto;
     text-align: center;
-    background-color: rgb(171, 171, 171);
+    background-color: rgb(130, 130, 130);
+    border-radius: 5px;
     color: #fff;
   }
 }

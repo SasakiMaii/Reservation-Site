@@ -16,7 +16,7 @@ const Footer = () => {
                 <Link to={"/"}>客室・プラン</Link>
               </li>
               <li>
-                <Link to={"/"}>お問い合わせ</Link>
+                <Link to={"/books/Contact"}>よくあるご質問</Link>
               </li>
             </ul>
           </div>
