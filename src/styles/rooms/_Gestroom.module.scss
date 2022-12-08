@@ -537,18 +537,19 @@ align-items: right;
 //error
 .err{
   text-align: center;
-  margin-top: 20px;
+  margin-top: 30px;
   color: red;
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 
-.reservedCheck {
-  font-size: 13px;
-  display: block;
+
+
+.info{
   text-align: center;
-  margin: 10px 0 10px 0;
-  border-bottom: 1px solid #000;
-  display: inline-block;
-  @include mq(sp){
-    margin-left: 70px;
-  }
+  margin-top: 20px;
+  font-size: 30px;
+  border-top: #7e0000 solid 3px;
+  border-bottom: #7e0000 solid 3px;
+  color:rgb(69, 0, 0);
 }

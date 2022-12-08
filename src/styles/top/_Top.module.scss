@@ -177,17 +177,12 @@ p{
   // background-color: aqua;
   
   @extend %itemsPositionCenter;
-  margin: 100px auto;
+  margin: 80px auto;
 }
 
-.roomsIntroductionFlex{
-  display: flex;
-  align-items: center;
-}
 
 .roomsIntroductionDetail{
-  margin-left: 30px;
-  width: 50%;
+  text-align: center;
 
 }
 

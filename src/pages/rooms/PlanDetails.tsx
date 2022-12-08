@@ -22,6 +22,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { HiOutlineChevronLeft } from "react-icons/hi";
 import PlanRecomendSwiper from "../../components/Organisms/PlanRecomendSwiper";
 import { useAuthState } from "react-firebase-hooks/auth";
+import Calender from "../../components/Atoms/Calender";
 
 // const status = 404;
 // if (status === 404) {
@@ -37,6 +38,7 @@ const PlanDetails = () => {
   const [roomsId, setRoomsId] = useState<any>([]);
   const [inputDate, setInputDate] = useState(false);
   const [datetext, setDatetext] = useState("");
+
 
   const navigation = useNavigate();
   const [user] = useAuthState(auth);
@@ -124,19 +126,6 @@ const PlanDetails = () => {
   };
 
   const handleResarve = () => {
-    // const reserveData = collection(db, "reserve");
-    // const data = {
-    //   adultsNum: adult,
-    //   childrenNum: children,
-    //   checkIn: datetext,
-    //   price: result,
-    //   roomType: String(room),
-    //   totalDate: Number(num),
-    //   plan: roomtype || roomtype2 || roomtype3 || roomtype4,
-    // };
-    // addDoc(reserveData, data);
-
-    console.log(datetext)
     if (user) {
       console.log(user.email);
       const reserveData = collection(db, "reserve");
@@ -170,8 +159,6 @@ const PlanDetails = () => {
     }
   };
 
-  // const gestRoomData = collection(db, "gestRoomType");
-
   const handleDateClick = (arg: any) => {
     if (inputDate === false) {
       arg.dayEl.style.backgroundColor = "steelblue"; //カレンダーに色つける
@@ -185,7 +172,6 @@ const PlanDetails = () => {
   };
 
   const room = rooms.map((room: any) => room.area);
-
   const price = rooms.map((room: any) => room.price);
 
   const planPrice = rooms.map((room: any) => {
@@ -204,21 +190,11 @@ const PlanDetails = () => {
     (Number(price) + Number(planPrice)) * num * adult +
     children * 5000
   ).toLocaleString();
-  // const result = (
-  //   (num * Number(price) * adult +
-  //   children * 5000)+Number(planPrice)
-  // ).toLocaleString();
 
   return (
     <>
       <Header />
       <>
-        {/* <Link
-          to={"/books/ReservateHistory"}
-          className={RoomDetailStyle.detailreservedchange}
-          >
-          →予約内容の確認・取り消しはこちら
-        </Link> */}
         <Link to={"/rooms/Gestroom"} className={RoomDetailStyle.detaillink}>
           <HiOutlineChevronLeft size={25} /> 客室・プラン{" "}
         </Link>
@@ -235,17 +211,10 @@ const PlanDetails = () => {
                   />
                   <div className={RoomDetailStyle.detailCheck}>
                     <p>※チェックインの日付を選択してください</p>
-                    <FullCalendar
-                      plugins={[dayGridPlugin, interactionPlugin]}
-                      locale="ja"
-                      initialView="dayGridMonth"
-                      dateClick={handleDateClick}
-                      selectable={true}
-                      selectMirror={true}
-                      businessHours={true}
-                      buttonText={{
-                        today: "今日",
-                      }}
+                    <Calender
+                      inputDate={inputDate}
+                      setInputDate={setInputDate}
+                      setDatetext={setDatetext}
                     />
                     <p>チェックイン：{room.checkIn}</p>
                     <p>チェックアウト：{room.checkOut}</p>
@@ -393,7 +362,7 @@ export const RecomendRoom = () => {
         {plans.map((plan: any) => (
           <div key={plan.name}>
             <img
-              src="../hotel-4.jpg"
+              src={plan.image}
               className={RoomDetailStyle.detailrecomendpic}
               alt="roompicture"
             />

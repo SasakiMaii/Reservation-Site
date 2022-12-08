@@ -22,6 +22,7 @@ import Pageing from "../../components/Organisms/rooms/Pageing";
 import PagingStyle from "../../styles/rooms/_Paging.module.scss";
 import RoomPlanSearch from "../../components/Templates/Search";
 import SecondryButton from "../../components/Atoms/button/SecondryButton";
+import RoomLink from "../../components/Molecules/rooms/RoomLink";
 
 //プラン
 const Plan = () => {
@@ -42,13 +43,6 @@ const Plan = () => {
   const [datetext, setDatetext] = useState("");
 
   const dateChoice = () => {
-    // const res = reserve.filter((x: any) => {
-    //   return x.checkIn === datetext;
-    // }); //日付が一致
-
-    // const result = reserved.filter((y: any) => {
-    //   return y.checkIn === datetext;
-    // }); //日付が一致
 
     const roomFilter = reserve.filter((x: any) => {
       return x.roomType === roomChange;
@@ -61,11 +55,6 @@ const Plan = () => {
 
     const count = Number(adultInput) + Number(chilrdInput) <= 3;
     //人数が合わせて３人以上だったらtrue
-
-    // const noemptyRoom = room.filter((x: any) => {
-    //   return String(x.roomType) === roomChange;
-    // });
-    // //ゲストルームのDBのルームタイプと,部屋の入力値が一致
 
     const noemptyRooms = reserve.filter((x: any) => {
       return String(x.checkIn) === datetext;
@@ -113,13 +102,7 @@ const Plan = () => {
       <Header />
       <p className={PlanStyle.pageTitle}><IoSearchOutline/>空室検索</p>
       <RoomPlanSearch room={room} setRoom={setRoom} reserve={reserve} setReserve={setReserve} reserved={reserved} setReserved={setReserved} chilrdInput={chilrdInput} setChilrdInput={setChilrdInput} adultInput={adultInput} setAdultInput={setAdultInput} roomChange={roomChange} setRoomChange={setRoomChange} downChange={downChange} setDownChange={setDownChange} upChange={upChange} setUpChange={setUpChange} datetext={datetext} setDatetext={setDatetext} dateChoice={dateChoice}/>
-      <p className={PlanStyle.pageTitle2}>全ての客室＆プラン</p>
-      <div className={PlanStyle.planLinkWrapper}>
-        <Link to={"/rooms/GestRoom"}>客室で探す</Link>
-        <Link to={"#"} className={PlanStyle.planLink}>
-          プランで探す
-        </Link>
-      </div>
+      <RoomLink/>
       <PlanCard plans={plans} SetPlans={SetPlans} rooms={rooms} setRooms={SetRooms} descClick={descClick} setDescClick={setDescClick} setAscClick={setAscClick} ascClick={ascClick}/>
       <Pageing />
       <Footer />

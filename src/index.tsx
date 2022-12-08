@@ -13,6 +13,12 @@ import reginsterReducer from "./store/RegisterSlice"
 import 
   reservateConfirmReducer
  from "./store/ReservateConfirmSlice";
+
+import searchReducer from "./store/SearchSlice"
+import gestroomReducer from "./store/GestroomSlice"
+
+// redux store
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -38,7 +44,9 @@ const analytics = getAnalytics(app);
 const store = configureStore({
   reducer: {
     inputValue: reservateConfirmReducer,
-    registerInput:reginsterReducer
+    registerInput:reginsterReducer,
+    searchInput:searchReducer,
+    gestroom:gestroomReducer,
   },
 });
     
