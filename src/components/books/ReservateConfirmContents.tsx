@@ -58,10 +58,10 @@ export const ReservateConfirmContents = () => {
     useState<string>("init");
   const [reserveLastNameErrorState, SetReserveLastNameErrorState] =
     useState<string>("init");
-  const [lodgeFirstNameValue, SetLodgeFirstNameValue] = useState("");
+  const [lodgeFirstName, SetLodgeFirstName] = useState("");
   const [lodgeFirstNameErrorState, SetLodgeFirstNameErrorState] =
     useState<string>("init");
-  const [lodgeLastNameValue, SetLodgeLastNameValue] = useState("");
+  const [lodgeLastName, SetLodgeLastName] = useState("");
   const [lodgeLastNameErrorState, SetLodgeLastNameErrorState] =
     useState<string>("init");
   const [telErrorState, SetTelErrorState] = useState<string>("init");
@@ -128,8 +128,8 @@ export const ReservateConfirmContents = () => {
       const data = {
         reserveFirstName: reserveFirstName,
         reserveLastName: reserveLastName,
-        lodgeFirstName: lodgeFirstNameValue,
-        lodgeLastName: lodgeLastNameValue,
+        lodgeFirstName: lodgeFirstName,
+        lodgeLastName: lodgeLastName,
         tel: telValue,
         mail: mailValue,
         contact: contactInput,
@@ -149,6 +149,8 @@ export const ReservateConfirmContents = () => {
       navigate("/books/ReservateComplete");
     }
   };
+  console.log(lodgeFirstName);
+  console.log(lodgeLastName);
 
   return (
     <div>
@@ -165,6 +167,7 @@ export const ReservateConfirmContents = () => {
                 lastNameErrorState={reserveLastNameErrorState}
                 SetLastNameErrorState={SetReserveLastNameErrorState}
                 errorFlag={errorFlag}
+                
               />
               <TelInput
                 telErrorState={telErrorState}
@@ -204,10 +207,9 @@ export const ReservateConfirmContents = () => {
                 ""
               ) : (
                 <NameInput
-                  lastNameValue={lodgeLastNameValue}
-                  setLastNameValue={SetLodgeLastNameValue}
-                  firstNameValue={lodgeFirstNameValue}
-                  setFirstNameValue={SetLodgeFirstNameValue}
+                  lodgeName="ok"
+                  SetLodgeLastName={SetLodgeLastName}
+                  SetLodgeFirstName={SetLodgeFirstName}
                   firstNameErrorState={lodgeFirstNameErrorState}
                   SetFirstNameErrorState={SetLodgeFirstNameErrorState}
                   lastNameErrorState={lodgeLastNameErrorState}
@@ -265,7 +267,7 @@ export const ReservateConfirmContents = () => {
                     <li>
                       <span>予約人数</span>
                       {peopleNumber}
-                      名（内訳：大人{reserveData.adultsNum}名、子ども
+                      名（内訳：大人{reserveData.adultsNum}名、子供
                       {reserveData.childrenNum}名）
                     </li>
                   );
