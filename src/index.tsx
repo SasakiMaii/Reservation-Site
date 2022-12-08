@@ -15,6 +15,21 @@ import {
   reservateConfirmPaymentReducer,
   reservateConfirmPaymentItemReducer,
 } from "./store/ReservateConfirmSlice";
+import searchReducer from "./store/SearchSlice"
+import gestroomReducer from "./store/GestroomSlice"
+
+// redux store
+const store = configureStore({
+  reducer: {
+    input: reservateConfirmContactReducer,
+    addPayment: reservateConfirmPaymentItemReducer,
+    select: reservateConfirmPaymentReducer,
+    registerInput:reginsterReducer,
+    searchInput:searchReducer,
+    gestroom:gestroomReducer,
+  },
+});
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -35,17 +50,6 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 // eslint-disable-next-line import/first
 
-
-// redux store
-const store = configureStore({
-  reducer: {
-    input: reservateConfirmContactReducer,
-    addPayment: reservateConfirmPaymentItemReducer,
-    select: reservateConfirmPaymentReducer,
-    registerInput:reginsterReducer
-  },
-});
-    
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

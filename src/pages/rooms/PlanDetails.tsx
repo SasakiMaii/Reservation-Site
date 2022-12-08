@@ -38,6 +38,7 @@ const PlanDetails = () => {
   const [inputDate, setInputDate] = useState(false);
   const [datetext, setDatetext] = useState("");
 
+
   const navigation = useNavigate();
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
@@ -393,7 +394,7 @@ export const RecomendRoom = () => {
         {plans.map((plan: any) => (
           <div key={plan.name}>
             <img
-              src="../hotel-4.jpg"
+              src={plan.image}
               className={RoomDetailStyle.detailrecomendpic}
               alt="roompicture"
             />

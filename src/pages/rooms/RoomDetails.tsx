@@ -1,10 +1,8 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import {
-  addDoc,
   collection,
   getDocs,
   limit,
-  orderBy,
   query,
   where,
 } from "firebase/firestore";
@@ -16,34 +14,32 @@ import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
 import { Link, useLocation } from "react-router-dom";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
-import { Navigate } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { useAuthState } from "react-firebase-hooks/auth";
-
-import { useNavigation } from "react-router-dom";
 import { HiOutlineChevronLeft } from "react-icons/hi";
-import PlanRecomendSwiper from "../../components/Organisms/PlanRecomendSwiper";
 import { RecomendRoom } from "./PlanDetails";
-
-// const status = 404;
-// if (status === 404) {
-// return <Navigate to="/notfound" />;
-// }リダイレクト
+import { useDispatch, useSelector } from "react-redux";
+import { setAdultCount, setChildInput } from "../../store/SearchSlice";
 
 const RoomDetails = () => {
   const [num, setNum] = useState(1);
-  const [adult, setAdult] = useState(1);
-  const [children, setChildren] = useState(0);
   const [rooms, setRooms] = useState<any>([]);
-  const [roomsId, setRoomsId] = useState<any>([]);
   const [inputDate, setInputDate] = useState(false);
   const [datetext, setDatetext] = useState("");
+  
+  const dispatch = useDispatch();
+  const adultEl = useSelector((state:any) => state.searchInput.adultCount)
+  const childEl = useSelector((state:any) => state.searchInput.childInput)
+  const [SearchParams] = useSearchParams();
 
-
-  // const location =useLocation()
-  // const [selectId,setSelectId]=useState<{id:number}>(location.state as {id:number})
+  const adultchange=(ev:ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setAdultCount(ev.target.value));
+  };
+  const childchange=(ev:ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setChildInput(ev.target.value));
+  };
 
   // データの受け渡しのため
   const navigation = useNavigate();
@@ -73,7 +69,6 @@ const RoomDetails = () => {
       }
     });
   }, []);
-  const [SearchParams] = useSearchParams();
 
   const RoomData = collection(db, "gestRoomType");
 
@@ -101,16 +96,14 @@ const RoomDetails = () => {
   const handleResarve = () => {
     if (user) {
       console.log(user.email);
-      // const reserveData = collection(db, "reserve");
       const data = {
-        adultsNum: Number(adult),
-        childrenNum: Number(children),
+        adultsNum: Number(adultEl),
+        childrenNum: Number(childEl),
         checkIn: datetext,
         price: result,
         roomType: String(room),
         totalDate: Number(num),
         mail: user.email,
-        // gestId:
       };
       // addDoc(reserveData, data);
       navigation("/books/ReservateConfirm", { state: data });
@@ -118,8 +111,8 @@ const RoomDetails = () => {
     } else {
       // const reserveData = collection(db, "reserve");
       const data = {
-        adultsNum: adult,
-        childrenNum: children,
+        adultsNum: adultEl,
+        childrenNum: childEl,
         checkIn: datetext,
         price: result,
         roomType: String(room),
@@ -130,7 +123,6 @@ const RoomDetails = () => {
       document.cookie = "next=confirm; path=/;";
     }
   };
-
   // const gestRoomData = collection(db, "gestRoomType");
 
   const handleDateClick = (arg: any) => {
@@ -148,8 +140,8 @@ const RoomDetails = () => {
   const room = rooms.map((room: any) => room.area);
   const price = rooms.map((room: any) => room.price);
   const result = (
-    num * Number(price) * adult +
-    children * 5000
+    num * Number(price) * adultEl +
+    childEl * 5000
   ).toLocaleString();
 
   return (
@@ -166,7 +158,7 @@ const RoomDetails = () => {
                 <div className={RoomDetailStyle.detailwrapper}>
                   <h1 className={RoomDetailStyle.RoomName}>{room.area}</h1>
                   <img
-                    src="../hotel-4.jpg"
+                    src={room.image}
                     className={RoomDetailStyle.detailpic}
                     alt="roompicture"
                   />
@@ -190,7 +182,7 @@ const RoomDetails = () => {
                   <div className={RoomDetailStyle.detailcount}>
                     <p>大人</p>
                     <select
-                      onChange={(e: any) => setAdult(e.target.value)}
+                      onChange={adultchange}
                       name="people"
                       id="people"
                     >
@@ -200,7 +192,7 @@ const RoomDetails = () => {
                     <select
                       name="people"
                       id="people"
-                      onChange={(e: any) => setChildren(e.target.value)}
+                      onChange={childchange}
                     >
                       <option value="0">--</option>
                       {obroop()}

@@ -5,9 +5,7 @@ import {
   IoAccessibilityOutline,
   IoSearchOutline,
 } from "react-icons/io5";
-import { HiOutlineCursorClick } from "react-icons/hi";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import SearchStyle from "../../styles/rooms/_Search.module.scss";
 import PrimaryButton from "../Atoms/button/PrimaryButton";
 import SearchInputLayout from "../Molecules/rooms/SearchInputLayout";
@@ -16,31 +14,23 @@ import SecondryButton from "../Atoms/button/SecondryButton";
 import db from "../../Firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
-
+import { setAdultInput } from "../../store/SearchSlice";
+import {
+  setDownSelect,
+  setRoomSelect,
+  setUpSelect,
+} from "../../store/GestroomSlice";
 
 const RoomPlanSearch = (props: any) => {
   const {
-    room,
     setRoom,
-    reserve,
     setReserve,
-    reserved,
     setReserved,
-    adultInput,
-    setAdultInput,
     chilrdInput,
     setChilrdInput,
-    roomChange,
-    setRoomChange,
-    downChange,
-    setDownChange,
-    upChange,
-    setUpChange,
     datetext,
     setDatetext,
     dateChoice,
-    adultInputEl,
-    chilrdInputEl,
   } = props;
   const [showModal, setShowModal] = useState(false);
   const [showBtn, setShowBtn] = useState(true);
@@ -78,21 +68,10 @@ const RoomPlanSearch = (props: any) => {
           setInputDate={setInputDate}
           chilrdInput={chilrdInput}
           setChildInput={setChilrdInput}
-          adultInput={adultInput}
-          setAdultInput={setAdultInput}
-          adultInputEl={adultInputEl}
-          chilrdInputEl={chilrdInputEl}
         />
-        <ObsessionSearch
-          roomChange={roomChange}
-          setRoomChange={setRoomChange}
-          downChange={downChange}
-          setDownChange={setDownChange}
-          upChange={upChange}
-          setUpChange={setUpChange}
-        />
+        <ObsessionSearch />
         <div className={SearchStyle.rightBtn}>
-          <PrimaryButton onClick={() => dateChoice()}>検索</PrimaryButton>
+          <PrimaryButton onClick={dateChoice}>検索</PrimaryButton>
         </div>
       </div>
     </>
@@ -103,24 +82,21 @@ const RoomPlanSearch = (props: any) => {
 //チェックイン
 //
 export const Checkin = (props: any) => {
-  const {
-    setAdultInput,
-    setChildInput,
-    setShowModal,
-    setShowBtn,
-    showBtn,
-    inputDate,
-    chilrdInputEl,
-    adultInputEl,
-  } = props;
+  const { setShowModal, setShowBtn, showBtn, inputDate } = props;
   //大人の人数・子供の人数
+  const dispatch = useDispatch();
+  const adultEl = useSelector((state: any) => state.searchInput.adultInput);
+  const childEl = useSelector((state: any) => state.searchInput.childInput);
+  const roomEl = useSelector((state: any) => state.gestroom.roomSelect);
+  const upEl = useSelector((state: any) => state.gestroom.upSelect);
+  const downEl = useSelector((state: any) => state.gestroom.dowmselect);
 
-  const adult = () => {
-    setAdultInput(adultInputEl.current.value);
-  }; //
-  const child = () => {
-    setChildInput(chilrdInputEl.current.value);
-  }; //inputChildEl.current.value
+  const adult = (ev: ChangeEvent<HTMLInputElement>) => {
+    dispatch(setAdultInput(ev.target.value));
+  };
+  const child = (ev: ChangeEvent<HTMLInputElement>) => {
+    dispatch(setChildInput(ev.target.value));
+  };
 
   //モーダル開ける
   const ShowModal = () => {
@@ -177,30 +153,26 @@ export const Checkin = (props: any) => {
         <p>
           <IoAccessibilitySharp size={23} /> 大人
         </p>
-        <SearchInputLayout onChange={adult} elm={adultInputEl} />
+        <SearchInputLayout onChange={adult} value={adultEl} />
       </div>
       <div className={SearchStyle.children}>
         <p>
           <IoAccessibilityOutline size={20} /> 子供（小学生以下）
         </p>
-        <SearchInputLayout elm={chilrdInputEl} onChange={child} />
+        <SearchInputLayout value={childEl} onChange={child} />
       </div>
     </div>
   );
-}; //elm={inputChildEl}  elm={inputAdultEl}
+};
 
 //ループ使う際 {(()=>{})}
 
 //こだわり条件
-export const ObsessionSearch = ({
-  setRoomChange,
-  setDownChange,
-  setUpChange,
-}: any) => {
-
-    //redux
-    const upchangeprice=useSelector((state:any)=>state.upchangePrice)
-  const dispatch=useDispatch()
+export const ObsessionSearch = () => {
+  const dispatch = useDispatch();
+  const roomEl = useSelector((state: any) => state.searchInput.roomSelect);
+  const upEl = useSelector((state: any) => state.searchInput.upSelect);
+  const downEl = useSelector((state: any) => state.searchInput.dowmselect);
 
   //selectの取得
   const obroop = () => {
@@ -216,21 +188,14 @@ export const ObsessionSearch = ({
   };
 
   //selectの値を取得
-  const selectRoomChange = () => {
-    const elem: any = document.getElementById("gestroom");
-    const res = elem.value;
-    setRoomChange(res);
+  const selectRoomChange = (ev: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setRoomSelect(ev.target.value));
   };
-  const selectDownPriceChange = () => {
-    const elem: any = document.getElementById("downPrice");
-    const res = elem.value;
-    setDownChange(res);
+  const selectDownPriceChange = (ev: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setUpSelect(ev.target.value));
   };
-  const selectUpPriceChange = () => {
-    const elem: any = document.getElementById("upPrice");
-    const res:any = elem.value;
-     setUpChange(res);
-
+  const selectUpPriceChange = (ev: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setDownSelect(ev.target.value));
   };
 
   return (
@@ -245,6 +210,7 @@ export const ObsessionSearch = ({
           <select
             className={SearchStyle.priceroomSelect}
             onChange={selectRoomChange}
+            value={roomEl}
             name="gestroom"
             id="gestroom"
           >
@@ -264,7 +230,7 @@ export const ObsessionSearch = ({
               className={SearchStyle.priceroomSelect}
               name="downprice"
               id="downPrice"
-              value={upchangeprice}
+              value={downEl}
               onChange={selectDownPriceChange}
             >
               <option value="">下限なし</option>
@@ -274,6 +240,7 @@ export const ObsessionSearch = ({
             <select
               className={SearchStyle.priceroomSelect}
               name="upprice"
+              value={upEl}
               id="upPrice"
               onChange={selectUpPriceChange}
             >
@@ -290,4 +257,6 @@ export const ObsessionSearch = ({
 
 export default RoomPlanSearch;
 
-
+function setChildInput(value: string): any {
+  throw new Error("Function not implemented.");
+}

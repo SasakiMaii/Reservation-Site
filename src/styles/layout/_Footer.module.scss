@@ -11,6 +11,13 @@ $breakpoints: (
   }
 }
 
+.pagetop{
+  display: inline-block;
+  width: 100%;
+  text-align: right;
+  padding-right: 30px;
+  font-size: 23px;
+};
 
 .footerWrapper{
   max-width: 100%;
@@ -19,6 +26,8 @@ $breakpoints: (
   margin-top: 150px;
 
 }
+
+
 .footerFlex{
   display: flex;
   justify-content: space-around;

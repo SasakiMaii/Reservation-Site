@@ -21,35 +21,24 @@ import {
 import RoomPlanSearch from "../../components/Templates/Search";
 import SecondryButton from "../../components/Atoms/button/SecondryButton";
 import { useDispatch, useSelector } from "react-redux";
-import { GestRoom } from "../../types/Types";
 
-// type Props={
-//   gestroom:GestRoom;
-// }
-
-// const Rooms: any[]=[];
-// console.log(Rooms)
 const GestroomPlan: React.FC = () => {
-  const [rooms, SetRooms] = useState<any>([]);
   const [descClick, setDescClick] = useState(false);
   const [ascClick, setAscClick] = useState(false);
+  const [datetext, setDatetext] = useState("");
+  const [info, setInfo] = useState([]);
+  const [err, setErr] = useState([]); //検索のバリデーション
+  const [rooms, SetRooms] = useState<any>([]); //db取り出し
   const [room, setRoom] = useState<any>([]); //db取り出し
   const [reserve, setReserve] = useState<any>([]); //db取り出し
   const [reserved, setReserved] = useState<any>([]); //db取り出し
-  const [adultInput, setAdultInput] = useState<any>("");
-  const [chilrdInput, setChilrdInput] = useState<any>("");
-  const [roomChange, setRoomChange] = useState<any>(""); //selectの値
-  const [downChange, setDownChange] = useState<any>("");
-  const [upChange, setUpChange] = useState<any>("");
-  const [datetext, setDatetext] = useState("");
-  const [err, setErr] = useState([]); //検索のバリデーション
-  const [info, setInfo] = useState([]);
 
-  // const {upPrice}=useSelector((state:any)=>state.upchangePrice)
-  // const dispatch =useDispatch();
-
-  const chilrdInputEl: any = useRef(null);
-  const adultInputEl: any = useRef(null);
+    //Redux
+    const adultEl = useSelector((state:any) => state.searchInput.adultInput)
+    const childEl = useSelector((state:any) => state.searchInput.childInput)
+    const roomEl = useSelector((state:any) => state.gestroom.roomSelect)
+    const upEl = useSelector((state:any) => state.gestroom.upSelect)
+    const downEl = useSelector((state:any) => state.gestroom.downSelect)
   //---------------------------
   //日付が一致（予約確認のDBと入力値）
   const noemptyDates = reserved.filter((x: any) => {
@@ -58,33 +47,26 @@ const GestroomPlan: React.FC = () => {
 
   //部屋が一致(予約されている部屋と)
   const noemptyRoom = reserved.filter((x: any) => {
-    return x.roomType === roomChange;
+    return x.roomType === roomEl;
   });
 
   //人数が合わせて３人以上だったらtrue
-  const count = Number(adultInput) + Number(chilrdInput) <= 3;
+  const count = Number(adultEl) + Number(childEl) <= 3;
 
-  // const noemptyRoom = room.filter((x: any) => {
-  //   return String(x.roomType) === roomChange;
-  // });
-  // //ゲストルームのDBのルームタイプと,部屋の入力値が一致
-
-  const priceFilter = downChange <= upChange;
+  const priceFilter = upEl <= downEl;
   //上限金額のが高いように(trueが正常)
 
-  // console.log(roomFilters && noemptyDate)
+  console.log(priceFilter)
 
   //金額での絞り込み（10,000円〜15,000円の間など）
   const price = room.filter((x: any) => {
-    return Number(downChange) >= x.price || x.price <= Number(upChange);
+    return Number(downEl) >= x.price || x.price <= Number(upEl);
   });
 
   //roomChangeで指定された部屋の表示
   const roomPick = room.filter((r: any) => {
-    return r.area === roomChange;
+    return r.area === roomEl;
   });
-
-  // console.log(roomPick)
 
   //全部屋情報
   const resRoom = rooms.filter((room: any) => {
@@ -95,89 +77,89 @@ const GestroomPlan: React.FC = () => {
     return room.area === datetext;
   });
 
-  // console.log(resRoom)
-
   //検索ボタン・検索バリデーション
   const dateChoice = () => {
     setErr([]);
     setInfo([]);
     const errorMsg: any = [];
     const infoMsg: any = [];
-    const errorInfo:any=[]
-console.log(errorInfo)
-    if (adultInput === "" || datetext === "") {
-      if (roomChange.length >= 1) {
+    const errorInfo: any = [];
+    if (adultEl === "" || datetext === "") {
+      if (roomEl.length >= 1) {
         console.log("input");
         errorMsg.push("チェックイン日と大人の宿泊人数は入力必須項目です");
         SetRooms(resRoom);
-        errorInfo.push("エラー")
+        errorInfo.push("エラー");
       } else {
         errorMsg.push("チェックイン日と大人の宿泊人数は入力必須項目です");
         SetRooms(resRoom);
-        errorInfo.push("エラー")
+        errorInfo.push("エラー");
+      }
+    }
+    if (count === false) {
+      if (roomEl.length >= 1) {
+        console.log("input");
+        errorMsg.push("一部屋での宿泊可能人数を超えています");
+        SetRooms(resRoom);
+        errorInfo.push("エラー");
+      } else {
+        errorMsg.push("一部屋での宿泊可能人数を超えていますす");
+        SetRooms(resRoom);
+        errorInfo.push("エラー");
       }
     }
 
     if (new Date(datetext) <= new Date(new Date().toString())) {
-      if (roomChange.length >= 1) {
+      if (roomEl.length >= 1) {
         SetRooms(resRoom);
         errorMsg.push("今日以降の日付を入れてください");
-        errorInfo.push("エラー")
+        errorInfo.push("エラー");
       } else {
         errorMsg.push("今日以降の日付を入れてください");
         SetRooms(resRoom);
-        errorInfo.push("エラー")
+        errorInfo.push("エラー");
       }
     }
 
     if (priceFilter === false) {
-      if (roomChange.length >= 1) {
+      if (roomEl.length >= 1) {
         SetRooms(resRoom);
-        errorMsg.push("金額の入力を確認してください");errorInfo.push("エラー")
+        errorMsg.push("金額の入力を確認してください");
+        errorInfo.push("エラー");
       } else {
         errorMsg.push("金額の入力を確認してください");
         SetRooms(resRoom);
-        errorInfo.push("エラー")
+        errorInfo.push("エラー");
       }
     }
 
     //予約している部屋と一致、日付も一致
-console.log(noemptyDates.length >=1)
+
     if (noemptyRoom.length >= 1 && noemptyDates.length >= 1) {
       errorMsg.push(
         "上記の条件で空室はございません。条件を変更して検索しなおしてください。"
       );
-      console.log("aaa");
       SetRooms(reset);
     } else {
-      if(noemptyRoom.length===0 && noemptyDates.length >=1){
-SetRooms(roomPick)
-console.log("部屋表示")
+      if (noemptyRoom.length === 0 && noemptyDates.length >= 1) {
+        SetRooms(roomPick);
       }
       //日付も部屋もdbと一致しない場合は全件データ表示
-      if (roomChange.length >= 1) {
-        if(errorInfo.length>=1){
-          console.log("エラーあり")
-          SetRooms(resRoom)
-        }else{
-          console.log("www");
-          console.log("エラーなし")
-          infoMsg.push(`現在、${roomChange}は空室です`);
+      if (roomEl.length >= 1) {
+        if (errorInfo.length >= 1) {
+          SetRooms(resRoom);
+        } else {
+          infoMsg.push(`現在、${roomEl}は空室です`);
           SetRooms(roomPick);
-
         }
-      } else if (roomChange.length <= 1) {
-        if(errorInfo.length>=1){
-          console.log("エラーあり")
-          SetRooms(resRoom)
-        }else{
-          console.log("エラーなし")
+      } else if (roomEl.length <= 1) {
+        if (errorInfo.length >= 1) {
+          SetRooms(resRoom);
+        } else {
           infoMsg.push(`現在、5つのお部屋が空室です`);
           SetRooms(resRoom);
         }
       }
-
-      // Rooms.push(roomPick)
     }
 
     //予約の日付が一致して予約の部屋は一致しない
@@ -187,20 +169,15 @@ console.log("部屋表示")
     //   SetRooms(roomPick);
     // }
 
-    // if (datetext && roomChange === "") {
+    // if (datetext && roomEl === "") {
     //   infoMsg.push(`現在、下記のお部屋が空室です`);
     //   SetRooms(resRoom);
     // }
-
-    // console.log(roomPick);
-
-    //日付は埋まってるけど部屋は空いてるから指定の部屋を表示
 
     // 宿泊数に対して空いているか（できていない）
 
     setErr(errorMsg);
     setInfo(infoMsg);
-    // SetRooms("")
   };
 
   return (
@@ -213,7 +190,7 @@ console.log("部屋表示")
         </p>
         {err.map((error: any) => {
           return (
-            <p key={err[0]} className={RoomStyle.err}>
+            <p key={err[1]} className={RoomStyle.err}>
               ※{error}
             </p>
           );
@@ -225,18 +202,6 @@ console.log("部屋表示")
           setReserve={setReserve}
           reserved={reserved}
           setReserved={setReserved}
-          chilrdInput={chilrdInput}
-          setChilrdInput={setChilrdInput}
-          adultInput={adultInput}
-          chilrdInputEl={chilrdInputEl}
-          adultInputEl={adultInputEl}
-          setAdultInput={setAdultInput}
-          roomChange={roomChange}
-          setRoomChange={setRoomChange}
-          downChange={downChange}
-          setDownChange={setDownChange}
-          upChange={upChange}
-          setUpChange={setUpChange}
           datetext={datetext}
           setDatetext={setDatetext}
           dateChoice={dateChoice}
@@ -279,9 +244,9 @@ console.log("部屋表示")
 };
 
 //部屋の詳細
-export const RoomCard = (prps: any) => {
+export const RoomCard = (props: any) => {
   const { descClick, setDescClick, rooms, setRooms, ascClick, setAscClick } =
-    prps;
+    props;
   const soartData = collection(db, "gestRoomType");
   // const planData = collection(db, "Plan");
   const [showPlan, setShowPlan] = useState(false);
@@ -304,13 +269,11 @@ export const RoomCard = (prps: any) => {
     renderFlag.current = true;
   }
 
-
   const onAscSort = async () => {
     const priceAsc = query(soartData, orderBy("price"), limit(3));
     const data = await getDocs(priceAsc);
     const newAscData = data.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
+      ...doc.data()
     }));
     setAscClick(true);
     setDescClick(false);
@@ -321,8 +284,7 @@ export const RoomCard = (prps: any) => {
     const priceDesc = query(soartData, orderBy("price", "desc"), limit(3));
     const data = await getDocs(priceDesc);
     const newDescData = data.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
+      ...doc.data()
     }));
     setDescClick(true);
     setAscClick(false);
@@ -390,7 +352,6 @@ export const RoomCard = (prps: any) => {
       const nextPage = nextdata.docs.map((doc) => ({
         ...doc.data(),
       }));
-
       setRooms(nextPage);
     }
   };
