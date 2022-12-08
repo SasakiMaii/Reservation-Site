@@ -1,11 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import {
-  collection,
-  getDocs,
-  limit,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { useEffect } from "react";
 import PrimaryButton from "../../components/Atoms/button/PrimaryButton";
 import db, { auth } from "../../Firebase";
@@ -22,22 +16,24 @@ import { HiOutlineChevronLeft } from "react-icons/hi";
 import { RecomendRoom } from "./PlanDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { setAdultCount, setChildInput } from "../../store/SearchSlice";
+import Stays from "../../components/Organisms/rooms/Stays";
+import Calender from "../../components/Atoms/Calender";
 
 const RoomDetails = () => {
   const [num, setNum] = useState(1);
   const [rooms, setRooms] = useState<any>([]);
   const [inputDate, setInputDate] = useState(false);
   const [datetext, setDatetext] = useState("");
-  
+
   const dispatch = useDispatch();
-  const adultEl = useSelector((state:any) => state.searchInput.adultCount)
-  const childEl = useSelector((state:any) => state.searchInput.childInput)
+  const adultEl = useSelector((state: any) => state.searchInput.adultCount);
+  const childEl = useSelector((state: any) => state.searchInput.childInput);
   const [SearchParams] = useSearchParams();
 
-  const adultchange=(ev:ChangeEvent<HTMLSelectElement>) => {
+  const adultchange = (ev: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setAdultCount(ev.target.value));
   };
-  const childchange=(ev:ChangeEvent<HTMLSelectElement>) => {
+  const childchange = (ev: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setChildInput(ev.target.value));
   };
 
@@ -125,18 +121,6 @@ const RoomDetails = () => {
   };
   // const gestRoomData = collection(db, "gestRoomType");
 
-  const handleDateClick = (arg: any) => {
-    if (inputDate === false) {
-      arg.dayEl.style.backgroundColor = "steelblue"; //カレンダーに色つける
-      setInputDate(true);
-      setDatetext(arg.dateStr);
-    } else if (inputDate === true) {
-      arg.dayEl.style.backgroundColor = ""; //カレンダーの色を変える
-      setInputDate(false);
-      // alert(arg.dateStr)
-    }
-  };
-
   const room = rooms.map((room: any) => room.area);
   const price = rooms.map((room: any) => room.price);
   const result = (
@@ -164,14 +148,11 @@ const RoomDetails = () => {
                   />
                   <div className={RoomDetailStyle.detailCheck}>
                     <p>※チェックインの日付を選択してください</p>
-                    <FullCalendar
-                      plugins={[dayGridPlugin, interactionPlugin]}
-                      locale="ja"
-                      initialView="dayGridMonth"
-                      dateClick={handleDateClick}
-                      selectable={true}
-                      selectMirror={true}
-                      businessHours={true}
+                    {/* inputDate,setInputDate,setDatetext */}
+                    <Calender
+                      inputDate={inputDate}
+                      setInputDate={setInputDate}
+                      setDatetext={setDatetext}
                     />
                     <p>チェックイン：{room.checkIn}</p>
                     <p>チェックアウト：{room.checkOut}</p>
@@ -181,38 +162,16 @@ const RoomDetails = () => {
                   <p className={RoomDetailStyle.count}>人数</p>
                   <div className={RoomDetailStyle.detailcount}>
                     <p>大人</p>
-                    <select
-                      onChange={adultchange}
-                      name="people"
-                      id="people"
-                    >
+                    <select onChange={adultchange} name="people" id="people">
                       {obroop()}
                     </select>
                     <p>子供</p>
-                    <select
-                      name="people"
-                      id="people"
-                      onChange={childchange}
-                    >
+                    <select name="people" id="people" onChange={childchange}>
                       <option value="0">--</option>
                       {obroop()}
                     </select>
                   </div>
-
-                  <div className={RoomDetailStyle.detaildate}>
-                    <p className={RoomDetailStyle.count}>宿泊日数</p>
-                    <select
-                      name="people"
-                      id="people"
-                      onChange={(e: any) => setNum(e.target.value)}
-                    >
-                      <option value="1">1泊</option>
-                      <option value="2">2泊</option>
-                      <option value="3">3泊</option>
-                      <option value="4">4泊</option>
-                      <option value="5">5泊</option>
-                    </select>
-                  </div>
+                  <Stays setNum={setNum} />
                   <div>
                     <p className={RoomDetailStyle.count}>合計金額</p>
                     <p>一泊¥{room.price.toLocaleString()}〜/人</p>
@@ -238,9 +197,7 @@ const RoomDetails = () => {
                   冷蔵庫 金庫 / 電気ケトル / Wi-Fi
                 </p>
               </div>
-
               <RecomendRoom />
-             
               <Link
                 to={"/rooms/Gestroom"}
                 className={RoomDetailStyle.detaillink}

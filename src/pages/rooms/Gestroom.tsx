@@ -7,6 +7,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import PagingStyle from "../../styles/rooms/_Paging.module.scss";
 import { useEffect, useRef, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
+import RoomLink from "../../components/Molecules/rooms/RoomLink";
 // import "firebase";
 import db from "../../Firebase";
 import {
@@ -18,9 +19,8 @@ import {
   startAfter,
   endBefore,
 } from "firebase/firestore";
-import RoomPlanSearch from "../../components/Templates/Search";
 import SecondryButton from "../../components/Atoms/button/SecondryButton";
-import { useDispatch, useSelector } from "react-redux";
+import EmptyRoomConditions from "../../components/Templates/EmptyRoomConditions";
 
 const GestroomPlan: React.FC = () => {
   const [descClick, setDescClick] = useState(false);
@@ -32,153 +32,6 @@ const GestroomPlan: React.FC = () => {
   const [room, setRoom] = useState<any>([]); //db取り出し
   const [reserve, setReserve] = useState<any>([]); //db取り出し
   const [reserved, setReserved] = useState<any>([]); //db取り出し
-
-    //Redux
-    const adultEl = useSelector((state:any) => state.searchInput.adultInput)
-    const childEl = useSelector((state:any) => state.searchInput.childInput)
-    const roomEl = useSelector((state:any) => state.gestroom.roomSelect)
-    const upEl = useSelector((state:any) => state.gestroom.upSelect)
-    const downEl = useSelector((state:any) => state.gestroom.downSelect)
-  //---------------------------
-  //日付が一致（予約確認のDBと入力値）
-  const noemptyDates = reserved.filter((x: any) => {
-    return String(x.checkIn) === datetext;
-  });
-
-  //部屋が一致(予約されている部屋と)
-  const noemptyRoom = reserved.filter((x: any) => {
-    return x.roomType === roomEl;
-  });
-
-  //人数が合わせて３人以上だったらtrue
-  const count = Number(adultEl) + Number(childEl) <= 3;
-
-  const priceFilter = upEl <= downEl;
-  //上限金額のが高いように(trueが正常)
-
-  console.log(priceFilter)
-
-  //金額での絞り込み（10,000円〜15,000円の間など）
-  const price = room.filter((x: any) => {
-    return Number(downEl) >= x.price || x.price <= Number(upEl);
-  });
-
-  //roomChangeで指定された部屋の表示
-  const roomPick = room.filter((r: any) => {
-    return r.area === roomEl;
-  });
-
-  //全部屋情報
-  const resRoom = rooms.filter((room: any) => {
-    return room;
-  }); //全部を表示
-
-  const reset = rooms.filter((room: any) => {
-    return room.area === datetext;
-  });
-
-  //検索ボタン・検索バリデーション
-  const dateChoice = () => {
-    setErr([]);
-    setInfo([]);
-    const errorMsg: any = [];
-    const infoMsg: any = [];
-    const errorInfo: any = [];
-    if (adultEl === "" || datetext === "") {
-      if (roomEl.length >= 1) {
-        console.log("input");
-        errorMsg.push("チェックイン日と大人の宿泊人数は入力必須項目です");
-        SetRooms(resRoom);
-        errorInfo.push("エラー");
-      } else {
-        errorMsg.push("チェックイン日と大人の宿泊人数は入力必須項目です");
-        SetRooms(resRoom);
-        errorInfo.push("エラー");
-      }
-    }
-    if (count === false) {
-      if (roomEl.length >= 1) {
-        console.log("input");
-        errorMsg.push("一部屋での宿泊可能人数を超えています");
-        SetRooms(resRoom);
-        errorInfo.push("エラー");
-      } else {
-        errorMsg.push("一部屋での宿泊可能人数を超えていますす");
-        SetRooms(resRoom);
-        errorInfo.push("エラー");
-      }
-    }
-
-    if (new Date(datetext) <= new Date(new Date().toString())) {
-      if (roomEl.length >= 1) {
-        SetRooms(resRoom);
-        errorMsg.push("今日以降の日付を入れてください");
-        errorInfo.push("エラー");
-      } else {
-        errorMsg.push("今日以降の日付を入れてください");
-        SetRooms(resRoom);
-        errorInfo.push("エラー");
-      }
-    }
-
-    if (priceFilter === false) {
-      if (roomEl.length >= 1) {
-        SetRooms(resRoom);
-        errorMsg.push("金額の入力を確認してください");
-        errorInfo.push("エラー");
-      } else {
-        errorMsg.push("金額の入力を確認してください");
-        SetRooms(resRoom);
-        errorInfo.push("エラー");
-      }
-    }
-
-    //予約している部屋と一致、日付も一致
-
-    if (noemptyRoom.length >= 1 && noemptyDates.length >= 1) {
-      errorMsg.push(
-        "上記の条件で空室はございません。条件を変更して検索しなおしてください。"
-      );
-      SetRooms(reset);
-    } else {
-      if (noemptyRoom.length === 0 && noemptyDates.length >= 1) {
-        SetRooms(roomPick);
-      }
-      //日付も部屋もdbと一致しない場合は全件データ表示
-      if (roomEl.length >= 1) {
-        if (errorInfo.length >= 1) {
-          SetRooms(resRoom);
-        } else {
-          infoMsg.push(`現在、${roomEl}は空室です`);
-          SetRooms(roomPick);
-        }
-      } else if (roomEl.length <= 1) {
-        if (errorInfo.length >= 1) {
-          SetRooms(resRoom);
-        } else {
-          infoMsg.push(`現在、5つのお部屋が空室です`);
-          SetRooms(resRoom);
-        }
-      }
-    }
-
-    //予約の日付が一致して予約の部屋は一致しない
-    // if (noemptyDates.length === 1 && noemptyRoom.length === 0) {
-    //   console.log("ccc");
-    //   // infoMsg.push(`現在、下記のお部屋が空室です`);
-    //   SetRooms(roomPick);
-    // }
-
-    // if (datetext && roomEl === "") {
-    //   infoMsg.push(`現在、下記のお部屋が空室です`);
-    //   SetRooms(resRoom);
-    // }
-
-    // 宿泊数に対して空いているか（できていない）
-
-    setErr(errorMsg);
-    setInfo(infoMsg);
-  };
 
   return (
     <>
@@ -195,25 +48,21 @@ const GestroomPlan: React.FC = () => {
             </p>
           );
         })}
-        <RoomPlanSearch
-          room={room}
-          setRoom={setRoom}
-          reserve={reserve}
-          setReserve={setReserve}
-          reserved={reserved}
-          setReserved={setReserved}
+        <EmptyRoomConditions
           datetext={datetext}
           setDatetext={setDatetext}
-          dateChoice={dateChoice}
+          setInfo={setInfo}
+          reserved={reserved}
+          room={room}
+          setRoom={setRoom}
+          rooms={rooms}
+          SetRooms={SetRooms}
+          setErr={setErr}
+          setReserved={setReserved}
+          setReserve={setReserve}
+          reserve={reserve}
         />
-        <p className={RoomStyle.pageTitle2}>全ての客室＆プラン</p>
-        <div className={RoomStyle.roomLinkWrapper}>
-          <Link to={"#"} className={RoomStyle.roomLink}>
-            {" "}
-            客室で探す{" "}
-          </Link>
-          <Link to={"/rooms/Plan"}> プランで探す </Link>
-        </div>
+        <RoomLink />
         {err.map((error: any) => {
           return (
             <p key={err[0]} className={RoomStyle.err}>
@@ -237,7 +86,6 @@ const GestroomPlan: React.FC = () => {
           setAscClick={setAscClick}
         />
       </div>
-      {/* <Pageing /> */}
       <Footer />
     </>
   );
@@ -273,7 +121,7 @@ export const RoomCard = (props: any) => {
     const priceAsc = query(soartData, orderBy("price"), limit(3));
     const data = await getDocs(priceAsc);
     const newAscData = data.docs.map((doc) => ({
-      ...doc.data()
+      ...doc.data(),
     }));
     setAscClick(true);
     setDescClick(false);
@@ -284,7 +132,7 @@ export const RoomCard = (props: any) => {
     const priceDesc = query(soartData, orderBy("price", "desc"), limit(3));
     const data = await getDocs(priceDesc);
     const newDescData = data.docs.map((doc) => ({
-      ...doc.data()
+      ...doc.data(),
     }));
     setDescClick(true);
     setAscClick(false);
