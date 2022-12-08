@@ -19,9 +19,7 @@ const ReservateComplete = () => {
           <Link to="/rooms/Gestroom">客室・プラン検索に戻る</Link>
         </div>
       </div>
-      <footer>
-        <Footer />
-      </footer>
+      <Footer />
     </>
   );
 };

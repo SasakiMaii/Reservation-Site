@@ -7,7 +7,6 @@
 }
 
 //コンポーネント背景色
-// $mainColor: rgb(227, 227, 227);
 $mainColor: #ffffff;
 
 //レスポンシブ
@@ -41,37 +40,11 @@ $breakpoints: (
   }
 }
 
-.registerComplete {
-  width: 500px;
-  height: 400px;
-  background-color: #c0c0c0;
-  margin: 30px auto;
-}
-
-.registerIncomplete {
-  width: 500px;
-  height: 400px;
-  background-color: beige;
-  margin: 30px auto;
-}
-
-.reservateLogin {
-  display: flex;
-}
 
 .reservateConfirmTitle {
   text-align: center;
   margin: 50px 0 25px 0;
   @include mq(sp) {
     width: 500px;
-    margin: 50px 180px;
   }
-}
-
-.reservateGuide {
-  text-align: center;
-}
-
-.reservateGuide button {
-  color: crimson;
 }

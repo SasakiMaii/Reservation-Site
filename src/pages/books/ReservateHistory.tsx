@@ -43,10 +43,12 @@ const ReservateHistory = () => {
   }
 
   const clickChange = (index: number) => {
+    console.log(index);
     setUnReserveOpenAnswer((prevState: any) => ({
       ...prevState,
       [index]: !prevState[index],
     }));
+    
   };
 
   const clickDetails = (index: any) => {
@@ -55,6 +57,8 @@ const ReservateHistory = () => {
       [index]: !prevState[index],
     }));
   };
+  console.log("f",openUnReseveAnswer)
+  console.log("j",openResevedAnswer)
 
   const clickUnlodgeOpen = async () => {
     setOpenUnlodgeDisplay(true);
@@ -63,7 +67,7 @@ const ReservateHistory = () => {
     //firebaseから、ログインしているユーザーメールアドレスと一致する予約データを取得する
     const reserveData = query(
       collection(db, "reserved"),
-      where("mail", "==", userEmail)
+      where("loginMail", "==", userEmail)
     );
     getDocs(reserveData).then((reserveItem) => {
       setReserves(reserveItem.docs.map((doc) => ({ ...doc.data() })));
@@ -97,14 +101,13 @@ const ReservateHistory = () => {
       reserved.push(reserveItems);
     }
   });
+  console.log("j",reserves);
 
   return (
     <>
       <div className={ReservateHistoryStyles.HistoryContainer}>
         <Header />
-
         <h1 className={ReservateHistoryStyles.HistoryTitle}>予約履歴確認</h1>
-        {!userEmail ? (<p className={ReservateHistoryStyles.LoginMessage}>ログインしてご確認ください</p>) : ("")}
         <UnReserveTitle
           clickUnlodgeOpen={clickUnlodgeOpen}
           hideUnlodgeMessage={hideUnlodgeMessage}
