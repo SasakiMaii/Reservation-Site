@@ -1,13 +1,5 @@
-import { useState } from "react";
-import {
-  addDoc,
-  collection,
-  getDocs,
-  limit,
-  orderBy,
-  query,
-  where,
-} from "firebase/firestore";
+import { ChangeEvent, useState } from "react";
+import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { useEffect } from "react";
 import PrimaryButton from "../../components/Atoms/button/PrimaryButton";
 import db, { auth } from "../../Firebase";
@@ -16,34 +8,34 @@ import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
 import { Link, useLocation } from "react-router-dom";
 import { useParams, useSearchParams, useNavigate } from "react-router-dom";
-import { Navigate } from "react-router-dom";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import { useAuthState } from "react-firebase-hooks/auth";
-
-import { useNavigation } from "react-router-dom";
 import { HiOutlineChevronLeft } from "react-icons/hi";
-import PlanRecomendSwiper from "../../components/Organisms/PlanRecomendSwiper";
 import { RecomendRoom } from "./PlanDetails";
-
-// const status = 404;
-// if (status === 404) {
-// return <Navigate to="/notfound" />;
-// }リダイレクト
+import { useDispatch, useSelector } from "react-redux";
+import { setAdultCount, setChildInput } from "../../store/SearchSlice";
+import Stays from "../../components/Organisms/rooms/Stays";
+import Calender from "../../components/Atoms/Calender";
 
 const RoomDetails = () => {
   const [num, setNum] = useState(1);
-  const [adult, setAdult] = useState(1);
-  const [children, setChildren] = useState(0);
   const [rooms, setRooms] = useState<any>([]);
-  const [roomsId, setRoomsId] = useState<any>([]);
   const [inputDate, setInputDate] = useState(false);
   const [datetext, setDatetext] = useState("");
 
+  const dispatch = useDispatch();
+  const adultEl = useSelector((state: any) => state.searchInput.adultCount);
+  const childEl = useSelector((state: any) => state.searchInput.childInput);
+  const [SearchParams] = useSearchParams();
 
-  // const location =useLocation()
-  // const [selectId,setSelectId]=useState<{id:number}>(location.state as {id:number})
+  const adultchange = (ev: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setAdultCount(ev.target.value));
+  };
+  const childchange = (ev: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setChildInput(ev.target.value));
+  };
 
   // データの受け渡しのため
   const navigation = useNavigate();
@@ -73,7 +65,6 @@ const RoomDetails = () => {
       }
     });
   }, []);
-  const [SearchParams] = useSearchParams();
 
   const RoomData = collection(db, "gestRoomType");
 
@@ -101,16 +92,14 @@ const RoomDetails = () => {
   const handleResarve = () => {
     if (user) {
       console.log(user.email);
-      // const reserveData = collection(db, "reserve");
       const data = {
-        adultsNum: Number(adult),
-        childrenNum: Number(children),
+        adultsNum: Number(adultEl),
+        childrenNum: Number(childEl),
         checkIn: datetext,
         price: result,
         roomType: String(room),
         totalDate: Number(num),
         mail: user.email,
-        // gestId:
       };
       // addDoc(reserveData, data);
       navigation("/books/ReservateConfirm", { state: data });
@@ -118,8 +107,8 @@ const RoomDetails = () => {
     } else {
       // const reserveData = collection(db, "reserve");
       const data = {
-        adultsNum: adult,
-        childrenNum: children,
+        adultsNum: adultEl,
+        childrenNum: childEl,
         checkIn: datetext,
         price: result,
         roomType: String(room),
@@ -130,26 +119,13 @@ const RoomDetails = () => {
       document.cookie = "next=confirm; path=/;";
     }
   };
-
   // const gestRoomData = collection(db, "gestRoomType");
-
-  const handleDateClick = (arg: any) => {
-    if (inputDate === false) {
-      arg.dayEl.style.backgroundColor = "steelblue"; //カレンダーに色つける
-      setInputDate(true);
-      setDatetext(arg.dateStr);
-    } else if (inputDate === true) {
-      arg.dayEl.style.backgroundColor = ""; //カレンダーの色を変える
-      setInputDate(false);
-      // alert(arg.dateStr)
-    }
-  };
 
   const room = rooms.map((room: any) => room.area);
   const price = rooms.map((room: any) => room.price);
   const result = (
-    num * Number(price) * adult +
-    children * 5000
+    num * Number(price) * adultEl +
+    childEl * 5000
   ).toLocaleString();
 
   return (
@@ -166,20 +142,17 @@ const RoomDetails = () => {
                 <div className={RoomDetailStyle.detailwrapper}>
                   <h1 className={RoomDetailStyle.RoomName}>{room.area}</h1>
                   <img
-                    src="../hotel-4.jpg"
+                    src={room.image}
                     className={RoomDetailStyle.detailpic}
                     alt="roompicture"
                   />
                   <div className={RoomDetailStyle.detailCheck}>
                     <p>※チェックインの日付を選択してください</p>
-                    <FullCalendar
-                      plugins={[dayGridPlugin, interactionPlugin]}
-                      locale="ja"
-                      initialView="dayGridMonth"
-                      dateClick={handleDateClick}
-                      selectable={true}
-                      selectMirror={true}
-                      businessHours={true}
+                    {/* inputDate,setInputDate,setDatetext */}
+                    <Calender
+                      inputDate={inputDate}
+                      setInputDate={setInputDate}
+                      setDatetext={setDatetext}
                     />
                     <p>チェックイン：{room.checkIn}</p>
                     <p>チェックアウト：{room.checkOut}</p>
@@ -189,38 +162,16 @@ const RoomDetails = () => {
                   <p className={RoomDetailStyle.count}>人数</p>
                   <div className={RoomDetailStyle.detailcount}>
                     <p>大人</p>
-                    <select
-                      onChange={(e: any) => setAdult(e.target.value)}
-                      name="people"
-                      id="people"
-                    >
+                    <select onChange={adultchange} name="people" id="people">
                       {obroop()}
                     </select>
                     <p>子供</p>
-                    <select
-                      name="people"
-                      id="people"
-                      onChange={(e: any) => setChildren(e.target.value)}
-                    >
+                    <select name="people" id="people" onChange={childchange}>
                       <option value="0">--</option>
                       {obroop()}
                     </select>
                   </div>
-
-                  <div className={RoomDetailStyle.detaildate}>
-                    <p className={RoomDetailStyle.count}>宿泊日数</p>
-                    <select
-                      name="people"
-                      id="people"
-                      onChange={(e: any) => setNum(e.target.value)}
-                    >
-                      <option value="1">1泊</option>
-                      <option value="2">2泊</option>
-                      <option value="3">3泊</option>
-                      <option value="4">4泊</option>
-                      <option value="5">5泊</option>
-                    </select>
-                  </div>
+                  <Stays setNum={setNum} />
                   <div>
                     <p className={RoomDetailStyle.count}>合計金額</p>
                     <p>一泊¥{room.price.toLocaleString()}〜/人</p>
@@ -246,9 +197,7 @@ const RoomDetails = () => {
                   冷蔵庫 金庫 / 電気ケトル / Wi-Fi
                 </p>
               </div>
-
               <RecomendRoom />
-             
               <Link
                 to={"/rooms/Gestroom"}
                 className={RoomDetailStyle.detaillink}
