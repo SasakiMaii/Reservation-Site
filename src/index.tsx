@@ -16,6 +16,7 @@ import
 
 import searchReducer from "./store/SearchSlice"
 import gestroomReducer from "./store/GestroomSlice"
+import { HelmetProvider } from 'react-helmet-async';
 
 // redux store
 
@@ -57,9 +58,11 @@ const root = ReactDOM.createRoot(
 // 全てのコンポーネントでstoreを共有
 root.render(
   <React.StrictMode>
+    <HelmetProvider>
     <Provider store={store}>
       <App />
     </Provider>
+    </HelmetProvider>
   </React.StrictMode>
 );
 

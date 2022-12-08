@@ -23,6 +23,7 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import Header from '../../components/layout/Header'
 import Footer from '../../components/layout/footer'
 import { useSelector } from 'react-redux'
+import Head from '../../components/layout/Head'
 
 
 
@@ -114,6 +115,7 @@ export const Registered = () => {
 
   return (
     <>
+      <Head title="PrinceViewHotel-新規登録" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
       <Header />
       <div className={`${RegisterStyle.main} container`}>
 

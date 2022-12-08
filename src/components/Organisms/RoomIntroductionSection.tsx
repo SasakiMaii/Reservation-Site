@@ -51,7 +51,7 @@ export const RoomsIntroduction = () => {
                 <div className={style.roomsIntroductionCols} 
                 data-aos="zoom-out-right"
                 data-aos-easing="linear"
-                data-aos-duration="1000"
+                data-aos-duration="1300"
                 data-aos-anchor-placement="bottom-bottom"
                 key={index}
                 >
@@ -68,7 +68,7 @@ export const RoomsIntroduction = () => {
                 <div className={style.roomsIntroductionCols}
                 data-aos="zoom-out-left"
                 data-aos-easing="linear"
-                data-aos-duration="1000"
+                data-aos-duration="1300"
                 data-aos-anchor-placement="bottom-bottom"
                 key={index}
                 >

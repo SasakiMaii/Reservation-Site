@@ -19,12 +19,14 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import Head from "../layout/Head";
 
 
 export const TopLayout = () => {
 
   return (
     <>
+    <Head title="PrinceViewHotel-TOP" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
       <Header />
       <TopHeader />
       <main>

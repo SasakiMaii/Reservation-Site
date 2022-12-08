@@ -23,6 +23,7 @@ import PagingStyle from "../../styles/rooms/_Paging.module.scss";
 import RoomPlanSearch from "../../components/Templates/Search";
 import SecondryButton from "../../components/Atoms/button/SecondryButton";
 import RoomLink from "../../components/Molecules/rooms/RoomLink";
+import Head from "../../components/layout/Head";
 
 //プラン
 const Plan = () => {
@@ -99,6 +100,7 @@ const Plan = () => {
 
   return (
     <>
+     <Head title="PrinceViewHotel-客室・プラン" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
       <Header />
       <p className={PlanStyle.pageTitle}><IoSearchOutline/>空室検索</p>
       <RoomPlanSearch room={room} setRoom={setRoom} reserve={reserve} setReserve={setReserve} reserved={reserved} setReserved={setReserved} chilrdInput={chilrdInput} setChilrdInput={setChilrdInput} adultInput={adultInput} setAdultInput={setAdultInput} roomChange={roomChange} setRoomChange={setRoomChange} downChange={downChange} setDownChange={setDownChange} upChange={upChange} setUpChange={setUpChange} datetext={datetext} setDatetext={setDatetext} dateChoice={dateChoice}/>

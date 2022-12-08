@@ -7,6 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
+import Head from "../../components/layout/Head";
 
 
 const ReservateHistory = () => {
@@ -105,8 +106,10 @@ const ReservateHistory = () => {
 
   return (
     <>
-      <div className={ReservateHistoryStyles.HistoryContainer}>
+  <Head title="PrinceViewHotel-予約履歴" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
         <Header />
+      <div className={ReservateHistoryStyles.HistoryContainer}>
+
         <h1 className={ReservateHistoryStyles.HistoryTitle}>予約履歴確認</h1>
         <UnReserveTitle
           clickUnlodgeOpen={clickUnlodgeOpen}
