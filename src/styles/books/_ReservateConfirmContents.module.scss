@@ -227,7 +227,7 @@ $breakpoints: (
 }
 
 .input:hover {
-  border: solid 2px rgb(101, 109, 183);
+  border: solid 2px rgb(205, 176, 109);
 }
 
 textarea {
@@ -238,11 +238,6 @@ textarea {
 
 .reservateButton {
   margin: 40px auto 10px auto;
-  text-align: center;
-  padding: 15px;
-  color: #fff;
-  width: 170px;
-  height: 55px;
   font-size: 18px;
   line-height: 1;
   text-decoration: none;
@@ -382,9 +377,14 @@ textarea {
   margin-right: 10px;
 }
 
+.paymentContents {
+  margin-left: 35px;
+}
+
 .payment span {
   font-size: 10px;
   padding: 5px;
+  margin-left: 0;
   background-color: rgb(220 38 38);
   color: white;
   transform: translateY(-2px) translateX(8px);

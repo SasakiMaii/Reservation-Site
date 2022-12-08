@@ -82,6 +82,15 @@ const Header = () => {
                     </span>
                   </Link>
                 </li>
+                <li className={headerStyle.headerlist}>
+                  <Link to={"/books/Contact"}>
+                    {" "}
+                    <span className={headerStyle.headerspan}>
+                      {" "}
+                      よくあるご質問
+                    </span>
+                  </Link>
+                </li>
                 {/* <li>
               <Link to={"/"}>ログイン</Link>
             </li> */}

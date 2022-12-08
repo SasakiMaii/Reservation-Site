@@ -41,6 +41,9 @@ const GestroomPlan: React.FC = () => {
           <IoSearchOutline size={28} />
           空室検索
         </p>
+        <Link to={"/"} className={RoomStyle.reservedCheck}>
+          ご予約内容の確認はこちら
+        </Link>
         {err.map((error: any) => {
           return (
             <p key={err[1]} className={RoomStyle.err}>
