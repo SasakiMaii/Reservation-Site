@@ -16,7 +16,6 @@ import PlanDetails from './pages/rooms/PlanDetails';
 import Contact from './pages/books/Contact';
 import ScrollTop from './components/ScrollToTop';
 
-
 function App() {
   return (
     <>
