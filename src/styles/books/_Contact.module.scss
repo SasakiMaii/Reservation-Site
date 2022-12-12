@@ -20,19 +20,31 @@
 
 
 .contactContainer {
-    width: 1400px;
+    width: 100%;
     margin: 0 auto;
+    @include mq(sp) {
+        width: 80%;
+        margin: 0 auto;
+      }
 }
 
 .contactContainer h1 {
     text-align: center;
     margin: 50px;
+    @include mq(sp) {
+        font-size: 28px;
+      }
 }
 
 .contactSubTitle {
     margin: 50px 70px 30px 70px;
     position: relative;
     padding: 1rem;
+    @include mq(sp) {
+        font-size: 22px;
+        width: 300px;
+        margin: 0 auto;
+      }
     span {
         position: relative;
         z-index: 2;
@@ -84,6 +96,6 @@
 }
 
 .contactAnswer {
-    margin: 20px auto;
+    margin: 20px auto 40px auto;
     width: 1250px;
 }

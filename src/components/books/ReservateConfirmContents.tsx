@@ -17,8 +17,6 @@ import DeleteModal from "./DeleteModal";
 import {
   contactInput,
   select,
-  lodgeFirstName,
-  lodgeLastName,
 } from "../../store/ReservateConfirmSlice";
 import PrimaryButton from "../Atoms/button/PrimaryButton";
 
@@ -35,8 +33,6 @@ export const ReservateConfirmContents = () => {
   const reserveLastName = useSelector(
     (state: any) => state.registerInput.lastName
   );
-  // const lodgeFirstName = useSelector((state:any) => state.inputValue.lodgeFirstName);
-  // const lodgeLastName = useSelector((state:any) => state.inputValue.lodgeLastName);
   const telValue = useSelector((state: any) => state.registerInput.tel);
   const mailValue = useSelector((state: any) => state.registerInput.mail);
 
