@@ -6,10 +6,6 @@ import { auth, provider } from "../../Firebase";
 import { GiFrogPrince } from "react-icons/gi";
 import Hamburger from "hamburger-react";
 import { useState } from "react";
-// yarn add hamburger-react;
-//yarn add react-helmet
-//yarn add @types/react-helmet
-//yarn add react-helmet-async
 import { useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";

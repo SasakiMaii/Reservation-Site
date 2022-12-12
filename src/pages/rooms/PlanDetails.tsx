@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import {
   addDoc,
   collection,
   getDocs,
   limit,
-  orderBy,
   query,
   where,
 } from "firebase/firestore";
@@ -13,22 +12,12 @@ import db, { auth } from "../../Firebase";
 import RoomDetailStyle from "../../styles/rooms/_RoomDetails.module.scss";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useParams, useSearchParams } from "react-router-dom";
-import { Navigate } from "react-router-dom";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import { HiOutlineChevronLeft } from "react-icons/hi";
-import PlanRecomendSwiper from "../../components/Organisms/PlanRecomendSwiper";
+import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Calender from "../../components/Atoms/Calender";
 import Head from "../../components/layout/Head";
-
-// const status = 404;
-// if (status === 404) {
-// <Navigate to="/notfound" />;
-// }
+import SecondaryLink from "../../components/Atoms/button/SecondaryLink";
 
 const PlanDetails = () => {
   const [num, setNum] = useState(1);
@@ -36,10 +25,8 @@ const PlanDetails = () => {
   const [children, setChildren] = useState(0);
   const [rooms, setRooms] = useState<any>([]);
   const [plans, setPlans] = useState<any>([]);
-  const [roomsId, setRoomsId] = useState<any>([]);
   const [inputDate, setInputDate] = useState(false);
   const [datetext, setDatetext] = useState("");
-
 
   const navigation = useNavigate();
   const [user] = useAuthState(auth);
@@ -49,11 +36,9 @@ const PlanDetails = () => {
     // 以下、cookie取り出し処理
     const splitCookie = document.cookie.split(";");
     const list = [];
-
     for (let i = 0; i < splitCookie.length; i++) {
       list.push(splitCookie[i].split("="));
     }
-
     // cookieにgestID（hJ2JnzBn）がセットされていな場合、付与する
     list.map((data, index) => {
       if (data[0].includes("hJ2JnzBn")) {
@@ -65,7 +50,6 @@ const PlanDetails = () => {
   const [SearchParams] = useSearchParams();
   const RoomData = collection(db, "gestRoomType");
   const PlanData = collection(db, "Plan");
-
   const roomtype = SearchParams.get("plan");
   const roomtype2 = SearchParams.get("plan2");
   const roomtype3 = SearchParams.get("plan3");
@@ -75,6 +59,7 @@ const PlanDetails = () => {
     getDocs(PlanData).then((SnapShot) => {
       setPlans(SnapShot.docs.map((doc) => ({ ...doc.data() })));
     });
+
     if (roomtype) {
       const detailRoom = query(
         RoomData,
@@ -125,8 +110,12 @@ const PlanDetails = () => {
     }
     return price;
   };
+  const [err, setErr] = useState([]);
+  const errMsg: SetStateAction<never[]> = [];
 
   const handleResarve = () => {
+    setErr([]);
+
     if (user) {
       console.log(user.email);
       const reserveData = collection(db, "reserve");
@@ -141,11 +130,10 @@ const PlanDetails = () => {
         mail: user.email,
         // gestId:
       };
-      console.log(datetext)
+      console.log(datetext);
       addDoc(reserveData, data);
       navigate("/books/ReservateConfirm", { state: data });
     } else {
-      const reserveData = collection(db, "reserve");
       const data = {
         adultsNum: adult,
         childrenNum: children,
@@ -158,18 +146,7 @@ const PlanDetails = () => {
       navigation("/users/login", { state: data });
       document.cookie = "next=confirm; path=/;";
     }
-  };
-
-  const handleDateClick = (arg: any) => {
-    if (inputDate === false) {
-      arg.dayEl.style.backgroundColor = "steelblue"; //カレンダーに色つける
-      setInputDate(true);
-      setDatetext(arg.dateStr);
-    } else if (inputDate === true) {
-      arg.dayEl.style.backgroundColor = ""; //カレンダーの色を変える
-      setInputDate(false);
-      // alert(arg.dateStr)
-    }
+    setErr(errMsg);
   };
 
   const room = rooms.map((room: any) => room.area);
@@ -194,12 +171,17 @@ const PlanDetails = () => {
 
   return (
     <>
-    <Head title="PrinceViewHotel-プラン" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
+      <Head
+        title="PrinceViewHotel-プラン"
+        description="ホテルの予約サイトです。-PrinceViewHotel-"
+      />
       <Header />
       <>
-        <Link to={"/rooms/Gestroom"} className={RoomDetailStyle.detaillink}>
-          <HiOutlineChevronLeft size={25} /> 客室・プラン{" "}
-        </Link>
+        <SecondaryLink
+          title="客室・プランへ戻る"
+          path={"/rooms/Gestroom"}
+          classname={RoomDetailStyle.containerAllDetail}
+        />
         {rooms.map((room: any) => {
           return (
             <div key={room.id} className={RoomDetailStyle.detailcontainers}>
@@ -254,6 +236,13 @@ const PlanDetails = () => {
                   ) : (
                     <></>
                   )}
+                  {err.map((error: any) => {
+                    return (
+                      <p key={err[1]} className={RoomDetailStyle.err}>
+                        ※{error}
+                      </p>
+                    );
+                  })}
                   <p className={RoomDetailStyle.count}>人数</p>
                   <div className={RoomDetailStyle.detailcount}>
                     <p>大人</p>
@@ -311,7 +300,7 @@ const PlanDetails = () => {
                     </p>
                   </div>
                   <div className={RoomDetailStyle.detailBtn}>
-                    <PrimaryButton onClick={ handleResarve}>
+                    <PrimaryButton onClick={handleResarve}>
                       予約する
                     </PrimaryButton>
                   </div>
@@ -337,26 +326,15 @@ const PlanDetails = () => {
   );
 };
 
-export const RecomendRoom = () => {
+export const RecomendRoom: React.FC = () => {
   const PlanData = collection(db, "Plan");
   const detailPlan = query(PlanData, limit(3));
   const [plans, setPlans] = useState<any>([]);
-  const[posts,SetPosts]=useState<any>([])
- 
   useEffect(() => {
     getDocs(detailPlan).then((snapShot) => {
       setPlans(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
   }, []);
-
-  // const getRoomData = () => {
-  //   const postDate = collection(db, "Plan");
-  //   getDocs(postDate).then((snapShot) => {
-  //     SetPosts(snapShot.docs.map((doc) => ({ ...doc.data() })))
-  //   })
-  //   const pathList: any = []
-    
-
   return (
     <>
       <p className={RoomDetailStyle.recomendName}>お客さまにおすすめのプラン</p>

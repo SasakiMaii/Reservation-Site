@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, SetStateAction, useState } from "react";
 import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { useEffect } from "react";
 import PrimaryButton from "../../components/Atoms/button/PrimaryButton";
@@ -6,19 +6,16 @@ import db, { auth } from "../../Firebase";
 import RoomDetailStyle from "../../styles/rooms/_RoomDetails.module.scss";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
-import { Link, useLocation } from "react-router-dom";
-import { useParams, useSearchParams, useNavigate } from "react-router-dom";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { HiOutlineChevronLeft } from "react-icons/hi";
 import { RecomendRoom } from "./PlanDetails";
 import { useDispatch, useSelector } from "react-redux";
 import { setAdultCount, setChildInput } from "../../store/SearchSlice";
 import Stays from "../../components/Organisms/rooms/Stays";
 import Calender from "../../components/Atoms/Calender";
 import Head from "../../components/layout/Head";
+import PrimaryLink from "../../components/Atoms/PrimaryLink";
+import SecondaryLink from "../../components/Atoms/button/SecondaryLink";
 
 const RoomDetails = () => {
   const [num, setNum] = useState(1);
@@ -43,10 +40,10 @@ const RoomDetails = () => {
 
   // ログイン情報
   const [user] = useAuthState(auth);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   // ゲストID情報取得
-  const [gestIdCookie, SetGestIdCookie] = useState();
+  // const [gestIdCookie, SetGestIdCookie] = useState();
 
   // gestID（hJ2JnzBn）の入れ物
   const cookieList: any = [];
@@ -89,36 +86,46 @@ const RoomDetails = () => {
     return price;
   };
 
+
+  const [err, setErr] = useState([]);
+  const errMsg:any = [];
+
   // ログインログアウト判定追加
   const handleResarve = () => {
-    if (user) {
-      console.log(user.email);
-      const data = {
-        adultsNum: Number(adultEl),
-        childrenNum: Number(childEl),
-        checkIn: datetext,
-        price: result,
-        roomType: String(room),
-        totalDate: Number(num),
-        mail: user.email,
-      };
-      // addDoc(reserveData, data);
-      navigation("/books/ReservateConfirm", { state: data });
-      // navigate("/books/ReservateConfirm");
-    } else {
-      // const reserveData = collection(db, "reserve");
-      const data = {
-        adultsNum: adultEl,
-        childrenNum: childEl,
-        checkIn: datetext,
-        price: result,
-        roomType: String(room),
-        totalDate: Number(num),
-      };
-      // navigate("/users/login")
-      navigation("/users/login", { state: data });
-      document.cookie = "next=confirm; path=/;";
+    setErr([]);
+    if (adultEl === "" && datetext === ""&&new Date(datetext) <= new Date(new Date().toString())) {
+      errMsg.push("項目を正しく入力してください")
+    }else{
+      if (user) {
+        console.log(user.email);
+        const data = {
+          adultsNum: Number(adultEl),
+          childrenNum: Number(childEl),
+          checkIn: datetext,
+          price: result,
+          roomType: String(room),
+          totalDate: Number(num),
+          mail: user.email,
+        };
+        // addDoc(reserveData, data);
+        navigation("/books/ReservateConfirm", { state: data });
+        // navigate("/books/ReservateConfirm");
+      } else {
+        // const reserveData = collection(db, "reserve");
+        const data = {
+          adultsNum: adultEl,
+          childrenNum: childEl,
+          checkIn: datetext,
+          price: result,
+          roomType: String(room),
+          totalDate: Number(num),
+        };
+        // navigate("/users/login")
+        navigation("/users/login", { state: data });
+        document.cookie = "next=confirm; path=/;";
+      }
     }
+    setErr(errMsg);
   };
   // const gestRoomData = collection(db, "gestRoomType");
 
@@ -131,12 +138,17 @@ const RoomDetails = () => {
 
   return (
     <>
-    <Head title="PrinceViewHotel-客室" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
+      <Head
+        title="PrinceViewHotel-客室"
+        description="ホテルの予約サイトです。-PrinceViewHotel-"
+      />
       <Header />
       <div className={RoomDetailStyle.containerAllDetail}>
-        <Link to={"/rooms/Gestroom"} className={RoomDetailStyle.detaillink}>
-          <HiOutlineChevronLeft size={25} /> 客室・プランへ戻る{" "}
-        </Link>
+        <SecondaryLink
+          title="客室・プランへ戻る"
+          path={"/rooms/Gestroom"}
+          classname={RoomDetailStyle.containerAllDetail}
+        />
         {rooms.map((room: any) => {
           return (
             <div key={room.id} className={RoomDetailStyle.detailcontainers}>
@@ -150,7 +162,6 @@ const RoomDetails = () => {
                   />
                   <div className={RoomDetailStyle.detailCheck}>
                     <p>※チェックインの日付を選択してください</p>
-                    {/* inputDate,setInputDate,setDatetext */}
                     <Calender
                       inputDate={inputDate}
                       setInputDate={setInputDate}
@@ -160,6 +171,13 @@ const RoomDetails = () => {
                     <p>チェックアウト：{room.checkOut}</p>
                   </div>
                 </div>
+                {err.map((error: any) => {
+                  return (
+                    <p key={err[1]} className={RoomDetailStyle.err}>
+                      ※{error}
+                    </p>
+                  );
+                })}
                 <div className={RoomDetailStyle.detailplan}>
                   <p className={RoomDetailStyle.count}>人数</p>
                   <div className={RoomDetailStyle.detailcount}>
@@ -200,13 +218,11 @@ const RoomDetails = () => {
                 </p>
               </div>
               <RecomendRoom />
-              <Link
-                to={"/rooms/Gestroom"}
-                className={RoomDetailStyle.detaillink}
-              >
-                {" "}
-                →前の画面に戻る{" "}
-              </Link>
+              <PrimaryLink
+                title="→前の画面に戻る"
+                path={"/rooms/Gestroom"}
+                classname={RoomDetailStyle.detaillink}
+              />
             </div>
           );
         })}

@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import db from "../../Firebase";
-import {
-  IoSearchOutline,
-} from "react-icons/io5";
+import { IoSearchOutline } from "react-icons/io5";
 import {
   collection,
   getDocs,
@@ -17,143 +15,129 @@ import PrimaryButton from "../../components/Atoms/button/PrimaryButton";
 import { Link } from "react-router-dom";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
-import RoomSearchSoart from "../../components/Organisms/rooms/RoomSearchSoart";
-import Pageing from "../../components/Organisms/rooms/Pageing";
+import RoomSearchSoart from "../../components/Organisms/rooms/PlanSearchSoart";
 import PagingStyle from "../../styles/rooms/_Paging.module.scss";
-import RoomPlanSearch from "../../components/Templates/Search";
 import SecondryButton from "../../components/Atoms/button/SecondryButton";
-import RoomLink from "../../components/Molecules/rooms/RoomLink";
 import Head from "../../components/layout/Head";
+import EmptyRoomConditions from "../../components/Templates/EmptyRoomConditions";
+import PrimaryLink from "../../components/Atoms/PrimaryLink";
+import RoomStyle from "../../styles/rooms/_Gestroom.module.scss";
+import PlanSearchSoart from "../../components/Organisms/rooms/PlanSearchSoart";
+import Pageing from "../../components/Organisms/rooms/Pageing";
 
 //プラン
 const Plan = () => {
-//card
+  //card
   const [plans, SetPlans] = useState<any>([]);
   const [rooms, SetRooms] = useState<any>([]);
   const [descClick, setDescClick] = useState(false);
   const [ascClick, setAscClick] = useState(false);
-//search
+  //search
   const [room, setRoom] = useState<any>([]); //db取り出し
   const [reserve, setReserve] = useState<any>([]); //db取り出し
   const [reserved, setReserved] = useState<any>([]); //db取り出し
-  const [adultInput, setAdultInput] = useState<any>("");
-  const [chilrdInput, setChilrdInput] = useState<any>("");
-  const [roomChange, setRoomChange] = useState<any>(""); //selectの値
-  const [downChange, setDownChange] = useState<any>("");
-  const [upChange, setUpChange] = useState<any>("");
   const [datetext, setDatetext] = useState("");
-
-  const dateChoice = () => {
-
-    const roomFilter = reserve.filter((x: any) => {
-      return x.roomType === roomChange;
-    });
-    //部屋が一致
-    const roomFilters = reserved.filter((x: any) => {
-      return x.roomType === roomChange;
-    });
-    //部屋が一致
-
-    const count = Number(adultInput) + Number(chilrdInput) <= 3;
-    //人数が合わせて３人以上だったらtrue
-
-    const noemptyRooms = reserve.filter((x: any) => {
-      return String(x.checkIn) === datetext;
-    });
-    //日付が一致（予約確認のDBと入力値）
-    const noemptyRoom = reserved.filter((x: any) => {
-      return String(x.checkIn) === datetext;
-    });
-    //日付が一致（予約確認のDBと入力値）
-
-    const priceFilter = downChange <= upChange;
-    //上限金額のが高いように(trueが正常)
-
-    const price = room.filter((x: any) => {
-      return Number(downChange) >= x.price || x.price <= Number(upChange);
-    });
-
-    if (adultInput === "" || datetext === "") {
-      console.log("必須項目を入力してください");
-    }
-    if (count === false) {
-      console.log("部屋に対しての人数が超過しています");
-    }
-    if (new Date(datetext) <= new Date(new Date().toString())) {
-      console.log("今日以降の日付を入れてください");
-    } else if (noemptyRoom.length===0||noemptyRooms.length === 1 && roomFilter.length === 0) {
-      console.log("日付は埋まってるけど部屋は埋まってないのでその部屋を表示");
-    } else if (
-      (noemptyRoom.length===1||
-      noemptyRooms.length === 1) &&
-      roomFilter.length === 1 &&
-      roomFilters.length === 1 &&
-      priceFilter === false
-    ) {
-      console.log("空室なし");
-    } else if (roomFilter) {
-      console.log("空室の表示");
-    } else if (price === 1) {
-      console.log(price);
-    }
-  };
-
+  const [info, setInfo] = useState([]);
+  const [err, setErr] = useState([]); //検索のバリデーション
+  
   return (
     <>
-     <Head title="PrinceViewHotel-客室・プラン" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
+      <Head
+        title="PrinceViewHotel-客室・プラン"
+        description="このサイトの内容です"
+      />
       <Header />
-      <p className={PlanStyle.pageTitle}><IoSearchOutline/>空室検索</p>
-      <RoomPlanSearch room={room} setRoom={setRoom} reserve={reserve} setReserve={setReserve} reserved={reserved} setReserved={setReserved} chilrdInput={chilrdInput} setChilrdInput={setChilrdInput} adultInput={adultInput} setAdultInput={setAdultInput} roomChange={roomChange} setRoomChange={setRoomChange} downChange={downChange} setDownChange={setDownChange} upChange={upChange} setUpChange={setUpChange} datetext={datetext} setDatetext={setDatetext} dateChoice={dateChoice}/>
-      <RoomLink/>
-      <PlanCard plans={plans} SetPlans={SetPlans} rooms={rooms} setRooms={SetRooms} descClick={descClick} setDescClick={setDescClick} setAscClick={setAscClick} ascClick={ascClick}/>
-      <Pageing />
+      <p className={PlanStyle.pageTitle}>
+        <IoSearchOutline />
+        空室検索
+      </p>
+      <PrimaryLink
+          title={"ご予約内容の確認はこちら"}
+          path={"/books/ReservateHistory"}
+          classname={RoomStyle.reservedCheck}
+        />
+        {err.map((error: any) => {
+          return (
+            <p key={err[1]} className={RoomStyle.err}>
+              ※{error}
+            </p>
+          );
+        })}
+      <EmptyRoomConditions
+          datetext={datetext}
+          setDatetext={setDatetext}
+          setInfo={setInfo}
+          reserved={reserved}
+          room={room}
+          setRoom={setRoom}
+          rooms={rooms}
+          SetRooms={SetRooms}
+          setErr={setErr}
+          setReserved={setReserved}
+          setReserve={setReserve}
+          reserve={reserve}
+        />
+      <p className={PlanStyle.pageTitle2}>全ての客室＆プラン</p>
+      <div className={PlanStyle.roomLinkWrapper}>
+        <Link to={"/rooms/Gestroom"}> 客室で探す </Link>
+        <Link to={"#"} className={PlanStyle.planLink}>
+          {" "}
+          プランで探す{" "}
+        </Link>
+      </div>
+      {err.map((error: any) => {
+          return (
+            <p key={err[0]} className={RoomStyle.err}>
+              ※{error}
+            </p>
+          );
+        })}
+        {info.map((information: any) => {
+          return (
+            <p key={info[0]} className={RoomStyle.info}>
+              ※{information}
+            </p>
+          );
+        })}
+      <PlanCard
+        plans={plans}
+        SetPlans={SetPlans}
+        rooms={rooms}
+        setRooms={SetRooms}
+        descClick={descClick}
+        setDescClick={setDescClick}
+        setAscClick={setAscClick}
+        ascClick={ascClick}
+      />
       <Footer />
     </>
   );
 };
 
-export const PlanCard = (props:any) => {
-  const{plans,SetPlans,SetRooms,descClick,setDescClick,ascClick,setAscClick}=props
+export const PlanCard = (props: any) => {
+  const {
+    plans,
+    SetPlans,
+    SetRooms,
+    descClick,
+    setDescClick,
+    ascClick,
+    setAscClick,
+
+  } = props;
 
   const soartData = collection(db, "Plan");
-  const roomData = collection(db, "gestRoomType");
 
 
   //firebaseのID順
   useEffect(() => {
-    const room = query(roomData, orderBy("price"), limit(4));
-    getDocs(room).then((snapShot) => {
-      SetRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
-    });
     const planData = query(soartData, orderBy("price"), limit(3));
     getDocs(planData).then((snapShot) => {
       SetPlans(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
   }, []);
-  //降順
-  const onAscSort = async () => {
-    const priceAsc = query(soartData, orderBy("price"), limit(3));
-    const data = await getDocs(priceAsc);
-    const newAscData = data.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
-    setDescClick(false);
-    setAscClick(true);
-    SetPlans(newAscData);
-  };
-  //昇順
-  const onDescSort = async () => {
-    const priceDesc = query(soartData, orderBy("price", "desc"), limit(3));
-    const data = await getDocs(priceDesc);
-    const newDescData = data.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
-    setDescClick(true);
-    setAscClick(false);
-    SetPlans(newDescData);
-  };
+  
+
   const handleResarvedEmptyRoom = () => {};
   const handleNextPage = async () => {
     if (descClick === true) {
@@ -232,10 +216,10 @@ export const PlanCard = (props:any) => {
       SetPlans(prevPage);
     }
   };
-
+  
   return (
     <>
-      <RoomSearchSoart onAscClick={onAscSort} onDescClick={onDescSort} />
+      <PlanSearchSoart setDescClick={setDescClick} setAscClick={setAscClick} SetPlans={SetPlans} SetRooms={SetRooms}/>
       <div className={PlanStyle.roomPlanContainer}>
         <ul>
           {plans.map((plan: any) => {
@@ -268,9 +252,7 @@ export const PlanCard = (props:any) => {
                   </SecondryButton>
                 </div>
                 <div className={PlanStyle.roomplanWrapper}>
-                  <p className={PlanStyle.roomplan}>
-                    部屋
-                  </p>
+                  <p className={PlanStyle.roomplan}>部屋</p>
                 </div>
 
                 <div className={PlanStyle.roomplanCard}>
@@ -384,17 +366,14 @@ export const PlanCard = (props:any) => {
                     </div>
                   </div>
                 </div>
-                <p >
+                <p>
                   ※表示されている料金は参考価格です。予約内容確認画面で最終的な料金をご確認ください。
                 </p>
               </li>
             );
           })}
         </ul>
-        <div className={PagingStyle.pagingWrapper}>
-          {<button onClick={handlePrevPage}>1</button>}
-          <button onClick={handleNextPage}>2</button>・・
-        </div>
+        <Pageing onPrevClick={handlePrevPage} onNextClick={handleNextPage}/>
       </div>
     </>
   );
