@@ -7,7 +7,6 @@ const EmptyRoomConditions = (props: any) => {
     datetext,
     setDatetext,
     reserved,
-    room,
     rooms,
     SetRooms,
     setErr,
@@ -15,7 +14,6 @@ const EmptyRoomConditions = (props: any) => {
     setReserved,
     setReserve,
     reserve,
-    setRoom,
   } = props;
 
   //Redux
@@ -41,15 +39,13 @@ const EmptyRoomConditions = (props: any) => {
   const priceFilter = upEl <= downEl;
   //上限金額のが高いように(trueが正常)
 
-  console.log(priceFilter);
-
   //金額での絞り込み（10,000円〜15,000円の間など）
-  const price = room.filter((x: any) => {
+  const price = rooms.filter((x: any) => {
     return Number(downEl) >= x.price || x.price <= Number(upEl);
   });
 
   //roomChangeで指定された部屋の表示
-  const roomPick = room.filter((r: any) => {
+  const roomPick = rooms.filter((r: any) => {
     return r.area === roomEl;
   });
 
@@ -71,7 +67,6 @@ const EmptyRoomConditions = (props: any) => {
     const errorInfo: any = [];
     if (adultEl === "" || datetext === "") {
       if (roomEl.length >= 1) {
-        console.log("input");
         errorMsg.push("チェックイン日と大人の宿泊人数は入力必須項目です");
         SetRooms(resRoom);
         errorInfo.push("エラー");
@@ -154,8 +149,6 @@ const EmptyRoomConditions = (props: any) => {
   return (
     <>
       <RoomPlanSearch
-        room={room}
-        setRoom={setRoom}
         reserve={reserve}
         setReserve={setReserve}
         reserved={reserved}

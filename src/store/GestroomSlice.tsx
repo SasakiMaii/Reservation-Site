@@ -5,8 +5,9 @@ export const GestroomSlice = createSlice({
   initialState: {
     roomSelect: "",
     upSelect: "",
-    downSelect:"",
-    descCrick:false,
+    downSelect: "",
+    descClick: false,
+    ascClick: false,
   }, //初期値
   reducers: {
     setRoomSelect: (state, action: PayloadAction<string>) => {
@@ -18,14 +19,24 @@ export const GestroomSlice = createSlice({
     setDownSelect: (state, action: PayloadAction<string>) => {
       state.downSelect = action.payload;
     },
-    setDescCrick: (state, action: PayloadAction<boolean>) => {
-      state.descCrick = true;
+    setDescclick: (state, action: PayloadAction<boolean>) => {
+      state.descClick = true;
+      state.ascClick=false
     },
-
+    setAscclick: (state, action: PayloadAction<boolean>) => {
+      state.ascClick = true;
+      state.descClick = false;
+    },
   },
   //アクションの中身をかく
 });
 
-export const { setRoomSelect, setUpSelect,setDownSelect,setDescCrick} = GestroomSlice.actions;
+export const {
+  setRoomSelect,
+  setUpSelect,
+  setDownSelect,
+  setDescclick,
+  setAscclick,
+} = GestroomSlice.actions;
 
 export default GestroomSlice.reducer;

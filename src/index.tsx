@@ -10,9 +10,7 @@ import { getAnalytics } from "firebase/analytics";
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import reginsterReducer from "./store/RegisterSlice"
-import 
-  reservateConfirmReducer
- from "./store/ReservateConfirmSlice";
+import reservateConfirmReducer from "./store/ReservateConfirmSlice";
 
 import searchReducer from "./store/SearchSlice"
 import gestroomReducer from "./store/GestroomSlice"

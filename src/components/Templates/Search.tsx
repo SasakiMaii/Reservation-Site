@@ -14,7 +14,7 @@ import SecondryButton from "../Atoms/button/SecondryButton";
 import db from "../../Firebase";
 import { collection, getDocs } from "firebase/firestore";
 import { useDispatch, useSelector } from "react-redux";
-import { setAdultInput } from "../../store/SearchSlice";
+import { setAdultInput, setChildInput } from "../../store/SearchSlice";
 import {
   setDownSelect,
   setRoomSelect,
@@ -23,8 +23,7 @@ import {
 
 const RoomPlanSearch = (props: any) => {
   const {
-    setRoom,
-    setReserve,
+    // setRoom,
     setReserved,
     chilrdInput,
     setChilrdInput,
@@ -38,15 +37,7 @@ const RoomPlanSearch = (props: any) => {
   const [inputDate, setInputDate] = useState(false);
 
   useEffect(() => {
-    const reserveData = collection(db, "reserve"); //注文確認のDB
     const reservedData = collection(db, "reserved"); //注文確定のDB
-    const roomData = collection(db, "gestRoomType"); //部屋のDB
-    getDocs(reserveData).then((snapShot) => {
-      setReserve(snapShot.docs.map((doc) => ({ ...doc.data() })));
-    });
-    getDocs(roomData).then((snapShot) => {
-      setRoom(snapShot.docs.map((doc) => ({ ...doc.data() })));
-    });
     getDocs(reservedData).then((snapShot) => {
       setReserved(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
@@ -87,9 +78,6 @@ export const Checkin = (props: any) => {
   const dispatch = useDispatch();
   const adultEl = useSelector((state: any) => state.searchInput.adultInput);
   const childEl = useSelector((state: any) => state.searchInput.childInput);
-  const roomEl = useSelector((state: any) => state.gestroom.roomSelect);
-  const upEl = useSelector((state: any) => state.gestroom.upSelect);
-  const downEl = useSelector((state: any) => state.gestroom.dowmselect);
 
   const adult = (ev: ChangeEvent<HTMLInputElement>) => {
     dispatch(setAdultInput(ev.target.value));
@@ -256,7 +244,3 @@ export const ObsessionSearch = () => {
 };
 
 export default RoomPlanSearch;
-
-function setChildInput(value: string): any {
-  throw new Error("Function not implemented.");
-}
