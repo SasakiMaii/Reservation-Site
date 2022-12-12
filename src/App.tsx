@@ -14,6 +14,7 @@ import NotFound from './pages/NotFound';
 import Header from "../src/components/layout/Header";
 import PlanDetails from './pages/rooms/PlanDetails';
 import Contact from './pages/books/Contact';
+import ScrollTop from './components/ScrollToTop';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
 
 
       <Router >
+        <ScrollTop />
         <Routes>
           <Route path='/books/ReservateConfirm' element={<ReservateConfirm />}></Route>
           <Route path='/books/ReservateComplete' element={<ReservateComplete />}></Route>
