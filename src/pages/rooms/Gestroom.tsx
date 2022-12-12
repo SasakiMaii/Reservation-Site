@@ -1,14 +1,10 @@
-import RoomSearchSoart from "../../components/Organisms/rooms/RoomSearchSoart";
 import RoomStyle from "../../styles/rooms/_Gestroom.module.scss";
 import PrimaryButton from "../../components/Atoms/button/PrimaryButton";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import PagingStyle from "../../styles/rooms/_Paging.module.scss";
-import { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useRef, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
-import RoomLink from "../../components/Molecules/rooms/RoomLink";
-// import "firebase";
 import db from "../../Firebase";
 import {
   collection,
@@ -22,30 +18,41 @@ import {
 import SecondryButton from "../../components/Atoms/button/SecondryButton";
 import EmptyRoomConditions from "../../components/Templates/EmptyRoomConditions";
 import Head from "../../components/layout/Head";
+import PrimaryLink from "../../components/Atoms/PrimaryLink";
+import SearchSoart from "../../components/Organisms/rooms/RoomSearchSoart";
+import Pageing from "../../components/Organisms/rooms/Pageing";
+import { useSelector } from "react-redux";
 
-const GestroomPlan: React.FC = () => {
-  const [descClick, setDescClick] = useState(false);
-  const [ascClick, setAscClick] = useState(false);
+type RoomProps = {
+  classname?: string;
+};
+
+const GestroomPlan: React.FC<RoomProps> = () => {
   const [datetext, setDatetext] = useState("");
   const [info, setInfo] = useState([]);
   const [err, setErr] = useState([]); //検索のバリデーション
   const [rooms, SetRooms] = useState<any>([]); //db取り出し
   const [room, setRoom] = useState<any>([]); //db取り出し
-  const [reserve, setReserve] = useState<any>([]); //db取り出し
+  // const [reserve, setReserve] = useState<any>([]); //db取り出し
   const [reserved, setReserved] = useState<any>([]); //db取り出し
 
   return (
     <>
-    <Head title="PrinceViewHotel-客室・プラン" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
-      <Header/>
+      <Head
+        title="PrinceViewHotel-客室・プラン"
+        description="ホテルの予約サイトです。-PrinceViewHotel-"
+      />
+      <Header />
       <div className={RoomStyle.hidden}>
         <p className={RoomStyle.pageTitle}>
           <IoSearchOutline size={28} />
           空室検索
         </p>
-        <Link to={"/"} className={RoomStyle.reservedCheck}>
-          ご予約内容の確認はこちら
-        </Link>
+        <PrimaryLink
+          title={"ご予約内容の確認はこちら"}
+          path={"/books/ReservateHistory"}
+          classname={RoomStyle.reservedCheck}
+        />
         {err.map((error: any) => {
           return (
             <p key={err[1]} className={RoomStyle.err}>
@@ -64,10 +71,17 @@ const GestroomPlan: React.FC = () => {
           SetRooms={SetRooms}
           setErr={setErr}
           setReserved={setReserved}
-          setReserve={setReserve}
-          reserve={reserve}
+          // setReserve={setReserve}
+          // reserve={reserve}
         />
-        <RoomLink />
+        <p className={RoomStyle.pageTitle2}>全ての客室＆プラン</p>
+        <div className={RoomStyle.roomLinkWrapper}>
+          <Link to={"#"} className={RoomStyle.roomLink}>
+            {" "}
+            客室で探す{" "}
+          </Link>
+          <Link to={"/rooms/Plan"}> プランで探す </Link>
+        </div>
         {err.map((error: any) => {
           return (
             <p key={err[0]} className={RoomStyle.err}>
@@ -83,12 +97,9 @@ const GestroomPlan: React.FC = () => {
           );
         })}
         <RoomCard
-          descClick={descClick}
-          setDescClick={setDescClick}
           rooms={rooms}
-          setRooms={SetRooms}
-          ascClick={ascClick}
-          setAscClick={setAscClick}
+          SetRooms={SetRooms}
+
         />
       </div>
       <Footer />
@@ -98,11 +109,27 @@ const GestroomPlan: React.FC = () => {
 
 //部屋の詳細
 export const RoomCard = (props: any) => {
-  const { descClick, setDescClick, rooms, setRooms, ascClick, setAscClick } =
-    props;
+  const {
+    rooms,
+    SetRooms,
+    SetPlans,
+  } = props;
+  // const dispatch = useDispatch();
+  const descEl = useSelector((state: any) => state.gestroom.descClick);
+  const ascEl = useSelector((state: any) => state.gestroom.ascClick);
   const soartData = collection(db, "gestRoomType");
-  // const planData = collection(db, "Plan");
   const [showPlan, setShowPlan] = useState(false);
+  const navigate = useNavigate();
+
+  let renderFlag = useRef(false);
+
+  if (!renderFlag.current) {
+    const roomDate = query(soartData, orderBy("price"), limit(3));
+    getDocs(roomDate).then((snapShot) => {
+      SetRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+    });
+    renderFlag.current = true;
+  }
 
   const showPlanChange = () => {
     if (showPlan) {
@@ -111,53 +138,9 @@ export const RoomCard = (props: any) => {
       setShowPlan(true);
     }
   };
-
-  let renderFlag = useRef(false);
-
-  if (!renderFlag.current) {
-    const roomDate = query(soartData, orderBy("price"), limit(3));
-    getDocs(roomDate).then((snapShot) => {
-      setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
-    });
-    renderFlag.current = true;
-  }
-
-  const onAscSort = async () => {
-    const priceAsc = query(soartData, orderBy("price"), limit(3));
-    const data = await getDocs(priceAsc);
-    const newAscData = data.docs.map((doc) => ({
-      ...doc.data(),
-    }));
-    setAscClick(true);
-    setDescClick(false);
-    setRooms(newAscData);
-  };
-
-  const onDescSort = async () => {
-    const priceDesc = query(soartData, orderBy("price", "desc"), limit(3));
-    const data = await getDocs(priceDesc);
-    const newDescData = data.docs.map((doc) => ({
-      ...doc.data(),
-    }));
-    setDescClick(true);
-    setAscClick(false);
-    setRooms(newDescData);
-  };
-  // useEffect(() => {
-  //   const roomDate = query(soartData, orderBy("price"), limit(3));
-  //   getDocs(roomDate).then((snapShot) => {
-  //     setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
-  //   });
-  // }, []);
-
-  //ソート関数
-
-  //予約ボタン
-  const navigate = useNavigate();
-
-  //次のページへ進むボタン。ソートボタンがクリックされていた場合は、料金順でページングになるように。
+  //次のページへ進むボタン
   const handleNextPage = async () => {
-    if (descClick === true) {
+    if (descEl === true) {
       const priceDesc = query(soartData, orderBy("price", "desc"), limit(3));
       const data = await getDocs(priceDesc);
       const last = data.docs[data.docs.length - 1];
@@ -172,9 +155,8 @@ export const RoomCard = (props: any) => {
         ...doc.data(),
         id: doc.id,
       }));
-      // console.log(nextPage)
-      setRooms(nextPage);
-    } else if (ascClick === true) {
+      SetRooms(nextPage);
+    } else if (ascEl === true) {
       const priceDesc = query(soartData, orderBy("price"), limit(3));
       const data = await getDocs(priceDesc);
       const last = data.docs[data.docs.length - 1];
@@ -188,9 +170,7 @@ export const RoomCard = (props: any) => {
       const nextPage = nextdata.docs.map((doc) => ({
         ...doc.data(),
       }));
-      // console.log(nextPage)
-
-      setRooms(nextPage);
+      SetRooms(nextPage);
     } else {
       const priceDesc = query(soartData, orderBy("price"), limit(3));
       const data = await getDocs(priceDesc);
@@ -205,20 +185,19 @@ export const RoomCard = (props: any) => {
       const nextPage = nextdata.docs.map((doc) => ({
         ...doc.data(),
       }));
-      setRooms(nextPage);
+      SetRooms(nextPage);
     }
   };
   //前のページに戻るボタン
   const handlePrevPage = async () => {
-    //安い順の時はこれでちゃんと戻れる
-    if (descClick === true) {
+    if (descEl === true) {
       const priceDesc = query(soartData, orderBy("price", "desc"), limit(3));
       const data = await getDocs(priceDesc);
       const newDescData = data.docs.map((doc) => ({
         ...doc.data(),
         id: doc.id,
       }));
-      setRooms(newDescData);
+      SetRooms(newDescData);
     } else {
       const p = query(soartData, orderBy("price"), limit(4));
       const data = await getDocs(p);
@@ -233,7 +212,7 @@ export const RoomCard = (props: any) => {
       const prevPage = descPrevdata.docs.map((doc) => ({
         ...doc.data(),
       }));
-      setRooms(prevPage);
+      SetRooms(prevPage);
     }
   };
 
@@ -241,7 +220,11 @@ export const RoomCard = (props: any) => {
     <>
       <div className={RoomStyle.roomPlanContainer}>
         <ul>
-          <RoomSearchSoart onAscClick={onAscSort} onDescClick={onDescSort} />
+          <SearchSoart
+            SetPlans={SetPlans}
+            SetRooms={SetRooms}
+            rooms={rooms}
+          />
           {rooms.map((room: any) => {
             return (
               <li key={room.area} className={RoomStyle.roomPlanCard}>
@@ -301,8 +284,6 @@ export const RoomCard = (props: any) => {
                     </button>
                   )}
                 </div>
-                {/* <hr /> */}
-
                 <div className={RoomStyle.roomplanCards}>
                   <img
                     width={200}
@@ -410,11 +391,7 @@ export const RoomCard = (props: any) => {
           })}
         </ul>
       </div>
-      <div className={PagingStyle.pagingWrapper}>
-        {<button onClick={handlePrevPage}>1</button>}
-        <button onClick={handleNextPage}>2</button>
-        <p className={PagingStyle.pagingdetail}>全2ページ</p>
-      </div>
+      <Pageing onPrevClick={handlePrevPage} onNextClick={handleNextPage}/>
     </>
   );
 };
