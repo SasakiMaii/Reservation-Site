@@ -19,8 +19,6 @@ import Contact from './pages/books/Contact';
 function App() {
   return (
     <>
-
-
       <Router >
         <Routes>
           <Route path='/books/ReservateConfirm' element={<ReservateConfirm />}></Route>
