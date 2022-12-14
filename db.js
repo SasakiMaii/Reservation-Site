@@ -19,4 +19,13 @@
 //     port: 5433,
 // });
 
+// const pool = new Pool({
+//   user: "postgres",
+//   host: "localhost",
+//   database: "users",
+//   password: "postgres",
+//   port: 5432,
+// });
+
+
 // module.exports = pool;
