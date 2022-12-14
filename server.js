@@ -23,7 +23,7 @@ app.get("/news", (req, res) => {
             // res.json({title: "i"})
             pool.query("SELECT * from info", (error, results) => {
                 return res.status(200).json(results.rows);
-              });            
+              });
         } catch (error) {
             console.error(error)
         }

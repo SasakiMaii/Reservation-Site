@@ -76,7 +76,7 @@ const RoomDetails = () => {
 
   const obroop = () => {
     const price = [];
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 2; i++) {
       price.push(
         <option key={i} value={i}>
           {i}人
@@ -86,16 +86,19 @@ const RoomDetails = () => {
     return price;
   };
 
-
   const [err, setErr] = useState([]);
-  const errMsg:any = [];
+  const errMsg: any = [];
 
   // ログインログアウト判定追加
   const handleResarve = () => {
     setErr([]);
-    if (adultEl === "" && datetext === ""&&new Date(datetext) <= new Date(new Date().toString())) {
-      errMsg.push("項目を正しく入力してください")
-    }else{
+    if (
+      adultEl === "" &&
+      datetext === "" &&
+      new Date(datetext) <= new Date(new Date().toString())
+    ) {
+      errMsg.push("項目を正しく入力してください");
+    } else {
       if (user) {
         console.log(user.email);
         const data = {

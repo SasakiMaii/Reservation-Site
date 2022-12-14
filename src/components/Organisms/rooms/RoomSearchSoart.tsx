@@ -7,11 +7,11 @@ import RoomStyle from "../../../styles/rooms/_Gestroom.module.scss";
 
 //料金が安い順高い順並び替え
 const RoomSearchSoart = ({
-  SetRooms,
+  SetRooms,descClick, setDescClick, ascClick, setAscClick
 }: any) => {
-  const dispatch = useDispatch();
-  const descEl = useSelector((state: any) => state.gestroom.descClick);
-  const ascEl = useSelector((state: any) => state.gestroom.ascClick);
+  // const dispatch = useDispatch();
+  // const descEl = useSelector((state: any) => state.gestroom.descClick);
+  // const ascEl = useSelector((state: any) => state.gestroom.ascClick);
   const soartData = collection(db, "gestRoomType");
 
   const onAscSort = async () => {
@@ -20,10 +20,11 @@ const RoomSearchSoart = ({
     const newAscData = data.docs.map((doc) => ({
       ...doc.data(),
     }));
-    dispatch(setAscclick(false))
-    dispatch(setDescclick(false))
-    console.log("a",ascEl)
-    console.log("d",descEl)
+    // dispatch(setAscclick(false))
+    // dispatch(setDescclick(false))
+    setAscClick(true);
+    setDescClick(false);
+
     SetRooms(newAscData);
   };
 
@@ -33,10 +34,11 @@ const RoomSearchSoart = ({
     const newDescData = data.docs.map((doc) => ({
       ...doc.data(),
     }));
-    dispatch(setDescclick(false))
-    dispatch(setAscclick(false))
-    console.log("a",ascEl)
-    console.log("d",descEl)
+    setDescClick(true);
+    setAscClick(false);
+    // dispatch(setDescclick(false))
+    // dispatch(setAscclick(false))
+
     SetRooms(newDescData);
   };
  

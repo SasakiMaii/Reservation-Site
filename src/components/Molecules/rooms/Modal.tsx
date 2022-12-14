@@ -77,7 +77,7 @@ const Modal = ({
               <div className={SearchStyle.modalSelectContainer}>
                 <div className={SearchStyle.modalSelectcount}>
                   <p>宿泊数</p>
-                  <select name="" id="">
+                  <select name="stay" id="stay">
                     <option value="1">1泊</option>
                     <option value="2">2泊</option>
                     <option value="3">3泊</option>

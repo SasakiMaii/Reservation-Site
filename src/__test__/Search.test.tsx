@@ -4,7 +4,7 @@ import SecondryButton from "../components/Atoms/button/SecondryButton";
 import {expect, test} from '@jest/globals';
 import RoomPlanSearch from "../components/Templates/Search";
 import { Provider } from "react-redux";
-import store from "../../src/index";
+import {store} from "../../src/index";
 
 describe("Search", () => {
   test("One Search Button", async () => {

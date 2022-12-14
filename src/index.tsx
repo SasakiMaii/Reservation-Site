@@ -6,7 +6,6 @@ import reportWebVitals from "./reportWebVitals";
 import "ress";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider} from 'react-redux';
 import reginsterReducer from "./store/RegisterSlice"
@@ -40,7 +39,7 @@ const app = initializeApp(firebaseConfig);
 
 
 // redux store
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     inputValue: reservateConfirmReducer,
     registerInput:reginsterReducer,
@@ -68,4 +67,4 @@ root.render(
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
 
-export default store;
+

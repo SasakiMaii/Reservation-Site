@@ -39,7 +39,7 @@ const Plan = () => {
   const [datetext, setDatetext] = useState("");
   const [info, setInfo] = useState([]);
   const [err, setErr] = useState([]); //検索のバリデーション
-  
+
   return (
     <>
       <Head
@@ -52,31 +52,31 @@ const Plan = () => {
         空室検索
       </p>
       <PrimaryLink
-          title={"ご予約内容の確認はこちら"}
-          path={"/books/ReservateHistory"}
-          classname={RoomStyle.reservedCheck}
-        />
-        {err.map((error: any) => {
-          return (
-            <p key={err[1]} className={RoomStyle.err}>
-              ※{error}
-            </p>
-          );
-        })}
+        title={"ご予約内容の確認はこちら"}
+        path={"/books/ReservateHistory"}
+        classname={RoomStyle.reservedCheck}
+      />
+      {err.map((error: any) => {
+        return (
+          <p key={err[1]} className={RoomStyle.err}>
+            ※{error}
+          </p>
+        );
+      })}
       <EmptyRoomConditions
-          datetext={datetext}
-          setDatetext={setDatetext}
-          setInfo={setInfo}
-          reserved={reserved}
-          room={room}
-          setRoom={setRoom}
-          rooms={rooms}
-          SetRooms={SetRooms}
-          setErr={setErr}
-          setReserved={setReserved}
-          setReserve={setReserve}
-          reserve={reserve}
-        />
+        datetext={datetext}
+        setDatetext={setDatetext}
+        setInfo={setInfo}
+        reserved={reserved}
+        room={room}
+        setRoom={setRoom}
+        rooms={rooms}
+        SetRooms={SetRooms}
+        setErr={setErr}
+        setReserved={setReserved}
+        setReserve={setReserve}
+        reserve={reserve}
+      />
       <p className={PlanStyle.pageTitle2}>全ての客室＆プラン</p>
       <div className={PlanStyle.roomLinkWrapper}>
         <Link to={"/rooms/Gestroom"}> 客室で探す </Link>
@@ -86,19 +86,19 @@ const Plan = () => {
         </Link>
       </div>
       {err.map((error: any) => {
-          return (
-            <p key={err[0]} className={RoomStyle.err}>
-              ※{error}
-            </p>
-          );
-        })}
-        {info.map((information: any) => {
-          return (
-            <p key={info[0]} className={RoomStyle.info}>
-              ※{information}
-            </p>
-          );
-        })}
+        return (
+          <p key={err[0]} className={RoomStyle.err}>
+            ※{error}
+          </p>
+        );
+      })}
+      {info.map((information: any) => {
+        return (
+          <p key={info[0]} className={RoomStyle.info}>
+            ※{information}
+          </p>
+        );
+      })}
       <PlanCard
         plans={plans}
         SetPlans={SetPlans}
@@ -123,11 +123,9 @@ export const PlanCard = (props: any) => {
     setDescClick,
     ascClick,
     setAscClick,
-
   } = props;
 
   const soartData = collection(db, "Plan");
-
 
   //firebaseのID順
   useEffect(() => {
@@ -136,7 +134,6 @@ export const PlanCard = (props: any) => {
       SetPlans(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
   }, []);
-  
 
   const handleResarvedEmptyRoom = () => {};
   const handleNextPage = async () => {
@@ -216,10 +213,15 @@ export const PlanCard = (props: any) => {
       SetPlans(prevPage);
     }
   };
-  
+
   return (
     <>
-      <PlanSearchSoart setDescClick={setDescClick} setAscClick={setAscClick} SetPlans={SetPlans} SetRooms={SetRooms}/>
+      <PlanSearchSoart
+        setDescClick={setDescClick}
+        setAscClick={setAscClick}
+        SetPlans={SetPlans}
+        SetRooms={SetRooms}
+      />
       <div className={PlanStyle.roomPlanContainer}>
         <ul>
           {plans.map((plan: any) => {
@@ -373,7 +375,7 @@ export const PlanCard = (props: any) => {
             );
           })}
         </ul>
-        <Pageing onPrevClick={handlePrevPage} onNextClick={handleNextPage}/>
+        <Pageing onPrevClick={handlePrevPage} onNextClick={handleNextPage} />
       </div>
     </>
   );
