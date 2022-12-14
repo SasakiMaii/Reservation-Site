@@ -19,8 +19,6 @@ import ScrollTop from './components/ScrollToTop';
 function App() {
   return (
     <>
-
-
       <Router >
         <ScrollTop />
         <Routes>
@@ -35,7 +33,6 @@ function App() {
           <Route path='/rooms/Plan' element={<Plan/>}></Route>
           <Route path='/rooms/RoomDetails' element={<RoomDetails/>}></Route>
           <Route path='/users/Register' element={<Registered />}></Route>
-          {/* <Route path='/Top' element={<Top />}></Route> */}
           <Route path='/rooms/RoomDetails/:id' element={<RoomDetails />}></Route>
           <Route path='/rooms/PlanDetails' element={<PlanDetails/>}></Route>
           <Route path="*" element={<NotFound/>} />

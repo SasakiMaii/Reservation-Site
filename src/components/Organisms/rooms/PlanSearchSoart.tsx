@@ -1,8 +1,9 @@
 import { collection, getDocs, limit, orderBy, query } from "firebase/firestore";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import db from "../../../Firebase";
+import { setAscclick, setDescclick } from "../../../store/GestroomSlice";
 import RoomStyle from "../../../styles/rooms/_Gestroom.module.scss";
-
 //料金が安い順高い順並び替え
 const RoomSearchSoart = ({
   setDescClick,
@@ -10,6 +11,9 @@ const RoomSearchSoart = ({
   SetPlans,
 }: any) => {
   const soartData = collection(db, "Plan");
+  // const descEl = useSelector((state: any) => state.gestroom.descClick);
+  // const ascEl = useSelector((state: any) => state.gestroom.ascClick);
+  // const dispatchi=useDispatch()
 
   //降順
   const onAscSort = async () => {
@@ -20,6 +24,8 @@ const RoomSearchSoart = ({
       id: doc.id,
     }));
 
+    // dispatchi(setDescclick(false))
+    // dispatchi(setAscclick(true))
     setDescClick(false);
     setAscClick(true);
     SetPlans(newAscData);
@@ -33,8 +39,6 @@ const RoomSearchSoart = ({
       ...doc.data(),
       id: doc.id,
     }));
-
-
     setDescClick(true);
     setAscClick(false);
     SetPlans(newDescData);

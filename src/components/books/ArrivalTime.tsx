@@ -18,8 +18,8 @@ export const ArrivalTime = (props: any) => {
             onChange={selectValueChange}
             className={ReservateConfirmContentsStyles.input}
           >
-            {selectItem.map((selects: any) => {
-              return <option value={selects}>{selects}</option>;
+            {selectItem.map((selects: any, index:number) => {
+              return <option value={selects} key={index}>{selects}</option>;
             })}
           </select>
           時

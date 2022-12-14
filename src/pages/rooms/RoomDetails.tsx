@@ -76,7 +76,7 @@ const RoomDetails = () => {
 
   const obroop = () => {
     const price = [];
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 2; i++) {
       price.push(
         <option key={i} value={i}>
           {i}人
@@ -85,7 +85,6 @@ const RoomDetails = () => {
     }
     return price;
   };
-
 
   const [err, setErr] = useState([]);
   const errMsg: any = [];
@@ -109,7 +108,7 @@ const RoomDetails = () => {
     } else {
       // ログインしている場合
       if (user) {
-        console.log(user.email);
+        
         const data = {
           adultsNum: Number(adultEl),
           childrenNum: Number(childEl),
@@ -142,7 +141,6 @@ const RoomDetails = () => {
     }
     setErr(errMsg);
   };
-  // const gestRoomData = collection(db, "gestRoomType");
 
   const room = rooms.map((room: any) => room.area);
   const price = rooms.map((room: any) => room.price);

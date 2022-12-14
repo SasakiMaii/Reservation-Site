@@ -19,13 +19,13 @@ export const GestroomSlice = createSlice({
     setDownSelect: (state, action: PayloadAction<string>) => {
       state.downSelect = action.payload;
     },
-    setDescclick: (state, action: PayloadAction<boolean>) => {
-      state.descClick = true;
-      state.ascClick=false
+    setDescclick: (state, action:any) => {
+      state.descClick = action.true;
+      state.ascClick=action.false
     },
-    setAscclick: (state, action: PayloadAction<boolean>) => {
-      state.ascClick = true;
-      state.descClick = false;
+    setAscclick: (state, action:any) => {
+      state.ascClick = action.true;
+      state.descClick = action.false;
     },
   },
   //アクションの中身をかく

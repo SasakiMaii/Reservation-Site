@@ -68,7 +68,8 @@ $breakpoints: (
 
 .detailplan {
   margin-top: 90px;
-  margin-left: 60px;
+  margin-left: 35px;
+  width: 400px;
   @include mq(sp) {
     margin: 0 auto;
   }
@@ -291,6 +292,6 @@ $breakpoints: (
 
 .plandetailName {
   margin-bottom: 20px;
-  font-size: 24px;
+  font-size: 20px;
   background-color: rgb(230, 230, 230);
 }

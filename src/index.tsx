@@ -6,9 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import "ress";
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { configureStore } from '@reduxjs/toolkit';
-import { Provider } from 'react-redux';
+import { Provider} from 'react-redux';
 import reginsterReducer from "./store/RegisterSlice"
 import reservateConfirmReducer from "./store/ReservateConfirmSlice";
 
@@ -35,12 +34,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 // eslint-disable-next-line import/first
 
 
 // redux store
-export const store = configureStore({
+const store = configureStore({
   reducer: {
     inputValue: reservateConfirmReducer,
     registerInput:reginsterReducer,
@@ -52,7 +51,6 @@ export const store = configureStore({
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
-
 // 全てのコンポーネントでstoreを共有
 root.render(
   <React.StrictMode>
@@ -68,3 +66,5 @@ root.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
+
+export default {store}
