@@ -4,6 +4,7 @@ import {
   collection,
   getDocs,
   limit,
+  orderBy,
   query,
   where,
 } from "firebase/firestore";
@@ -18,6 +19,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Calender from "../../components/Atoms/Calender";
 import Head from "../../components/layout/Head";
 import SecondaryLink from "../../components/Atoms/button/SecondaryLink";
+import RoomPlanSearch from "../../components/Templates/Search";
+import RoomSearchSoart from "../../components/Organisms/rooms/PlanSearchSoart";
 
 const PlanDetails = () => {
   const [num, setNum] = useState(1);
@@ -50,52 +53,110 @@ const PlanDetails = () => {
   const [SearchParams] = useSearchParams();
   const RoomData = collection(db, "gestRoomType");
   const PlanData = collection(db, "Plan");
-  const roomtype = SearchParams.get("plan");
+
+  const roomstype = SearchParams.get("room");
+
+  const roomtype = SearchParams.get("plan1");
   const roomtype2 = SearchParams.get("plan2");
   const roomtype3 = SearchParams.get("plan3");
   const roomtype4 = SearchParams.get("plan4");
+
+  const roomMatch = rooms.map((room: any) => {
+    return room.id === roomstype;
+  });
+  console.log(roomMatch);
 
   useEffect(() => {
     getDocs(PlanData).then((SnapShot) => {
       setPlans(SnapShot.docs.map((doc) => ({ ...doc.data() })));
     });
 
-    if (roomtype) {
-      const detailRoom = query(
-        RoomData,
-        limit(1),
-        where("plan1", "==", roomtype)
-      ); //一つだけ表示
-      getDocs(detailRoom).then((snapShot) => {
-        setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
-      });
-    } else if (roomtype2) {
-      const detailRoom = query(
-        RoomData,
-        limit(1),
-        where("plan2", "==", roomtype2)
-      ); //一つだけ表示
-      getDocs(detailRoom).then((snapShot) => {
-        setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
-      });
-    } else if (roomtype3) {
-      const detailRoom = query(
-        RoomData,
-        limit(1),
-        where("plan3", "==", roomtype3)
-      ); //一つだけ表示
-      getDocs(detailRoom).then((snapShot) => {
-        setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
-      });
-    } else if (roomtype4) {
-      const detailRoom = query(
-        RoomData,
-        limit(1),
-        where("plan4", "==", roomtype4)
-      ); //一つだけ表示
-      getDocs(detailRoom).then((snapShot) => {
-        setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
-      });
+    // orderBy("price","desc"),
+    if (roomMatch === true) {
+      if (roomtype) {
+        const detailRoom = query(
+          RoomData,
+          limit(1),
+          // orderBy("price","desc"),
+          where("plan1", "==", roomtype)
+        );
+        getDocs(detailRoom).then((snapShot) => {
+          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+        });
+      } else if (roomtype2) {
+        const detailRoom = query(
+          RoomData,
+          limit(1),
+          // orderBy("price","desc"),
+          where("plan2", "==", roomtype2)
+        ); //一つだけ表示
+        getDocs(detailRoom).then((snapShot) => {
+          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+        });
+      } else if (roomtype3) {
+        const detailRoom = query(
+          RoomData,
+          limit(1),
+          // orderBy("price","desc"),
+          where("plan3", "==", roomtype3)
+        ); //一つだけ表示
+        getDocs(detailRoom).then((snapShot) => {
+          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+        });
+      } else if (roomtype4) {
+        const detailRoom = query(
+          RoomData,
+          limit(1),
+          // orderBy("price","desc"),
+          where("plan4", "==", roomtype4)
+        ); //一つだけ表示
+        getDocs(detailRoom).then((snapShot) => {
+          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+        });
+      }
+    }else{
+      if (roomtype) {
+        const detailRoom = query(
+          RoomData,
+          limit(1),
+          orderBy("price","desc"),
+          where("plan1", "==", roomtype)
+        );
+        getDocs(detailRoom).then((snapShot) => {
+          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+        });
+      } else if (roomtype2) {
+        const detailRoom = query(
+          RoomData,
+          limit(1),
+          orderBy("price","desc"),
+          where("plan2", "==", roomtype2)
+        ); //一つだけ表示
+        getDocs(detailRoom).then((snapShot) => {
+          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+        });
+      } else if (roomtype3) {
+        const detailRoom = query(
+          RoomData,
+          limit(1),
+          orderBy("price","desc"),
+          where("plan3", "==", roomtype3)
+        ); //一つだけ表示
+        getDocs(detailRoom).then((snapShot) => {
+          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+        });
+      } else if (roomtype4) {
+        const detailRoom = query(
+          RoomData,
+          limit(1),
+          orderBy("price","desc"),
+          where("plan4", "==", roomtype4)
+        ); //一つだけ表示
+        getDocs(detailRoom).then((snapShot) => {
+          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+        });
+      }
+
     }
   }, []);
 
@@ -117,8 +178,8 @@ const PlanDetails = () => {
     setErr([]);
 
     if (user) {
-      console.log(user.email);
-      const reserveData = collection(db, "reserve");
+      // console.log(user.email);
+      // const reserveData = collection(db, "reserve");
       const data = {
         adultsNum: Number(adult),
         childrenNum: Number(children),
@@ -130,8 +191,8 @@ const PlanDetails = () => {
         mail: user.email,
         // gestId:
       };
-      console.log(datetext);
-      addDoc(reserveData, data);
+      // console.log(datetext);
+      // addDoc(reserveData, data);
       navigate("/books/ReservateConfirm", { state: data });
     } else {
       const data = {
@@ -320,6 +381,11 @@ const PlanDetails = () => {
             </div>
           );
         })}
+        {/* {rooms===""?
+        <RoomSearchSoart/>
+        :
+        <></>
+        } */}
       </>
       <Footer />
     </>

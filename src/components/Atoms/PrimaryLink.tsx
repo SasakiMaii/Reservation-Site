@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import RoomStyle from "../../styles/rooms/_Gestroom.module.scss";
 
 
 type Props = {

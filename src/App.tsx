@@ -19,8 +19,6 @@ import ScrollTop from './components/ScrollToTop';
 function App() {
   return (
     <>
-
-
       <Router >
         <ScrollTop />
         <Routes>

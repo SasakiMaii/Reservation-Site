@@ -3,7 +3,7 @@ import PrimaryButton from "../../components/Atoms/button/PrimaryButton";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
 import { Link, useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import db from "../../Firebase";
 import {
@@ -21,7 +21,6 @@ import Head from "../../components/layout/Head";
 import PrimaryLink from "../../components/Atoms/PrimaryLink";
 import SearchSoart from "../../components/Organisms/rooms/RoomSearchSoart";
 import Pageing from "../../components/Organisms/rooms/Pageing";
-import { useSelector } from "react-redux";
 
 type RoomProps = {
   classname?: string;
@@ -30,12 +29,12 @@ type RoomProps = {
 const GestroomPlan: React.FC<RoomProps> = () => {
   const [datetext, setDatetext] = useState("");
   const [info, setInfo] = useState([]);
+  const [descClick, setDescClick] = useState(false);
+  const [ascClick, setAscClick] = useState(false);
   const [err, setErr] = useState([]); //検索のバリデーション
   const [rooms, SetRooms] = useState<any>([]); //db取り出し
   const [room, setRoom] = useState<any>([]); //db取り出し
-  // const [reserve, setReserve] = useState<any>([]); //db取り出し
   const [reserved, setReserved] = useState<any>([]); //db取り出し
-
   return (
     <>
       <Head
@@ -53,9 +52,9 @@ const GestroomPlan: React.FC<RoomProps> = () => {
           path={"/books/ReservateHistory"}
           classname={RoomStyle.reservedCheck}
         />
-        {err.map((error: any) => {
+        {err.map((error: any, index: any) => {
           return (
-            <p key={err[1]} className={RoomStyle.err}>
+            <p key={index} className={RoomStyle.err}>
               ※{error}
             </p>
           );
@@ -71,16 +70,10 @@ const GestroomPlan: React.FC<RoomProps> = () => {
           SetRooms={SetRooms}
           setErr={setErr}
           setReserved={setReserved}
-          // setReserve={setReserve}
-          // reserve={reserve}
         />
         <p className={RoomStyle.pageTitle2}>全ての客室＆プラン</p>
         <div className={RoomStyle.roomLinkWrapper}>
-          <Link to={"#"} className={RoomStyle.roomLink}>
-            {" "}
-            客室で探す{" "}
-          </Link>
-          <Link to={"/rooms/Plan"}> プランで探す </Link>
+
         </div>
         {err.map((error: any) => {
           return (
@@ -99,7 +92,10 @@ const GestroomPlan: React.FC<RoomProps> = () => {
         <RoomCard
           rooms={rooms}
           SetRooms={SetRooms}
-
+          descClick={descClick}
+          setDescClick={setDescClick}
+          ascClick={ascClick}
+          setAscClick={setAscClick}
         />
       </div>
       <Footer />
@@ -113,34 +109,33 @@ export const RoomCard = (props: any) => {
     rooms,
     SetRooms,
     SetPlans,
+    descClick,
+    setDescClick,
+    ascClick,
+    setAscClick,
   } = props;
-  // const dispatch = useDispatch();
-  const descEl = useSelector((state: any) => state.gestroom.descClick);
-  const ascEl = useSelector((state: any) => state.gestroom.ascClick);
+  // const descEl = useSelector((state: any) => state.gestroom.descClick);
+  // const ascEl = useSelector((state: any) => state.gestroom.ascClick);
   const soartData = collection(db, "gestRoomType");
-  const [showPlan, setShowPlan] = useState(false);
+  // const [descRoom, setDescRoom] = useState<any>([]);
   const navigate = useNavigate();
 
-  let renderFlag = useRef(false);
-
-  if (!renderFlag.current) {
+  useEffect(() => {
     const roomDate = query(soartData, orderBy("price"), limit(3));
     getDocs(roomDate).then((snapShot) => {
       SetRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
-    renderFlag.current = true;
-  }
-
-  const showPlanChange = () => {
-    if (showPlan) {
-      setShowPlan(false);
-    } else {
-      setShowPlan(true);
-    }
-  };
+    // const roomDescDate = query(soartData, orderBy("price", "desc"), limit(3));
+    // getDocs(roomDescDate).then((snapShot) => {
+    //   setDescRoom(snapShot.docs.map((doc) => ({ ...doc.data() })));
+    // });
+  }, []);
+  const [page, setPage] = useState(false);
+  console.log(page);
   //次のページへ進むボタン
   const handleNextPage = async () => {
-    if (descEl === true) {
+    setPage(true);
+    if (descClick === true) {
       const priceDesc = query(soartData, orderBy("price", "desc"), limit(3));
       const data = await getDocs(priceDesc);
       const last = data.docs[data.docs.length - 1];
@@ -156,7 +151,7 @@ export const RoomCard = (props: any) => {
         id: doc.id,
       }));
       SetRooms(nextPage);
-    } else if (ascEl === true) {
+    } else if (ascClick === true) {
       const priceDesc = query(soartData, orderBy("price"), limit(3));
       const data = await getDocs(priceDesc);
       const last = data.docs[data.docs.length - 1];
@@ -189,8 +184,9 @@ export const RoomCard = (props: any) => {
     }
   };
   //前のページに戻るボタン
-  const handlePrevPage = async () => {
-    if (descEl === true) {
+
+ const handlePrevPage = async () => {
+    if (descClick === true) {
       const priceDesc = query(soartData, orderBy("price", "desc"), limit(3));
       const data = await getDocs(priceDesc);
       const newDescData = data.docs.map((doc) => ({
@@ -215,17 +211,32 @@ export const RoomCard = (props: any) => {
       SetRooms(prevPage);
     }
   };
+  const [openAnswer, setOpenAnswer] = useState<any>({ 0: false });
+  const handleOpenAnswer = (index: any) => {
+    setOpenAnswer((prevState: any) => ({
+      ...prevState,
+      [index]: !prevState[index],
+    }));
+  };
 
   return (
     <>
       <div className={RoomStyle.roomPlanContainer}>
         <ul>
-          <SearchSoart
-            SetPlans={SetPlans}
-            SetRooms={SetRooms}
-            rooms={rooms}
-          />
-          {rooms.map((room: any) => {
+          {rooms.length !== 1 ? (
+            <SearchSoart
+              SetPlans={SetPlans}
+              SetRooms={SetRooms}
+              rooms={rooms}
+              descClick={descClick}
+              setDescClick={setDescClick}
+              ascClick={ascClick}
+              setAscClick={setAscClick}
+            />
+          ) : (
+            <></>
+          )}
+          {rooms.map((room: any, index: any) => {
             return (
               <li key={room.area} className={RoomStyle.roomPlanCard}>
                 <div className={RoomStyle.cardTitle}>
@@ -260,7 +271,7 @@ export const RoomCard = (props: any) => {
                 <div className={RoomStyle.ResarvedRoomBtn}>
                   <PrimaryButton
                     onClick={() => {
-                      navigate(`/rooms/RoomDetails?room=${room.id}`);
+                      navigate(`/rooms/RoomDetails?room=${room.id}&room=${room.id}`);
                     }}
                   >
                     空室を探す
@@ -268,19 +279,19 @@ export const RoomCard = (props: any) => {
                 </div>
                 <div className={RoomStyle.roomplanWrapper}>
                   <p className={RoomStyle.roomplan}>プラン</p>
-                  {showPlan ? (
+                  {openAnswer ? (
                     <button
-                      onClick={showPlanChange}
+                      onClick={() => handleOpenAnswer(index)}
                       className={RoomStyle.roomplanbutton}
                     >
-                      元に戻す
+                      もっと見る・・・
                     </button>
                   ) : (
                     <button
-                      onClick={showPlanChange}
+                      onClick={() => handleOpenAnswer(index)}
                       className={RoomStyle.roomplanbutton}
                     >
-                      もっと見る...
+                      元に戻す
                     </button>
                   )}
                 </div>
@@ -295,7 +306,7 @@ export const RoomCard = (props: any) => {
                     <div className={RoomStyle.roomplanButton}>
                       <SecondryButton
                         onClick={() => {
-                          navigate(`/rooms/PlanDetails?plan=${room.plan1}`);
+                          navigate(`/rooms/PlanDetails?plan1=${room.plan1}&room=${room.id}`);
                         }}
                       >
                         このプランで探す
@@ -303,8 +314,7 @@ export const RoomCard = (props: any) => {
                     </div>
                   </div>
                 </div>
-                {}
-                {showPlan ? (
+                {openAnswer[index] ? (
                   <div>
                     <div className={RoomStyle.roomplanCards}>
                       <img
@@ -318,7 +328,7 @@ export const RoomCard = (props: any) => {
                           <SecondryButton
                             onClick={() => {
                               navigate(
-                                `/rooms/PlanDetails?plan2=${room.plan2}`
+                                `/rooms/PlanDetails?plan2=${room.plan2}&room=${room.id}`
                               );
                             }}
                           >
@@ -341,7 +351,7 @@ export const RoomCard = (props: any) => {
                             <SecondryButton
                               onClick={() => {
                                 navigate(
-                                  `/rooms/PlanDetails?plan3=${room.plan3}`
+                                  `/rooms/PlanDetails?plan3=${room.plan3}&room=${room.id}`
                                 );
                               }}
                             >
@@ -367,7 +377,7 @@ export const RoomCard = (props: any) => {
                             <SecondryButton
                               onClick={() => {
                                 navigate(
-                                  `/rooms/PlanDetails?plan4=${room.plan4}`
+                                  `/rooms/PlanDetails?plan4=${room.plan4}&room=${room.id}`
                                 );
                               }}
                             >
@@ -391,7 +401,19 @@ export const RoomCard = (props: any) => {
           })}
         </ul>
       </div>
-      <Pageing onPrevClick={handlePrevPage} onNextClick={handleNextPage}/>
+      {rooms.length !== 1 ? (
+        <Pageing onPrevClick={handlePrevPage} onNextClick={handleNextPage} />
+      ) : page === true ? (
+        <Pageing onPrevClick={handlePrevPage} onNextClick={handleNextPage} />
+      ) : (
+        <Link
+          to={"/rooms/Gestroom"}
+          onClick={() => window.location.reload()}
+          className={RoomStyle.alldisplayLink}
+        >
+          →全て表示する
+        </Link>
+      )}
     </>
   );
 };

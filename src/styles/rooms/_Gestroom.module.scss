@@ -28,7 +28,20 @@ $breakpoints: (
 }
 //第一引数は変数、第二引数はマップ型のキーを渡す
 
+
+
 // ページタイトル
+.alldisplayLink{
+  font-size: 25px;
+  margin-left: 55px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.reservedCheck{
+ display: inline-block;
+ margin-bottom: 20px;
+}
 
 .soartStyle {
   padding: 20px 20px 50px 20px;
@@ -85,9 +98,10 @@ $breakpoints: (
 }
 
 .roomplanContainer{
-  max-width: 370px;
+  width: 500px;
   padding-left: 10px;
   text-align: center;
+  font-size: 14px;
   p{
     padding-bottom: 2%;
   }
