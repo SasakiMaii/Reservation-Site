@@ -12,21 +12,21 @@ const Contact = () => {
   const [openReserveAnswer, setOpenReserveAnswer] = useState<any>({ 0: false });
   const [openAtherAnswer, setOpenAtherAnswer] = useState<any>({ 0: false });
 
-  const handleOpenHotelAnswer = (index: any) => {
+  const handleOpenHotelAnswer = (index: number) => {
     setOpenHotelAnswer((prevState: any) => ({
       ...prevState,
       [index]: !prevState[index],
     }));
   };
 
-  const handleOpenReserveAnswer = (index: any) => {
+  const handleOpenReserveAnswer = (index: number) => {
     setOpenReserveAnswer((prevState: any) => ({
       ...prevState,
       [index]: !prevState[index],
     }));
   };
 
-  const handleOpenAtherAnswer = (index: any) => {
+  const handleOpenAtherAnswer = (index: number) => {
     setOpenAtherAnswer((prevState: any) => ({
       ...prevState,
       [index]: !prevState[index],
@@ -46,9 +46,9 @@ const Contact = () => {
         </div>
         <div className={ContactStyles.contactItem}>
             <h2 className={ContactStyles.contactSubTitle} data-number="01" id="Hotel"><span>ホテルに関するご質問</span></h2>
-          {contactHotelList.map((contact: any, index: any) => {
+          {contactHotelList.map((contact: {question: string,answer: JSX.Element}, index: number) => {
             return (
-              <>
+              <React.Fragment key={index}>
                 <div
                   onClick={() => handleOpenHotelAnswer(index)}
                   className={ContactStyles.contactQuestion}
@@ -60,13 +60,13 @@ const Contact = () => {
                     {contact.answer}
                   </div>
                 ) : undefined}
-              </>
+              </React.Fragment>
             );
           })}
           <h2 className={ContactStyles.contactSubTitle} data-number="02" id="Reserve"><span>予約に関するご質問</span></h2>
-          {contactReserveList.map((contact: any, index: any) => {
+          {contactReserveList.map((contact: {question: string,answer: JSX.Element}, index: number) => {
             return (
-              <>
+              <React.Fragment key={index}>
                 <div
                   onClick={() => handleOpenReserveAnswer(index)}
                   className={ContactStyles.contactQuestion}
@@ -78,13 +78,13 @@ const Contact = () => {
                     {contact.answer}
                   </div>
                 ) : undefined}
-              </>
+              </React.Fragment>
             );
           })}
           <h2 className={ContactStyles.contactSubTitle} data-number="03" id="Ather"><span>その他のご質問</span></h2>
-          {contactAtherList.map((contact: any, index: any) => {
+          {contactAtherList.map((contact: {question: string,answer: JSX.Element}, index: number) => {
             return (
-              <>
+              <React.Fragment key={index}>
                 <div
                   onClick={() => handleOpenAtherAnswer(index)}
                   className={ContactStyles.contactQuestion}
@@ -96,7 +96,7 @@ const Contact = () => {
                     {contact.answer}
                   </div>
                 ) : undefined}
-              </>
+              </React.Fragment>
             );
           })}
         </div>

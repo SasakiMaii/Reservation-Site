@@ -20,54 +20,20 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import Head from "../layout/Head";
-import { useEffect, useState } from "react";
-
+import News from "../Organisms/News";
 
 export const TopLayout = () => {
-  //  fetch("http://localhost:5000/news")
-  //   .then((res) => {
-    //     res.json();
-    //     console.log(1,res.json());
-    //   })
-    //   .then((json: any) => {
-      //     return console.log("u",json);
-      //   });
-      // console.log(infoList);
-      
-      //       useEffect(()=>{
-        //         fetch('http://localhost:5000/news').then(response =>{
-          //     // console.log(response);
-          //     if(response.ok){
-            //         //  console.log(1,response.json()); 
-            //         //  return response.json(); 
-            
-            //         }}
-            //         )
-            // },[])
-        const [newsdate,setNewsdate] =useState ([]);   
-            // const infoList: any = [];
-         useEffect(()=>{
-           new Promise((resolve:any, reject:any) => {
-             fetch('http://localhost:5000/news')
-             .then((res) => res.json())
-             .then((data) => {
-               setNewsdate(data)
-              //  return resolve(data);
-              });
-            });
- 
-          },[])   
-
-
-console.log(2,newsdate)
-//  const Test = async () => {
-//     const url = "http://http://localhost:5000/news";
-  
-//     const response = await fetch(url);
-//     const data = await response.json();
-//     console.log(data);
-//   }
-//   Test();
+  // const [newsdate, setNewsdate] = useState([]);
+  // useEffect(() => {
+  //   new Promise((resolve: any, reject: any) => {
+  //     fetch("http://localhost:5000/news")
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setNewsdate(data);
+  //         //  return resolve(data);
+  //       });
+  //   });
+  // }, []);
 
   return (
     <>
@@ -80,14 +46,8 @@ console.log(2,newsdate)
       <main>
         <PlanRecomendSwiper />
         <RoomsIntroduction />
+        <News />
         <Access />
-        {newsdate.map((news:any,index:any)=>{
-          return(
-            <div key={index}>
-            <p>{news.title}</p>
-            </div>
-          )
-        })}
       </main>
       <Footer />
     </>
