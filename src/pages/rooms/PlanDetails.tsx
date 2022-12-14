@@ -54,6 +54,8 @@ const PlanDetails = () => {
   const RoomData = collection(db, "gestRoomType");
   const PlanData = collection(db, "Plan");
 
+  // &ad3r=${room.area}
+  const roomarea=SearchParams.get("ad3r");
   const roomstype = SearchParams.get("room");
 
   const roomtype = SearchParams.get("plan1");
@@ -61,18 +63,14 @@ const PlanDetails = () => {
   const roomtype3 = SearchParams.get("plan3");
   const roomtype4 = SearchParams.get("plan4");
 
-  const roomMatch = rooms.map((room: any) => {
-    return room.id === roomstype;
-  });
-  console.log(roomMatch);
-
   useEffect(() => {
     getDocs(PlanData).then((SnapShot) => {
       setPlans(SnapShot.docs.map((doc) => ({ ...doc.data() })));
     });
-
+console.log(roomstype)
+console.log(roomarea)
     // orderBy("price","desc"),
-    if (roomMatch === true) {
+    if (roomstype) {
       if (roomtype) {
         const detailRoom = query(
           RoomData,
@@ -114,49 +112,91 @@ const PlanDetails = () => {
           setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
         });
       }
+    }else if(roomarea){
+      if (roomtype) {
+        const detailRoom = query(
+          RoomData,
+          limit(1),
+          orderBy("price","desc"),
+          where("plan1", "==", roomtype)
+        );
+        getDocs(detailRoom).then((snapShot) => {
+          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+        });
+      } else if (roomtype2) {
+        const detailRoom = query(
+          RoomData,
+          limit(1),
+          orderBy("price","desc"),
+          where("plan2", "==", roomtype2)
+        ); //一つだけ表示
+        getDocs(detailRoom).then((snapShot) => {
+          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+        });
+      } else if (roomtype3) {
+        const detailRoom = query(
+          RoomData,
+          limit(1),
+          orderBy("price","desc"),
+          where("plan3", "==", roomtype3)
+        ); //一つだけ表示
+        getDocs(detailRoom).then((snapShot) => {
+          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+        });
+      } else if (roomtype4) {
+        const detailRoom = query(
+          RoomData,
+          limit(1),
+          orderBy("price","desc"),
+          where("plan4", "==", roomtype4)
+        ); //一つだけ表示
+        getDocs(detailRoom).then((snapShot) => {
+          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+        });
+      }
+
     }else{
       if (roomtype) {
-        const detailRoom = query(
-          RoomData,
-          limit(1),
-          orderBy("price","desc"),
-          where("plan1", "==", roomtype)
-        );
-        getDocs(detailRoom).then((snapShot) => {
-          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
-        });
-      } else if (roomtype2) {
-        const detailRoom = query(
-          RoomData,
-          limit(1),
-          orderBy("price","desc"),
-          where("plan2", "==", roomtype2)
-        ); //一つだけ表示
-        getDocs(detailRoom).then((snapShot) => {
-          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
-        });
-      } else if (roomtype3) {
-        const detailRoom = query(
-          RoomData,
-          limit(1),
-          orderBy("price","desc"),
-          where("plan3", "==", roomtype3)
-        ); //一つだけ表示
-        getDocs(detailRoom).then((snapShot) => {
-          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
-        });
-      } else if (roomtype4) {
-        const detailRoom = query(
-          RoomData,
-          limit(1),
-          orderBy("price","desc"),
-          where("plan4", "==", roomtype4)
-        ); //一つだけ表示
-        getDocs(detailRoom).then((snapShot) => {
-          setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
-        });
-      }
-
+      const detailRoom = query(
+        RoomData,
+        limit(1),
+        // orderBy("price","desc"),
+        where("plan1", "==", roomtype)
+      );
+      getDocs(detailRoom).then((snapShot) => {
+        setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+      });
+    } else if (roomtype2) {
+      const detailRoom = query(
+        RoomData,
+        limit(1),
+        // orderBy("price","desc"),
+        where("plan2", "==", roomtype2)
+      ); //一つだけ表示
+      getDocs(detailRoom).then((snapShot) => {
+        setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+      });
+    } else if (roomtype3) {
+      const detailRoom = query(
+        RoomData,
+        limit(1),
+        // orderBy("price","desc"),
+        where("plan3", "==", roomtype3)
+      ); //一つだけ表示
+      getDocs(detailRoom).then((snapShot) => {
+        setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+      });
+    } else if (roomtype4) {
+      const detailRoom = query(
+        RoomData,
+        limit(1),
+        // orderBy("price","desc"),
+        where("plan4", "==", roomtype4)
+      ); //一つだけ表示
+      getDocs(detailRoom).then((snapShot) => {
+        setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+      });
+    }
     }
   }, []);
 

@@ -26,6 +26,7 @@ const RoomSearchSoart = ({
 
     // dispatchi(setDescclick(false))
     // dispatchi(setAscclick(true))
+   
     setDescClick(false);
     setAscClick(true);
     SetPlans(newAscData);
