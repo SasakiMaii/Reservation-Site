@@ -14,6 +14,7 @@ $mainColor: rgb(248, 248, 248);
 $breakpoints: (
   pc: "screen and (min-width:1200px)",
   tab: "screen and (max-width:610px)",
+  tab2: "screen and (max-width:1100px)",
   sp: "screen and (max-width:414px)",
 );
 
@@ -36,7 +37,11 @@ $breakpoints: (
   @include mq(tab) {
     width: 350px;
     font-size: 12px;
-    margin: 10px;
+    margin: 10px auto;
+  }
+  @include mq(tab2) {
+    width: 700px;
+    margin: 0 auto;
   }
 }
 
@@ -46,7 +51,7 @@ $breakpoints: (
 
 .subscriberInfo {
   width: 90%;
-  margin: 0 auto;
+  margin: 20px auto;
 }
 
 .lodger {
@@ -64,7 +69,11 @@ $breakpoints: (
   @include mq(tab) {
     width: 350px;
     font-size: 12px;
-    margin: 10px;
+    margin: 10px auto;
+  }
+  @include mq(tab2) {
+    width: 700px;
+    margin: 20px auto;
   }
 }
 
@@ -85,16 +94,6 @@ $breakpoints: (
   margin-right: 20px;
   padding: 10px;
   box-shadow: 0px 0px 8px -4px #777777;
-  ul {
-    list-style-type: none;
-    line-height: 40px;
-    margin: 25px 0;
-  }
-  span {
-    display: inline-block;
-    width: 140px;
-    margin: 0 10px;
-  }
   @include mq(sp) {
     width: 300px;
     font-size: 10px;
@@ -103,8 +102,26 @@ $breakpoints: (
   @include mq(tab) {
     width: 350px;
     font-size: 12px;
-    margin: 10px;
+    margin: 10px auto;
   }
+  @include mq(tab2) {
+    width: 700px;
+    margin: 10px auto;
+  }
+  ul {
+    list-style-type: none;
+    line-height: 40px;
+    margin: 25px 0;
+  }
+  span {
+    display: inline-block;
+    width: 125px;
+    margin: 0 10px;
+    @include mq(sp) {
+      width: 95px;
+    }
+  }
+  
 }
 
 .reservateplan button {
@@ -118,7 +135,7 @@ $breakpoints: (
 .backBtn {
   display: block;
   width: 45px;
-  margin: 0 auto;
+  margin: 0 auto 10px auto;
   text-align: center;
   font-size: 14px;
   transition: 0.2s;
@@ -132,6 +149,9 @@ $breakpoints: (
   position: relative;
   ul p {
     display: inline;
+    @include mq(sp) {
+      font-size: 10px;
+    }
   }
 }
 
@@ -156,15 +176,23 @@ $breakpoints: (
   background-color: $mainColor;
   margin: 20px auto;
   padding: 10px;
-  width: 71%;
+  width: 1000px;
   box-shadow: 0px 0px 8px -4px #777777;
-  span {
-    color: red;
-  }
   @include mq(sp) {
-    width: 300px;
+    width: 350px;
     font-size: 10px;
     margin: 10px auto;
+  }
+  @include mq(tab) {
+    max-width: 400px;
+    font-size: 12px;
+    margin: 10px auto;
+  }
+  @include mq(tab2) {
+    margin: 20px auto;
+  }
+  span {
+    color: red;
   }
   input {
     flex-direction: column;
@@ -174,21 +202,33 @@ $breakpoints: (
     font-size: 15px;
     @include mq(sp) {
       font-size: 10px;
+      display: inline-block;
+      width: 120px;
     }
-  }
-  @include mq(tab) {
-    width: 350px;
-    font-size: 12px;
-    margin: 10px;
+    @include mq(tab) {
+      font-size: 12px;
+      display: inline-block;
+      width: 120px;
+    }
   }
 }
 
 .paymentRadioBtn {
   margin: 15px 40px 10px 45px;
   @include mq(sp) {
-    width: 200px;
+    max-width: 200px;
     font-size: 10px;
-    display: inline-block;
+    padding-left: 0;
+  }
+  @include mq(tab) {
+    max-width: 280px;
+    font-size: 10px;
+    padding-left: 0;
+  }
+  @include mq(tab2) {
+    width: 600px;
+    font-size: 10px;
+    margin-left: 50px;
   }
 }
 
@@ -199,12 +239,18 @@ $breakpoints: (
   max-height: 2500px;
   margin: 0 auto;
   @include mq(sp) {
+    max-width: 300px;
     flex-direction: column;
-    margin: 0 10px;
+    margin: 0 auto;
   }
   @include mq(tab) {
-    width: 800px;
+    max-width: 400px;
     display: block;
+    margin: 0 auto;
+  }
+  @include mq(tab2) {
+    display: block;
+    max-width: 800px;
     margin: 0 auto;
   }
 }
@@ -258,7 +304,7 @@ textarea {
   @include mq(sp) {
     width: 300px;
     text-align: center;
-    margin: 20px 240px;
+    margin: 20px auto;
   }
 }
 
@@ -370,7 +416,7 @@ textarea {
 }
 
 .paymentContents {
-  margin: 20px 0 0 35px;
+  margin: 20px 0 0 5px;
 }
 
 .payment span {
@@ -382,6 +428,9 @@ textarea {
   transform: translateY(-2px) translateX(8px);
   position: absolute;
   border-radius: 5px;
+  @include mq(sp) {
+    margin-left: 0;
+  }
 }
 
 .cancel {
@@ -440,9 +489,15 @@ textarea {
   padding: 50px;
   border-radius: 3px;
   text-align: center;
+  @include mq(sp) {
+    width: 400px;
+  }
   p {
     margin-top: 20px;
     font-size: 18px;
+    @include mq(sp) {
+      font-size: 16px;
+    }
   }
   p:nth-child(2) {
     font-size: 14px;
@@ -453,6 +508,10 @@ textarea {
     width: 15%;
     padding: 10px;
     background-color: rgb(227, 227, 227);
+    @include mq(sp) {
+      width: 80px;
+      margin: 20px;
+    }
   }
   button:hover {
     cursor: pointer;

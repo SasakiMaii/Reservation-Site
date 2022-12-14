@@ -83,7 +83,7 @@ export const Login = () => {
 
             }else{
               alert("ログイン成功");
-              navigation("/");
+              navigate("/");
             }
             
           },
