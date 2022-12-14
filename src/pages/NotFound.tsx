@@ -1,4 +1,4 @@
-const NotFound=()=>{
+export const NotFound =()=>{
   return(
     <>
     <h1>お探しのページは見つかりません</h1>

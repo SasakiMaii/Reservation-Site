@@ -33,6 +33,7 @@ const Header = () => {
       }
     });
 
+    // ex.) hJ2JnzBn=1ori4kgk 
     // gestID（hJ2JnzBn）が入っていなければ、ランダムな文字列をcookieに追加
     if (cookieList.length === 0) {
       let randomId = Math.random().toString(32).substring(2);

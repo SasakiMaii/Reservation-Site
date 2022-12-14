@@ -92,15 +92,23 @@ const RoomDetails = () => {
   // ログインログアウト判定追加
   const handleResarve = () => {
     setErr([]);
-    if (
-      adultEl === "" &&
-      datetext === "" &&
-      new Date(datetext) <= new Date(new Date().toString())
-    ) {
-      errMsg.push("項目を正しく入力してください");
+
+    // adultElの初期値が１なので、adultEl===""は消しました
+    // カレンダーの上にエラーを表示させています
+
+    // チェックイン日が選択されていない場合
+    if (datetext.length <= 0) {
+      // errMsg.push("項目を正しく入力してください")
+      errMsg.push("チェックインの日付を選択してください")
+
+      // 過去の日付が選択されている場合
+    } else if (new Date(datetext) <= new Date(new Date().toString())) {
+      errMsg.push("本日以降の日付を選択してください")
+
     } else {
+      // ログインしている場合
       if (user) {
-        console.log(user.email);
+        
         const data = {
           adultsNum: Number(adultEl),
           childrenNum: Number(childEl),
@@ -110,11 +118,13 @@ const RoomDetails = () => {
           totalDate: Number(num),
           mail: user.email,
         };
-        // addDoc(reserveData, data);
+
+        // 予約確認画面へdataを渡す
         navigation("/books/ReservateConfirm", { state: data });
-        // navigate("/books/ReservateConfirm");
+
+        // ログインしていない場合
       } else {
-        // const reserveData = collection(db, "reserve");
+
         const data = {
           adultsNum: adultEl,
           childrenNum: childEl,
@@ -123,14 +133,14 @@ const RoomDetails = () => {
           roomType: String(room),
           totalDate: Number(num),
         };
-        // navigate("/users/login")
+
+        // ログイン画面を経由し、予約確認画面へデータを渡す
         navigation("/users/login", { state: data });
         document.cookie = "next=confirm; path=/;";
       }
     }
     setErr(errMsg);
   };
-  // const gestRoomData = collection(db, "gestRoomType");
 
   const room = rooms.map((room: any) => room.area);
   const price = rooms.map((room: any) => room.price);
@@ -165,6 +175,8 @@ const RoomDetails = () => {
                   />
                   <div className={RoomDetailStyle.detailCheck}>
                     <p>※チェックインの日付を選択してください</p>
+
+
                     <Calender
                       inputDate={inputDate}
                       setInputDate={setInputDate}
@@ -174,14 +186,16 @@ const RoomDetails = () => {
                     <p>チェックアウト：{room.checkOut}</p>
                   </div>
                 </div>
-                {err.map((error: any) => {
-                  return (
-                    <p key={err[1]} className={RoomDetailStyle.err}>
-                      ※{error}
-                    </p>
-                  );
-                })}
+
                 <div className={RoomDetailStyle.detailplan}>
+                  {/* keyをindexに変更しました */}
+                  {err.map((error: any, index: number) => {
+                    return (
+                      <p key={index} className={RoomDetailStyle.err} style={{color:"red"}}>
+                        ※{error}
+                      </p>
+                    );
+                  })}
                   <p className={RoomDetailStyle.count}>人数</p>
                   <div className={RoomDetailStyle.detailcount}>
                     <p>大人</p>

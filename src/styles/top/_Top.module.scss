@@ -7,7 +7,7 @@
   flex-direction: column;
 }
 
-.test2wrapper{
+.test2wrapper {
   overflow: hidden;
 }
 
@@ -33,17 +33,20 @@ $breakpoints: (
   }
 }
 
-.hotelName{
-display: flex;
-p{
-  font-size: 100px;
-  @include mq(sp) {
-    font-size: 40px;
-   }
-   @include mq(tab) {
-    font-size: 30px;
+.hotelName {
+  display: flex;
+
+  p {
+    font-size: 100px;
+
+    @include mq(sp) {
+      font-size: 40px;
+    }
+
+    @include mq(tab) {
+      font-size: 30px;
+    }
   }
-}
 }
 
 
@@ -56,64 +59,167 @@ p{
   /* calc(画像高さ ÷ 画像横幅 × 100%) */
   background: url("../../../public/topImage/sofa.jpg") center center / cover no-repeat;
   @extend %itemsPositionCenter;
+
   @include mq(nest) {
     width: 1024px;
     height: 400px;
   }
+
   @include mq(galaxy) {
     width: 280px;
     height: 100vh;
   }
+
   @include mq(display) {
     height: 100vh;
   }
 }
 
-.roomsImagePic{
+.scrolldown2 {
+  /*描画位置*/
+  position: absolute;
+  display: flex;
+  bottom: 300px;
+  left: 50%;
 
-   width: 200px;
-   height: 200px;
-   @include mq(sp) {
+  @include mq(pc) {
+    bottom: 100px;
+  }
+
+  @include mq(tab) {
+    bottom: 300px;
+  }
+
+}
+
+/*Scrollテキストの描写*/
+.scrolldown2 span {
+  /*描画位置*/
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  /*テキストの形状*/
+  color: #eee;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  /*縦書き設定*/
+  -ms-writing-mode: tb-rl;
+  -webkit-writing-mode: vertical-rl;
+  writing-mode: vertical-rl;
+}
+
+/* 丸の描写 */
+.scrolldown2:before {
+  content: "";
+  /*描画位置*/
+  position: absolute;
+  bottom: 0;
+  left: -4px;
+  /*丸の形状*/
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #eee;
+  /*丸の動き1.6秒かけて透過し、永遠にループ*/
+  animation:
+    circlemove 1.6s ease-in-out infinite,
+    cirlemovehide 1.6s ease-out infinite;
+}
+
+/*下からの距離が変化して丸の全体が上から下に動く*/
+@keyframes circlemove {
+  0% {
+    bottom: 100px;
+  }
+
+  100% {
+    bottom: -5px;
+  }
+}
+
+/*上から下にかけて丸が透過→不透明→透過する*/
+@keyframes cirlemovehide {
+  0% {
+    opacity: 0
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  80% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 線の描写 */
+.scrolldown2:after {
+  content: "";
+  /*描画位置*/
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  /*線の形状*/
+  width: 2px;
+  height: 120px;
+  background: #eee;
+}
+
+.roomsImagePic {
+
+  width: 200px;
+  height: 200px;
+
+  @include mq(sp) {
     width: 100px;
     height: 100px;
   }
-  
+
 }
 
 
-.hotelName{
+.hotelName {
   color: white;
   z-index: 10;
   margin: auto;
   font-size: 70px;
+
   @include mq(sp) {
     font-size: 60px;
-  }  
+  }
+
   @include mq(nest) {
-    left:22%
+    left: 22%
   }
+
   @include mq(display) {
-    left:35%;
-    top:45%;    
+    left: 35%;
+    top: 45%;
   }
+
   @include mq(galaxy) {
-    left:5%;
-    top:40%;
+    left: 5%;
+    top: 40%;
     font-size: 20px;
   }
+
   @include mq(tab) {
-    left:0%;
-    top:40%;
+    left: 0%;
+    top: 40%;
     font-size: 20px;
   }
-  
-  
+
+
   animation-name:fadeIn;
-  animation-duration: 4s;  
+  animation-duration: 4s;
 }
 
 .scrollImage {
-  position:absolute;
+  position: absolute;
   height: 100px;
   width: 100px;
   left: 45%;
@@ -126,15 +232,17 @@ p{
     left: 10%;
     bottom: 250px;
   }
+
   @include mq(sp) {
-   display: none;
+    display: none;
   }
+
   @include mq(tab) {
-   display: none;
+    display: none;
   }
 
   animation-name:bound;
-  animation-duration: 5s; 
+  animation-duration: 5s;
   animation-delay: 4s;
   animation-iteration-count:infinite;
 }
@@ -144,44 +252,46 @@ p{
 .recommendPlanSection {
   @extend %itemsPositionCenter;
   height: 100vh;
-  height:fit-content;  
+  height: fit-content;
 
 }
 
-.roomsImagePicWrapper{
+.roomsImagePicWrapper {
   display: flex;
   align-items: center;
   margin-right: 200px;
+
   @include mq(sp) {
     flex-direction: column;
     margin: 0 auto;
     font-size: 15px;
-   }
-   @include mq(tab) {
+  }
+
+  @include mq(tab) {
     flex-direction: column;
     margin: 0 auto;
     font-size: 15px;
-}
+  }
 }
 
 
 .test {
   height: 1000px;
   background-color: aqua;
-  
+
   @extend %itemsPositionCenter;
 }
 
 .test2 {
   height: auto;
   // background-color: aqua;
-  
+
   @extend %itemsPositionCenter;
   margin: 80px auto;
 }
 
 
-.roomsIntroductionDetail{
+.roomsIntroductionDetail {
   text-align: center;
 
 }
@@ -190,18 +300,19 @@ p{
 // Swiper　設定
 .swiperColsFrame {
   margin: 10px 0;
+
   // background-color: blueviolet;
   @include mq(galaxy) {
-   margin: auto;
+    margin: auto;
   }
 }
 
 .swiperCols {
   width: 550px;
   height: 450px;
-  margin: 10px 10px; 
+  margin: 10px 10px;
   // padding: 10px;
-  background-color:rgb(243, 243, 243);
+  background-color: rgb(243, 243, 243);
   box-shadow: 10px 5px 5px rgba(128, 128, 128, 0.548);
   // border-radius: 20px  ;
 
@@ -209,8 +320,9 @@ p{
     width: 300px;
     height: 300px;
   }
+
   // @extend %itemsPositionCenter;
-  
+
 }
 
 .swiperBody {
@@ -218,9 +330,11 @@ p{
   // background-color: red;
   padding: 30px 0;
   position: relative;
+
   @include mq(galaxy) {
     width: 280px;
   }
+
   @include mq(sp) {
     width: 450px;
   }
@@ -229,6 +343,7 @@ p{
 .swiperPlanImage {
   height: 250px;
   width: 550px;
+
   // border-radius: 20px 20px 0 0;
   @include mq(sp) {
     height: 150px;
@@ -237,17 +352,19 @@ p{
 
 }
 
-.swiperPlanTitle, .swiperPlanInformation {
- margin: 10px auto;
+.swiperPlanTitle,
+.swiperPlanInformation {
+  margin: 10px auto;
 }
 
-.swiperPlanTitle{
+.swiperPlanTitle {
   @include mq(sp) {
     margin: 0;
     font-size: 13px;
   }
 }
-.swiperPlanInformation{
+
+.swiperPlanInformation {
   @include mq(sp) {
     margin-top: 25px;
     font-size: 10px;
@@ -258,6 +375,7 @@ p{
   @extend %itemsPositionCenter;
   margin: 20px auto;
   width: 480px;
+
   @include mq(sp) {
     margin: 2px;
   }
@@ -265,10 +383,10 @@ p{
 
 
 // 部屋紹介セクション
-.roomsIntroductionCols{
+.roomsIntroductionCols {
   @extend %itemsPositionCenter;
   width: 100%;
-  
+
   padding: 40px 0;
   display: flex;
   flex-direction: row;
@@ -282,14 +400,15 @@ p{
   width: 600px;
   // border-radius: 20px;
   margin: 0 50px;
-  box-shadow:  5px 2px 5px rgba(128, 128, 128, 0.548);
+  box-shadow: 5px 2px 5px rgba(128, 128, 128, 0.548);
+
   @include mq(sp) {
     height: 250px;
     width: 400px;
   }
 }
 
-.roomsIntroductionBtton{
+.roomsIntroductionBtton {
   padding: 20px 30px;
   margin: 20px;
   border: 1px solid #111;
@@ -299,10 +418,12 @@ p{
   width: 450px;
   margin: 0 100px;
   text-align: center;
-  p{
+
+  p {
     padding-bottom: 20px;
     padding-top: 10px;
   }
+
   // background-color: blueviolet;
 }
 
@@ -317,10 +438,10 @@ p{
 
 // .roomsIntroductionInformation{
 //   // background-color: darkcyan;
-  
+
 // }
 
-.roomsIntroductionTitle{
+.roomsIntroductionTitle {
   font-size: 30px;
   text-align: center;
   width: 300px;
@@ -334,10 +455,12 @@ p{
     transform: translateY(-15px);
     opacity: 0.5;
   }
+
   50% {
     transform: translateY(15px);
     opacity: 1;
   }
+
   100% {
     transform: translateY(-15px);
     opacity: 0.5;
@@ -352,10 +475,12 @@ p{
     opacity: 0;
     transform: translateY(30px);
   }
+
   50% {
     opacity: 1;
     transform: translateY(-15px);
   }
+
   100% {
     opacity: 1;
   }
@@ -371,18 +496,22 @@ p{
     background: url("../../../public/topImage/sofa.jpg") center center / cover no-repeat;
 
   }
+
   40% {
     opacity: 1;
     background: url("../../../public/topImage/lobbySide.jpg") center center / cover no-repeat;
   }
+
   60% {
     opacity: 1;
     background: url("../../../public/topImage/lobbySide.jpg") center center / cover no-repeat;
   }
+
   80% {
     opacity: 1;
 
   }
+
   100% {
     opacity: 1;
 

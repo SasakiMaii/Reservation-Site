@@ -118,7 +118,7 @@ const EmptyRoomConditions = (props: any) => {
         } else {
           infoMsg.push(`現在、${roomEl}は空室です`);
           SetRooms(roomPick);
-          console.log(333,rooms)
+    
         }
       } else if (roomEl.length <= 1) {
         if (errorInfo.length >= 1) {

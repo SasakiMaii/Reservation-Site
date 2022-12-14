@@ -21,18 +21,15 @@ export const Login = () => {
   // ログインのstatus管理
   const [user] = useAuthState(auth);
 
-    // データの受け渡しのため
-    const navigation = useNavigate();
-  // const router = useRouter();
-
-  // const [mailValue, SetMailValue] = useState("");
+  // データの受け渡しのため
+  const navigation = useNavigate();
   const [mailErrorState, SetMailErrorState] = useState("init");
 
   // const [passwordValue, SetPasswordValue] = useState("");
   const [passwordErrorState, SetPasswordErrorState] = useState("init");
 
-  const password = useSelector((state:any) => state.registerInput.password);
-  const mail = useSelector((state:any) => state.registerInput.mail);
+  const password = useSelector((state: any) => state.registerInput.password);
+  const mail = useSelector((state: any) => state.registerInput.mail);
 
   const [errorFlag, SetErrorFlag] = useState("false");
 
@@ -43,7 +40,7 @@ export const Login = () => {
 
   // cookie取り出し
   const splitCookie = document.cookie.split(';');
-  const list:any = [];
+  const list: any = [];
 
   useEffect(() => {
 
@@ -51,7 +48,7 @@ export const Login = () => {
       list.push(splitCookie[i].split('='));
     }
 
-    list.map((data:any, index:number) => {
+    list.map((data: any, index: number) => {
       // cookieにconfirmが含まれている場合、予約確認画面へ遷移
       if (data.includes("confirm")) {
         SetCookie(data[1])
@@ -60,32 +57,29 @@ export const Login = () => {
   })
 
   const location = useLocation()
-  
+
   // yarn add react-firebase-hooks/authしてください
   const login = () => {
     // 仮予約データ受け取り
     const data = location.state;
     // console.log("j",data)
-  
+
     if (mailErrorState === "ok" && passwordErrorState === "ok") {
       // ログインしているか判定
       if (!user) {
         // react-hook ログイン関数
         signInWithEmailAndPassword(auth, mail, password).then(
           (user) => {
-            if(cookie === "confirm"){
+            if (cookie === "confirm") {
               alert("ログイン成功");
               data.mail = user.user.email
-              // const reserveData = collection(db, "reserve");
-              // addDoc(reserveData, data);
-              // navigate("/books/ReservateConfirm");
               navigation("/books/ReservateConfirm", { state: data });
 
-            }else{
+            } else {
               alert("ログイン成功");
               navigate("/");
             }
-            
+
           },
           (err) => {
             alert("メールアドレスかパスワードが違います");
@@ -101,16 +95,14 @@ export const Login = () => {
 
   return (
     <>
-      <Head title="PrinceViewHotel-ログイン" description="ホテルの予約サイトです。-PrinceViewHotel-"/>
+      <Head title="PrinceViewHotel-ログイン" description="ホテルの予約サイトです。-PrinceViewHotel-" />
       <Header />
       <div className={`${LoginStyle.main} `}>
         <form className={` ${LoginStyle.form}`}>
           <h2 >ログイン</h2>
-          <hr  />
+          <hr />
 
           <MailInput
-            // mailValue={mailValue}
-            // SetMailValue={SetMailValue}
             mailErrorState={mailErrorState}
             SetMailErrorState={SetMailErrorState}
             errorFlag={errorFlag}
@@ -119,14 +111,11 @@ export const Login = () => {
           <hr />
 
           <PasswordInput
-            // passwordValue={passwordValue}
-            // SetPasswordValue={SetPasswordValue}
             passwordErrorState={passwordErrorState}
             SetPasswordErrorState={SetPasswordErrorState}
             errorFlag={errorFlag}
             displayFlag={true}
             page="login"
-            // confirmPasswordValue={passwordValue}
             SetConfirmPasswordErrorState={SetPasswordErrorState}
           />
           <hr />
