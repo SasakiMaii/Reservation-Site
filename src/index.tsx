@@ -40,7 +40,7 @@ const analytics = getAnalytics(app);
 
 
 // redux store
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     inputValue: reservateConfirmReducer,
     registerInput:reginsterReducer,

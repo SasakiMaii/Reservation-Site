@@ -24,26 +24,6 @@ import { useEffect, useState } from "react";
 
 
 export const TopLayout = () => {
-  //  fetch("http://localhost:5000/news")
-  //   .then((res) => {
-    //     res.json();
-    //     console.log(1,res.json());
-    //   })
-    //   .then((json: any) => {
-      //     return console.log("u",json);
-      //   });
-      // console.log(infoList);
-      
-      //       useEffect(()=>{
-        //         fetch('http://localhost:5000/news').then(response =>{
-          //     // console.log(response);
-          //     if(response.ok){
-            //         //  console.log(1,response.json()); 
-            //         //  return response.json(); 
-            
-            //         }}
-            //         )
-            // },[])
         const [newsdate,setNewsdate] =useState ([]);   
             // const infoList: any = [];
          useEffect(()=>{
@@ -60,15 +40,6 @@ export const TopLayout = () => {
 
 
 console.log(2,newsdate)
-//  const Test = async () => {
-//     const url = "http://http://localhost:5000/news";
-  
-//     const response = await fetch(url);
-//     const data = await response.json();
-//     console.log(data);
-//   }
-//   Test();
-
   return (
     <>
       <Head

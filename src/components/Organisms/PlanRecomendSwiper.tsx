@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef, createRef } from 'react';
 import style from "../../styles/top/_Top.module.scss"
-import { getDownloadURL, getStorage, ref } from "firebase/storage"
+import { getDownloadURL, getStorage, ref } from "firebase/storage";
 import { Link as Scroll } from "react-scroll";
-import "../../styles/top/_swiperNavigation.module.scss"
+import "../../styles/top/_swiperNavigation.module.scss";
 
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwiperCore, { Navigation, Pagination, EffectFade, Autoplay } from 'swiper';
 
-import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Navigation, Pagination, EffectFade, Autoplay } from 'swiper'
-
-import "swiper/css/bundle"
+import "swiper/css/bundle";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
@@ -46,7 +45,7 @@ export const PlanRecomendSwiper = () => {
 
 
   // storageから画像を取得
-  // アクセストークンをPlanのimageの中に入れてます。
+  // アクセストークン付きURLをPlanのimageの中に入れてます。
   posts.map((data: any, index: number) => {
     pathList.push(data.image)
   })
