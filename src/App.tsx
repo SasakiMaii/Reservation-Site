@@ -14,12 +14,13 @@ import NotFound from './pages/NotFound';
 import Header from "../src/components/layout/Header";
 import PlanDetails from './pages/rooms/PlanDetails';
 import Contact from './pages/books/Contact';
-
+import ScrollTop from './components/ScrollToTop';
 
 function App() {
   return (
     <>
       <Router >
+        <ScrollTop />
         <Routes>
           <Route path='/books/ReservateConfirm' element={<ReservateConfirm />}></Route>
           <Route path='/books/ReservateComplete' element={<ReservateComplete />}></Route>
@@ -32,7 +33,6 @@ function App() {
           <Route path='/rooms/Plan' element={<Plan/>}></Route>
           <Route path='/rooms/RoomDetails' element={<RoomDetails/>}></Route>
           <Route path='/users/Register' element={<Registered />}></Route>
-          {/* <Route path='/Top' element={<Top />}></Route> */}
           <Route path='/rooms/RoomDetails/:id' element={<RoomDetails />}></Route>
           <Route path='/rooms/PlanDetails' element={<PlanDetails/>}></Route>
           <Route path="*" element={<NotFound/>} />

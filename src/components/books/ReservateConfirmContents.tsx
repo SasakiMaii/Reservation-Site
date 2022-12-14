@@ -14,15 +14,10 @@ import { ArrivalTime } from "./ArrivalTime";
 import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import DeleteModal from "./DeleteModal";
-import {
-  contactInput,
-  select,
-  lodgeFirstName,
-  lodgeLastName,
-} from "../../store/ReservateConfirmSlice";
+import { contactInput, select } from "../../store/ReservateConfirmSlice";
 import PrimaryButton from "../Atoms/button/PrimaryButton";
 
-export const ReservateConfirmContents = () => {
+export const ReservateConfirmContents: React.FC = () => {
   const selectItem = ["--", 15, 16, 17, 18, 19, 20, 21, 22];
 
   //redux
@@ -35,8 +30,6 @@ export const ReservateConfirmContents = () => {
   const reserveLastName = useSelector(
     (state: any) => state.registerInput.lastName
   );
-  // const lodgeFirstName = useSelector((state:any) => state.inputValue.lodgeFirstName);
-  // const lodgeLastName = useSelector((state:any) => state.inputValue.lodgeLastName);
   const telValue = useSelector((state: any) => state.registerInput.tel);
   const mailValue = useSelector((state: any) => state.registerInput.mail);
 
@@ -167,7 +160,6 @@ export const ReservateConfirmContents = () => {
                 lastNameErrorState={reserveLastNameErrorState}
                 SetLastNameErrorState={SetReserveLastNameErrorState}
                 errorFlag={errorFlag}
-                
               />
               <TelInput
                 telErrorState={telErrorState}
@@ -294,30 +286,34 @@ export const ReservateConfirmContents = () => {
           </div>
         </div>
       </div>
-      <div className={ReservateConfirmContentsStyles.payment}>
-        <h3 className={ReservateConfirmContentsStyles.innertitle}>
-          お支払い方法
-        </h3>
-        <div className={ReservateConfirmContentsStyles.paymentContents}>
-          <span>必須</span>
-          <div className={ReservateConfirmContentsStyles.paymentRadioBtn}>
-            {paymentItem.map((radioItems: any) => (
-              <React.Fragment key={radioItems.title}>
-                <input
-                  type="radio"
-                  id={radioItems.id}
-                  name="payment"
-                  value={radioItems.value}
-                  onChange={(e: any) => dispatch(select(e.target.value))}
-                />
-                <label htmlFor={radioItems.id}>{radioItems.title}</label>
-              </React.Fragment>
-            ))}
-          </div>
+      {/* <div className={ReservateConfirmContentsStyles.paymentAll}> */}
+        <div className={ReservateConfirmContentsStyles.payment}>
+          <h3 className={ReservateConfirmContentsStyles.innertitle}>
+            お支払い方法
+          </h3>
+          <div className={ReservateConfirmContentsStyles.paymentContents}>
+            <span>必須</span>
+            <div className={ReservateConfirmContentsStyles.paymentRadioBtn}>
+              {paymentItem.map((radioItems: any) => (
+                <React.Fragment key={radioItems.title}>
+                  <input
+                    type="radio"
+                    id={radioItems.id}
+                    name="payment"
+                    value={radioItems.value}
+                    onChange={(e: any) => dispatch(select(e.target.value))}
+                  />
+                  <label htmlFor={radioItems.id}>{radioItems.title}</label>
+                </React.Fragment>
+              ))}
+            </div>
+          {/* </div> */}
         </div>
       </div>
       <div className={ReservateConfirmContentsStyles.reservateButton}>
-        <PrimaryButton onClick={clickReservate}>予約する</PrimaryButton>
+        <PrimaryButton onClick={clickReservate} id="submit">
+          予約する
+        </PrimaryButton>
       </div>
       <div className={ReservateConfirmContentsStyles.reservateMessage}>
         <p style={{ display: confirmMessage }}>
@@ -371,26 +367,6 @@ export const Content = (props: any) => {
         </div>
       </div>
     </>
-  );
-};
-
-type ClickCancelPolicy = {
-  accordionClick: () => void;
-  click: boolean;
-};
-
-export const ClickCancelPolicy = (props: ClickCancelPolicy) => {
-  return (
-    <div>
-      <ul className={ReservateConfirmContentsStyles.accordionMenu}>
-        <li>
-          <button type="button" onClick={props.accordionClick}>
-            キャンセルポリシー
-          </button>
-          {props.click ? <div>{cancel}</div> : ""}
-        </li>
-      </ul>
-    </div>
   );
 };
 

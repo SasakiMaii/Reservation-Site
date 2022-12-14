@@ -389,3 +389,27 @@ p{
   }
 }
 
+
+//NEWS
+.newsContainer {
+  text-align: center;
+  line-height: 35px;
+  width: 700px;
+  margin: 0 auto;
+  @include mq(sp) {
+    width: 300px;
+  }
+  h2 {
+    margin-bottom: 20px;
+  }
+  p {
+    padding: 8px;
+  }
+  @include mq(sp) {
+    font-size: 14px;
+  }
+}
+
+.newsContainer p:hover {
+  opacity: 0.7;
+}
