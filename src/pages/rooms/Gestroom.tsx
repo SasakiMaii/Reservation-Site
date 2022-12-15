@@ -52,7 +52,7 @@ const GestroomPlan: React.FC<RoomProps> = () => {
           path={"/books/ReservateHistory"}
           classname={RoomStyle.reservedCheck}
         />
-        {err.map((error: any, index: any) => {
+        {err.map((error: string, index: number) => {
           return (
             <p key={index} className={RoomStyle.err}>
               ※{error}
@@ -73,14 +73,14 @@ const GestroomPlan: React.FC<RoomProps> = () => {
         />
         <p className={RoomStyle.pageTitle2}>全ての客室＆プラン</p>
         <div className={RoomStyle.roomLinkWrapper}></div>
-        {err.map((error: any) => {
+        {err.map((error: string) => {
           return (
             <p key={err[0]} className={RoomStyle.err}>
               ※{error}
             </p>
           );
         })}
-        {info.map((information: any) => {
+        {info.map((information: string) => {
           return (
             <p key={info[0]} className={RoomStyle.info}>
               ※{information}
@@ -112,10 +112,9 @@ export const RoomCard = (props: any) => {
     ascClick,
     setAscClick,
   } = props;
-  // const descEl = useSelector((state: any) => state.gestroom.descClick);
-  // const ascEl = useSelector((state: any) => state.gestroom.ascClick);
+  const [openAnswer, setOpenAnswer] = useState<any>({ 0: false });
   const soartData = collection(db, "gestRoomType");
-  // const [descRoom, setDescRoom] = useState<any>([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -123,10 +122,6 @@ export const RoomCard = (props: any) => {
     getDocs(roomDate).then((snapShot) => {
       SetRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
-    // const roomDescDate = query(soartData, orderBy("price", "desc"), limit(3));
-    // getDocs(roomDescDate).then((snapShot) => {
-    //   setDescRoom(snapShot.docs.map((doc) => ({ ...doc.data() })));
-    // });
   }, []);
   const [page, setPage] = useState(false);
   //次のページへ進むボタン
@@ -208,16 +203,12 @@ export const RoomCard = (props: any) => {
       SetRooms(prevPage);
     }
   };
-  const [openAnswer, setOpenAnswer] = useState<any>({ 0: false });
   const handleOpenAnswer = (index: any) => {
     setOpenAnswer((prevState: any) => ({
       ...prevState,
       [index]: !prevState[index],
     }));
   };
-
-  console.log(ascClick);
-  console.log(descClick);
 
   return (
     <>
@@ -272,7 +263,7 @@ export const RoomCard = (props: any) => {
                   <PrimaryButton
                     onClick={() => {
                       navigate(
-                        `/rooms/RoomDetails?room=${room.id}&room=${room.id}`
+                        `/rooms/RoomDetails?room=${room.Id}`
                       );
                     }}
                   >
@@ -311,7 +302,7 @@ export const RoomCard = (props: any) => {
                           <SecondryButton
                             onClick={() => {
                               navigate(
-                                `/rooms/PlanDetails?plan1=${room.plan1}&room=${room.id}`
+                                `/rooms/PlanDetails?plan1=${room.plan1}&room=${room.Id}`
                               );
                             }}
                           >
@@ -336,7 +327,7 @@ export const RoomCard = (props: any) => {
                               <SecondryButton
                                 onClick={() => {
                                   navigate(
-                                    `/rooms/PlanDetails?plan2=${room.plan2}&room=${room.id}`
+                                    `/rooms/PlanDetails?plan2=${room.plan2}&room=${room.Id}`
                                   );
                                 }}
                               >
@@ -361,7 +352,7 @@ export const RoomCard = (props: any) => {
                                 <SecondryButton
                                   onClick={() => {
                                     navigate(
-                                      `/rooms/PlanDetails?plan3=${room.plan3}&room=${room.id}`
+                                      `/rooms/PlanDetails?plan3=${room.plan3}&room=${room.Id}`
                                     );
                                   }}
                                 >
@@ -389,7 +380,7 @@ export const RoomCard = (props: any) => {
                                 <SecondryButton
                                   onClick={() => {
                                     navigate(
-                                      `/rooms/PlanDetails?plan4=${room.plan4}&room=${room.id}`
+                                      `/rooms/PlanDetails?plan4=${room.plan4}&room=${room.Id}`
                                     );
                                   }}
                                 >

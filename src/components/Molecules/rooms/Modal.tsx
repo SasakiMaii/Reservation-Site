@@ -3,6 +3,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import SearchStyle from "../../../styles/rooms/_Search.module.scss";
 import interactionPlugin from "@fullcalendar/interaction";
 import { GrFormDown } from "react-icons/gr";
+import { useCallback } from "react";
 
 const Modal = ({
   showFlag,
@@ -14,20 +15,11 @@ const Modal = ({
   setInputDate,
 }: any) => {
   
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setShowModal(false);
-  };
+  },[]);
 
-  //「宿泊日未定」にチェックが入っていたら「宿泊日未定」をチェックイン日の下に表示
-  const handleChange = (e: any) => {
-    if (e.target.checked === true) {
-      setChecked(e.target.value);
-      setShowBtn(false);
-      setInputDate(false);
-    }
-  };
-
-  const handleDateClick = (arg: any) => {
+  const handleDateClick = useCallback((arg: any) => {
     if (inputDate === false) {
       arg.dayEl.style.backgroundColor = "steelblue"; //カレンダーに色つける
       setInputDate(true);
@@ -38,7 +30,7 @@ const Modal = ({
       setInputDate(false);
       // alert(arg.dateStr)
     }
-  };
+  },[]);
 
 
   return (
@@ -46,7 +38,7 @@ const Modal = ({
       {showFlag ? (
         <>
           <div style={modalStyle}>
-            <div style={modalContent}>
+            <div className={SearchStyle.closeBtntotal}>
               <div className={SearchStyle.closeBtnFlex}>
                 <h1 className={SearchStyle.title}>チェックイン日</h1>
                 <button className={SearchStyle.closeBtn} onClick={closeModal}>
@@ -63,17 +55,6 @@ const Modal = ({
                 selectMirror={true}
                 businessHours={true}
               />
-              <div className={SearchStyle.modalCheckContainer}>
-                <input
-                  className={SearchStyle.daycheckBox}
-                  type="checkbox"
-                  name="check"
-                  id="check"
-                  value="宿泊日未定"
-                  onChange={handleChange}
-                />
-                <label htmlFor="check">宿泊日未定 </label>
-              </div>
               <div className={SearchStyle.modalSelectContainer}>
                 <div className={SearchStyle.modalSelectcount}>
                   <p>宿泊数</p>
@@ -103,13 +84,13 @@ const Modal = ({
 };
 
 //モーダルのスタイル
-const modalContent: React.CSSProperties = {
-  background: "white",
-  width: "600px",
-  height: "800px",
-  padding: "60px",
-  borderRadius: "3px",
-};
+// const modalContent: React.CSSProperties = {
+//   background: "white",
+//   width: "600px",
+//   height: "600px",
+//   padding: "30px",
+//   borderRadius: "3px",
+// };
 
 const modalStyle: React.CSSProperties = {
   position: "fixed",

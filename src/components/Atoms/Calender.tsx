@@ -1,19 +1,21 @@
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import { useCallback } from "react";
 
 const Calender=(props:any)=>{
   const{inputDate,setInputDate,setDatetext}=props
-  const handleDateClick = (arg: any) => {
+
+  const handleDateClick = useCallback((arg: any) => {
     if (inputDate === false) {
-      arg.dayEl.style.backgroundColor = "steelblue"; //カレンダーに色つける
+      arg.dayEl.style.backgroundColor = "burlywood"; //カレンダーに色つける
       setInputDate(true);
       setDatetext(arg.dateStr);
     } else if (inputDate === true) {
       arg.dayEl.style.backgroundColor = ""; //カレンダーの色を変える
       setInputDate(false);
     }
-  };
+  },[]);
 
   return(
     <>
