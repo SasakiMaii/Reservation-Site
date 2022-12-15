@@ -1,5 +1,6 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import ReservateHistoryStyles from "../../styles/books/_ReservateHistory.module.scss";
 import db from "../../Firebase";
 import { auth } from "../../Firebase";
@@ -56,8 +57,6 @@ const ReservateHistory: React.FC = () => {
       [index]: !prevState[index],
     }));
   };
-  console.log("f", openUnReseveAnswer);
-  console.log("j", openResevedAnswer);
 
   const clickUnlodgeOpen = async () => {
     setOpenUnlodgeDisplay(true);
@@ -91,15 +90,16 @@ const ReservateHistory: React.FC = () => {
   // eslint-disable-next-line array-callback-return
   let unReserve: any = [];
   let reserved: any = [];
-  // eslint-disable-next-line array-callback-return
-  reserves.map((reserveItems: any) => {
-    const abc = Date.parse(reserveItems.checkIn);
-    if (abc > dateNum) {
-      unReserve.push(reserveItems);
-    } else {
-      reserved.push(reserveItems);
-    }
-  });
+
+    reserves.map((reserveItems: any) => {
+      const abc = Date.parse(reserveItems.checkIn);
+      if (abc > dateNum) {
+        unReserve.push(reserveItems);
+      } else {
+        reserved.push(reserveItems);
+      }
+    });
+  
 
   return (
     <>
@@ -166,14 +166,15 @@ export const UnReserve = (props: any) => {
     <div className={ReservateHistoryStyles.unLodger}>
       <h3 className={ReservateHistoryStyles.innerTitle}>宿泊待ち予約</h3>
       <div className={ReservateHistoryStyles.unLodgerContents}>
-        <p className={ReservateHistoryStyles.subTitle}>予約内容</p>
+        {unReserve.length > 0 ? (
+        <p className={ReservateHistoryStyles.subTitle}>予約内容</p>) : (<p>宿泊待ちの予約がありません</p>)}
       </div>
       <div>
         <div className={ReservateHistoryStyles.unLodgerContentsList}>
           {unReserve.map((unReserveItem: any, index: number) => {
             return (
               <>
-                <div className={ReservateHistoryStyles.unLodgerContentsLists}>
+                <div className={ReservateHistoryStyles.unLodgerContentsLists} key={index}>
                   <p>
                     ・{unReserveItem.checkIn}〜<br />
                     {unReserveItem.plan}
@@ -261,13 +262,14 @@ export const Reserved = (props: any) => {
     <div className={ReservateHistoryStyles.lodged}>
       <h3 className={ReservateHistoryStyles.innerTitle}>宿泊済み予約</h3>
       <div className={ReservateHistoryStyles.lodgedContents}>
-        <p className={ReservateHistoryStyles.subTitle}>予約内容</p>
+        {reserved.length > 0 ? (
+        <p className={ReservateHistoryStyles.subTitle}>予約内容</p>) : (<p>宿泊済みの予約がありません</p>)}
       </div>
       <div className={ReservateHistoryStyles.lodgedContentsList}>
         {reserved.map((reservedItem: any, index: number) => {
           return (
             <>
-              <div className={ReservateHistoryStyles.lodgedContentsLists}>
+              <div className={ReservateHistoryStyles.lodgedContentsLists} key={index}>
                 <p>
                   ・{reservedItem.checkIn}〜<br />
                   {reservedItem.plan}

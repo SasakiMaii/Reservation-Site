@@ -42,7 +42,7 @@ const Contact = () => {
         <div className={ContactStyles.contactBtn}>
           <button><Scroll to="Hotel" smooth={true}>ホテルに関するご質問</Scroll></button>
           <button><Scroll to="Reserve" smooth={true}>予約に関するご質問</Scroll></button>
-          <button><Scroll to="Ather" smooth={true}>その他</Scroll></button>
+          <button><Scroll to="Ather" smooth={true}>その他のご質問</Scroll></button>
         </div>
         <div className={ContactStyles.contactItem}>
             <h2 className={ContactStyles.contactSubTitle} data-number="01" id="Hotel"><span>ホテルに関するご質問</span></h2>
