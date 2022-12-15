@@ -68,7 +68,7 @@ const RoomDetails = () => {
 
   useEffect(() => {
     const roomtype = SearchParams.get("room");
-    const detailRoom = query(RoomData, limit(1), where("id", "==", roomtype)); 
+    const detailRoom = query(RoomData, limit(1), where("Id", "==", roomtype)); 
     getDocs(detailRoom).then((snapShot) => {
       setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
