@@ -1,5 +1,6 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useState, useRef } from "react";
+import { useState, useEffect } from "react";
 import ReservateHistoryStyles from "../../styles/books/_ReservateHistory.module.scss";
 import db from "../../Firebase";
 import { auth } from "../../Firebase";
@@ -43,7 +44,6 @@ const ReservateHistory: React.FC = () => {
   }
 
   const clickChange = (index: number) => {
-    console.log(index);
     setUnReserveOpenAnswer((prevState: any) => ({
       ...prevState,
       [index]: !prevState[index],
@@ -56,8 +56,6 @@ const ReservateHistory: React.FC = () => {
       [index]: !prevState[index],
     }));
   };
-  console.log("f", openUnReseveAnswer);
-  console.log("j", openResevedAnswer);
 
   const clickUnlodgeOpen = async () => {
     setOpenUnlodgeDisplay(true);
@@ -91,15 +89,16 @@ const ReservateHistory: React.FC = () => {
   // eslint-disable-next-line array-callback-return
   let unReserve: any = [];
   let reserved: any = [];
-  // eslint-disable-next-line array-callback-return
-  reserves.map((reserveItems: any) => {
-    const abc = Date.parse(reserveItems.checkIn);
-    if (abc > dateNum) {
-      unReserve.push(reserveItems);
-    } else {
-      reserved.push(reserveItems);
-    }
-  });
+
+    reserves.map((reserveItems: any) => {
+      const abc = Date.parse(reserveItems.checkIn);
+      if (abc > dateNum) {
+        unReserve.push(reserveItems);
+      } else {
+        reserved.push(reserveItems);
+      }
+    });
+  
 
   return (
     <>
@@ -172,7 +171,7 @@ export const UnReserve = (props: any) => {
         <div className={ReservateHistoryStyles.unLodgerContentsList}>
           {unReserve.map((unReserveItem: any, index: number) => {
             return (
-              <>
+              <div key={index}>
                 <div className={ReservateHistoryStyles.unLodgerContentsLists}>
                   <p>
                     ・{unReserveItem.checkIn}〜<br />
@@ -187,7 +186,7 @@ export const UnReserve = (props: any) => {
                     <UnReservateDetails unReserveItem={unReserveItem} />
                   ) : undefined}
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
@@ -266,7 +265,7 @@ export const Reserved = (props: any) => {
       <div className={ReservateHistoryStyles.lodgedContentsList}>
         {reserved.map((reservedItem: any, index: number) => {
           return (
-            <>
+            <div key={index}>
               <div className={ReservateHistoryStyles.lodgedContentsLists}>
                 <p>
                   ・{reservedItem.checkIn}〜<br />
@@ -280,7 +279,7 @@ export const Reserved = (props: any) => {
                   <ReservateDetails reservedItem={reservedItem} />
                 ) : undefined}
               </div>
-            </>
+            </div>
           );
         })}
       </div>
