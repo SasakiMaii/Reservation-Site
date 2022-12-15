@@ -44,7 +44,6 @@ const ReservateHistory: React.FC = () => {
   }
 
   const clickChange = (index: number) => {
-    console.log(index);
     setUnReserveOpenAnswer((prevState: any) => ({
       ...prevState,
       [index]: !prevState[index],
@@ -166,15 +165,14 @@ export const UnReserve = (props: any) => {
     <div className={ReservateHistoryStyles.unLodger}>
       <h3 className={ReservateHistoryStyles.innerTitle}>宿泊待ち予約</h3>
       <div className={ReservateHistoryStyles.unLodgerContents}>
-        {unReserve.length > 0 ? (
-        <p className={ReservateHistoryStyles.subTitle}>予約内容</p>) : (<p>宿泊待ちの予約がありません</p>)}
+        <p className={ReservateHistoryStyles.subTitle}>予約内容</p>
       </div>
       <div>
         <div className={ReservateHistoryStyles.unLodgerContentsList}>
           {unReserve.map((unReserveItem: any, index: number) => {
             return (
-              <>
-                <div className={ReservateHistoryStyles.unLodgerContentsLists} key={index}>
+              <div key={index}>
+                <div className={ReservateHistoryStyles.unLodgerContentsLists}>
                   <p>
                     ・{unReserveItem.checkIn}〜<br />
                     {unReserveItem.plan}
@@ -188,7 +186,7 @@ export const UnReserve = (props: any) => {
                     <UnReservateDetails unReserveItem={unReserveItem} />
                   ) : undefined}
                 </div>
-              </>
+              </div>
             );
           })}
         </div>
@@ -262,14 +260,13 @@ export const Reserved = (props: any) => {
     <div className={ReservateHistoryStyles.lodged}>
       <h3 className={ReservateHistoryStyles.innerTitle}>宿泊済み予約</h3>
       <div className={ReservateHistoryStyles.lodgedContents}>
-        {reserved.length > 0 ? (
-        <p className={ReservateHistoryStyles.subTitle}>予約内容</p>) : (<p>宿泊済みの予約がありません</p>)}
+        <p className={ReservateHistoryStyles.subTitle}>予約内容</p>
       </div>
       <div className={ReservateHistoryStyles.lodgedContentsList}>
         {reserved.map((reservedItem: any, index: number) => {
           return (
-            <>
-              <div className={ReservateHistoryStyles.lodgedContentsLists} key={index}>
+            <div key={index}>
+              <div className={ReservateHistoryStyles.lodgedContentsLists}>
                 <p>
                   ・{reservedItem.checkIn}〜<br />
                   {reservedItem.plan}
@@ -282,7 +279,7 @@ export const Reserved = (props: any) => {
                   <ReservateDetails reservedItem={reservedItem} />
                 ) : undefined}
               </div>
-            </>
+            </div>
           );
         })}
       </div>
