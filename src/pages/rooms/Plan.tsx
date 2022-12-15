@@ -15,8 +15,6 @@ import PrimaryButton from "../../components/Atoms/button/PrimaryButton";
 import { Link } from "react-router-dom";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/footer";
-import RoomSearchSoart from "../../components/Organisms/rooms/PlanSearchSoart";
-import PagingStyle from "../../styles/rooms/_Paging.module.scss";
 import SecondryButton from "../../components/Atoms/button/SecondryButton";
 import Head from "../../components/layout/Head";
 import EmptyRoomConditions from "../../components/Templates/EmptyRoomConditions";

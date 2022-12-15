@@ -371,6 +371,12 @@ padding-left: 40px;
 .title{
   margin: 0 auto;
   color: #4f4f4f;
+  @include mq(sp) {
+  font-size: 20px;
+  }
+  @include mq(tab) {
+    font-size: 20px;
+  }
 }
 
 .modalSelectcount{
@@ -433,13 +439,33 @@ padding-left: 40px;
   padding-bottom: 10px;
 }
 
+.closeBtntotal{
+  height: 800px;
+  background: white;
+  width: 600px;
+  padding: 30px;
+  @include mq(sp) {
+height: 500px;
+    }
+    @include mq(tab) {
+height: 600px;
+    }
+}
+
 .closeBtn{
   padding: 10px;
   margin-left: 50px;
   border: #9e9e9e 3px solid;
   background-color: #9e9e9e;
-  border-radius: 3px;
+  // border-radius: 3px;
   color: #fff;
+  @include mq(sp) {
+padding: 2px;
+font-size: 15px;
+  }
+  @include mq(tab) {
+    
+  }
 }
 
 .closeBtnBottom{

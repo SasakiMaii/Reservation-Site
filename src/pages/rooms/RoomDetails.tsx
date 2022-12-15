@@ -68,7 +68,7 @@ const RoomDetails = () => {
 
   useEffect(() => {
     const roomtype = SearchParams.get("room");
-    const detailRoom = query(RoomData, limit(1), where("id", "==", roomtype)); //一つだけ表示
+    const detailRoom = query(RoomData, limit(1), where("id", "==", roomtype)); 
     getDocs(detailRoom).then((snapShot) => {
       setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
@@ -188,7 +188,6 @@ const RoomDetails = () => {
                 </div>
 
                 <div className={RoomDetailStyle.detailplan}>
-                  {/* keyをindexに変更しました */}
                   {err.map((error: any, index: number) => {
                     return (
                       <p key={index} className={RoomDetailStyle.err} style={{color:"red"}}>
