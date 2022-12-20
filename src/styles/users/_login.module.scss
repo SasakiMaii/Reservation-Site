@@ -1,18 +1,7 @@
-.clearBtn {
-  color: RGB(26, 89, 136);
-  border-radius: 10px;
-  background-color: #fff;
-  width: 100px;
-  height: 45px;
-  font-weight: bold;
-  font-size: 18px;
-  border: solid 1px RGB(26, 89, 136);
-  margin: 20px;
-}
+$red :  rgb(178, 12, 12);
+$gold : rgb(205, 176, 109);
+$gray : #C0C0C0;
 
-.clearBtn:hover {
-  opacity: 0.8;
-}
 
 .googleIcon {
   // border-radius: 20px;
@@ -43,14 +32,9 @@
 }
 
  .main{
-  // display: flex;
-  // text-align: center;
-  // justify-content: center;
-
   position: relative;
-  margin: 180px 0;
+  margin: 90px 0;
   padding: 0;
-  // justify-content: center;
   flex-wrap: wrap;
   // background-color:#C0C0C0;;
   height: 440px;

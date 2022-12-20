@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react'
-import FormStyle from "../../styles/users/_Form.module.scss"
+import FormStyle from "../../../styles/users/_Form.module.scss"
 import { useDispatch , useSelector} from 'react-redux'
-import {firstNameInput, lastNameInput} from "../../store/RegisterSlice"
+import {firstNameInput, lastNameInput} from "../../../store/RegisterSlice"
 
 const Error = (props: any) => {
   if (props.errorFlag === "true") {

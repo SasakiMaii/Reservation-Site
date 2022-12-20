@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
-import FormStyle from "../../styles/users/_Form.module.scss"
-import {confirmPasswordInput} from "../../store/RegisterSlice"
+import FormStyle from "../../../styles/users/_Form.module.scss"
+import {confirmPasswordInput} from "../../../store/RegisterSlice"
 import { useSelector, useDispatch } from 'react-redux';
 
 const ConfirmPasswordError = (props: any) => {

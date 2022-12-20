@@ -11,7 +11,7 @@ export const TopHeader = () => {
       <div  >
         <Scroll to="concept" smooth={true} duration={1300} offset={0}>
           <div className={style.scrolldown2}><span>
-            {/* Scroll */}
+            Scroll
             </span></div>
           {/* <img src={scrollImage} alt="矢印" className={style.scrollImage} /> */}
         </Scroll>

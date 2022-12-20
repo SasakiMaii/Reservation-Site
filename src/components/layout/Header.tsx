@@ -53,7 +53,8 @@ const Header = () => {
 
   return (
     <>
-      <div className={headerStyle.headerFlex}>
+    {/* 上部移動用のID追加（react-scroll） */}
+      <div className={headerStyle.headerFlex} id="top">
         <Link to={"/"}>
           <h1>
             <GiFrogPrince /> Prince'View Hotel

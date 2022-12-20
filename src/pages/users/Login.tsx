@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import style from "../../styles/input.module.css";
 import { useState } from "react";
-import { MailInput } from "../../components/form/mailInput";
-import { PasswordInput } from "../../components/form/passwordInput";
+import { MailInput } from "../../components/Organisms/form/mailInput";
+import { PasswordInput } from "../../components/Organisms/form/passwordInput";
 import SearchStyle from "../../styles/rooms/_Search.module.scss";
 import LoginStyle from "../../styles/users/_login.module.scss";
 import { auth } from "../../Firebase";
@@ -57,8 +57,7 @@ export const Login = () => {
   })
 
   const location = useLocation()
-
-  // yarn add react-firebase-hooks/authしてください
+  
   const login = () => {
     // 仮予約データ受け取り
     const data = location.state;
