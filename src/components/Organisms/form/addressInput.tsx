@@ -1,52 +1,7 @@
 import React, { ChangeEvent } from 'react'
-import FormStyle from "../../styles/users/_Form.module.scss"
-import {addressInput} from "../../store/RegisterSlice"
+import FormStyle from "../../../styles/users/_Form.module.scss"
+import {addressInput} from "../../../store/RegisterSlice"
 import { useSelector, useDispatch } from 'react-redux';
-
-const Navigation = (props: any) => {
-  const address = useSelector((state:any) => state.registerInput.address);
-  if (address.length > 0) {
-    return (
-      <>
-        <div className="py-2 text-gray-500 text-sm mb-8">
-          <p>
-            {(() => {
-              if (address.includes("-")) {
-                return (
-                  <>
-                    <span className="material-symbols-outlined 
-                  rounded-full mr-3 text-white translate-y-1.5
-                  "
-                      style={{ backgroundColor: "#75ad9d" }}
-                    >
-                      check_circle
-                    </span>
-                  </>
-                );
-              } else {
-                return (
-                  <>
-                    <span className="material-symbols-outlined 
-                  rounded-full mr-3 text-white translate-y-1.5 bg-gray-300
-                  ">
-                      check_circle
-                    </span>
-                  </>
-                );
-              }
-            }
-            )()}
-            {props.text}
-          </p>
-        </div>
-      </>
-    )
-  } else {
-    return (
-      <></>
-    )
-  }
-}
 
 const Error = (props: any) => {
   

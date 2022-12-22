@@ -76,28 +76,33 @@ $breakpoints: (
 }
 
 .scrolldown2 {
+  cursor: pointer;
   /*描画位置*/
   position: absolute;
   display: flex;
-  bottom: 300px;
+  bottom: 200px;
   left: 50%;
-
+  padding:100px;
+  // background-color: red;
   @include mq(pc) {
     bottom: 100px;
   }
 
   @include mq(tab) {
-    bottom: 300px;
+    bottom: 200px;
   }
 
 }
 
 /*Scrollテキストの描写*/
 .scrolldown2 span {
+  cursor: pointer;
   /*描画位置*/
+  // background-color: blue;
   position: absolute;
+  padding:30px 5px;
   left: 10px;
-  bottom: 10px;
+  bottom: 5px;
   /*テキストの形状*/
   color: #eee;
   font-size: 0.7rem;
@@ -122,8 +127,8 @@ $breakpoints: (
   background: #eee;
   /*丸の動き1.6秒かけて透過し、永遠にループ*/
   animation:
-    circlemove 1.6s ease-in-out infinite,
-    cirlemovehide 1.6s ease-out infinite;
+    circlemove 5s ease-in-out infinite,
+    cirlemovehide 5s ease-out infinite;
 }
 
 /*下からの距離が変化して丸の全体が上から下に動く*/
@@ -165,7 +170,7 @@ $breakpoints: (
   left: 0;
   /*線の形状*/
   width: 2px;
-  height: 120px;
+  height: 110px;
   background: #eee;
 }
 
@@ -187,6 +192,7 @@ $breakpoints: (
   z-index: 10;
   margin: auto;
   font-size: 70px;
+  top: 30%;
 
   @include mq(sp) {
     font-size: 60px;

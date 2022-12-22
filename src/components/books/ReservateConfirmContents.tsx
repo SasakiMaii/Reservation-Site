@@ -4,11 +4,11 @@ import ReservateConfirmContentsStyles from "../../styles/books/_ReservateConfirm
 import { useNavigate } from "react-router-dom";
 import db from "../../Firebase.js";
 import { collection, doc, setDoc } from "firebase/firestore";
-import { NameInput } from "../form/nameInput";
-import { TelInput } from "../form/telInput";
+import { NameInput } from "../Organisms/form/nameInput";
+import { TelInput } from "../Organisms/form/telInput";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../Firebase";
-import { MailInput } from "../form/mailInput";
+import { MailInput } from "../Organisms/form/mailInput";
 import { FiAlertTriangle } from "react-icons/fi";
 import { ArrivalTime } from "./ArrivalTime";
 import { useLocation } from "react-router-dom";

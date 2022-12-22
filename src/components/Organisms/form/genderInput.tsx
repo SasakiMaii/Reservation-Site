@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from 'react'
-import FormStyle from "../../styles/users/_Form.module.scss"
-import {genderInput} from "../../store/RegisterSlice"
+import FormStyle from "../../../styles/users/_Form.module.scss"
+import {genderInput} from "../../../store/RegisterSlice"
 import { useSelector, useDispatch } from 'react-redux';
 
 

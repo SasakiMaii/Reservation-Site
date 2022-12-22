@@ -1,10 +1,8 @@
 import React, { ChangeEvent, useEffect } from 'react'
-import FormStyle from "../../styles/users/_Form.module.scss"
-import { IconContext } from 'react-icons'
-import { ImCheckmark } from "react-icons/im";
-import { ImCheckmark2 } from "react-icons/im";
-import {passwordInput} from "../../store/RegisterSlice"
+import FormStyle from "../../../styles/users/_Form.module.scss"
+import {passwordInput} from "../../../store/RegisterSlice"
 import { useSelector, useDispatch } from 'react-redux';
+import { CheckMarkGold, CheckMarkGray } from '../../Atoms/CheckMark';
 
 const Navigation = (props: any) => {
   const password = useSelector((state:any) => state.registerInput.password);
@@ -18,9 +16,7 @@ const Navigation = (props: any) => {
                 return (
                   <>
                     <span className={`${FormStyle.NavigationIcons}`}>
-                      <IconContext.Provider value={{ size: '20px' }}>
-                        <ImCheckmark />
-                      </IconContext.Provider>
+                    <CheckMarkGold />
                     </span>
                   </>
                 );
@@ -28,9 +24,7 @@ const Navigation = (props: any) => {
                 return (
                   <>
                     <span className={`${FormStyle.NavigationIcons}`}>
-                      <IconContext.Provider value={{ size: '20px' }}>
-                        <ImCheckmark2 />
-                      </IconContext.Provider>
+                    <CheckMarkGray />
                     </span>
                   </>
                 );

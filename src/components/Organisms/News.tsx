@@ -11,7 +11,6 @@ const News = () => {
         .then((res) => res.json())
         .then((data) => {
           setNewsdate(data);
-          //  return resolve(data);
         });
     });
   }, []);

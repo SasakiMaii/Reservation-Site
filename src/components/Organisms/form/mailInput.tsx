@@ -1,14 +1,12 @@
 import React, { ChangeEvent } from 'react'
 import { useEffect } from 'react';
-import FormStyle from "../../styles/users/_Form.module.scss"
-import { IconContext } from 'react-icons'
-import { ImCheckmark } from "react-icons/im";
-import { ImCheckmark2 } from "react-icons/im";
-import {mailInput} from "../../store/RegisterSlice"
+import FormStyle from "../../../styles/users/_Form.module.scss"
+import { mailInput } from "../../../store/RegisterSlice"
 import { useSelector, useDispatch } from 'react-redux';
+import { CheckMarkGold, CheckMarkGray } from '../../Atoms/CheckMark';
 
 const Navigation = (props: any) => {
-  const mail = useSelector((state:any) => state.registerInput.mail);
+  const mail = useSelector((state: any) => state.registerInput.mail);
   // if (props.value.length > 0) {
   if (mail.length > 0) {
     return (
@@ -20,9 +18,7 @@ const Navigation = (props: any) => {
                 return (
                   <>
                     <span className={`${FormStyle.NavigationIcons}`}>
-                      <IconContext.Provider value={{ size: '20px' }}>
-                        <ImCheckmark />
-                      </IconContext.Provider>
+                      <CheckMarkGold />
                     </span>
                   </>
                 );
@@ -30,9 +26,7 @@ const Navigation = (props: any) => {
                 return (
                   <>
                     <span className={`${FormStyle.NavigationIcons}`}>
-                      <IconContext.Provider value={{ size: '20px'}}>
-                        <ImCheckmark2 />
-                      </IconContext.Provider>
+                    <CheckMarkGray />
                     </span>
                   </>
                 );
@@ -73,10 +67,10 @@ const Error = (props: any) => {
 
 
 
-export const MailInput = (props:any) => {
+export const MailInput = (props: any) => {
   // { SetMailErrorState: any,  errorFlag: any, mailErrorState: any, displayFlag: boolean }
 
-  const mail = useSelector((state:any) => state.registerInput.mail);
+  const mail = useSelector((state: any) => state.registerInput.mail);
   const dispatch = useDispatch();
   const onChangeHandler = (ev: ChangeEvent<HTMLInputElement>) => {
     // props.SetMailValue(ev.target.value);
@@ -96,7 +90,7 @@ export const MailInput = (props:any) => {
       return (
         <>
           {/* <Navigation value={props.mailValue} text="@を含む形式" /> */}
-          <Navigation  text="@を含む形式" />
+          <Navigation text="@を含む形式" />
         </>
       )
     } else {
@@ -128,9 +122,9 @@ export const MailInput = (props:any) => {
           />
         </div>
 
-    <div className={FormStyle.nae}>
-        <NavigationDisplay displayFlag={props.displayFlag}  />
-    </div>
+        <div className={FormStyle.nae}>
+          <NavigationDisplay displayFlag={props.displayFlag} />
+        </div>
 
       </div>
     </>

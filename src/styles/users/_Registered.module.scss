@@ -1,12 +1,15 @@
+$red :  rgb(178, 12, 12);
+$gold : rgb(205, 176, 109);
+$gray : #C0C0C0;
+
 .clearBtn {
-  color: RGB(26, 89, 136);
-  border-radius: 10px;
+  color: $gold;
   background-color: #fff;
   width: 100px;
   height: 45px;
-  font-weight: bold;
+  // font-weight: bold;
   font-size: 18px;
-  border: solid 1px RGB(26, 89, 136);
+  border: solid 1px ;
   margin: 20px;
 }
 
@@ -20,17 +23,9 @@
 }
 
  .main{
-  // display: flex;
-  // text-align: center;
-  // justify-content: center;
-
-  // position: relative;
-  margin: 30px 0;
-  padding: 0;
-  // justify-content: center;
+  margin: 100px 0 0 0;
   flex-wrap: wrap;
-  // background-color:#C0C0C0;
-  height: 1000px;
+  height: 1200px;
  }
 
  .form {
@@ -38,7 +33,6 @@
   top:25%;
   left: 50%;
   transform: translateX(-50%);
-  // background-color: red;
  }
 
 

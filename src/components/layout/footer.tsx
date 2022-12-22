@@ -1,12 +1,19 @@
 import { Link } from "react-router-dom";
 import FooterStyle from "../../styles/layout/_Footer.module.scss";
-import {TbArrowTopCircle} from "react-icons/tb"
+import { TbArrowTopCircle } from "react-icons/tb"
+import { Link as Scroll } from "react-scroll";
 
 const Footer = () => {
-  
+
   return (
     <>
-     <a className={FooterStyle.pagetop} href="#"><TbArrowTopCircle size={30}/>Page Top</a>
+    {/* scrollのスピード調整 */}
+      <Scroll to="top" smooth={true} duration={1300} offset={0} >
+        <div className={FooterStyle.pagetop}>
+          <TbArrowTopCircle size={30} />Page Top
+        </div>
+      </Scroll>
+      {/* <a className={FooterStyle.pagetop} href="#"><TbArrowTopCircle size={30}/>Page Top</a> */}
       <div className={FooterStyle.footerWrapper}>
         <div className={FooterStyle.footerFlex}>
           <p>Prince'View Hotel</p>
