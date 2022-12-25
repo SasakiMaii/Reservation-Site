@@ -73,16 +73,16 @@ const GestroomPlan: React.FC<RoomProps> = () => {
         />
         <p className={RoomStyle.pageTitle2}>全ての客室＆プラン</p>
         <div className={RoomStyle.roomLinkWrapper}></div>
-        {err.map((error: string) => {
+        {err.map((error: string,index:number) => {
           return (
-            <p key={err[0]} className={RoomStyle.err}>
+            <p key={index} className={RoomStyle.err}>
               ※{error}
             </p>
           );
         })}
-        {info.map((information: string) => {
+        {info.map((information: string,index:number) => {
           return (
-            <p key={info[0]} className={RoomStyle.info}>
+            <p key={index} className={RoomStyle.info}>
               ※{information}
             </p>
           );
