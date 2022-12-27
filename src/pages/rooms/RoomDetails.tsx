@@ -1,4 +1,4 @@
-import { ChangeEvent, SetStateAction, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { useEffect } from "react";
 import PrimaryButton from "../../components/Atoms/button/PrimaryButton";
@@ -68,7 +68,7 @@ const RoomDetails = () => {
 
   useEffect(() => {
     const roomtype = SearchParams.get("room");
-    const detailRoom = query(RoomData, limit(1), where("Id", "==", roomtype)); 
+    const detailRoom = query(RoomData, limit(1), where("Id", "==", roomtype));
     getDocs(detailRoom).then((snapShot) => {
       setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
     });
@@ -93,22 +93,13 @@ const RoomDetails = () => {
   const handleResarve = () => {
     setErr([]);
 
-    // adultElの初期値が１なので、adultEl===""は消しました
-    // カレンダーの上にエラーを表示させています
-
-    // チェックイン日が選択されていない場合
     if (datetext.length <= 0) {
-      // errMsg.push("項目を正しく入力してください")
-      errMsg.push("チェックインの日付を選択してください")
-
-      // 過去の日付が選択されている場合
+      errMsg.push("チェックインの日付を選択してください");
     } else if (new Date(datetext) <= new Date(new Date().toString())) {
-      errMsg.push("本日以降の日付を選択してください")
-
+      errMsg.push("本日以降の日付を選択してください");
     } else {
       // ログインしている場合
       if (user) {
-        
         const data = {
           adultsNum: Number(adultEl),
           childrenNum: Number(childEl),
@@ -124,7 +115,6 @@ const RoomDetails = () => {
 
         // ログインしていない場合
       } else {
-
         const data = {
           adultsNum: adultEl,
           childrenNum: childEl,
@@ -176,7 +166,6 @@ const RoomDetails = () => {
                   <div className={RoomDetailStyle.detailCheck}>
                     <p>※チェックインの日付を選択してください</p>
 
-
                     <Calender
                       inputDate={inputDate}
                       setInputDate={setInputDate}
@@ -190,7 +179,11 @@ const RoomDetails = () => {
                 <div className={RoomDetailStyle.detailplan}>
                   {err.map((error: any, index: number) => {
                     return (
-                      <p key={index} className={RoomDetailStyle.err} style={{color:"red"}}>
+                      <p
+                        key={index}
+                        className={RoomDetailStyle.err}
+                        style={{ color: "red" }}
+                      >
                         ※{error}
                       </p>
                     );

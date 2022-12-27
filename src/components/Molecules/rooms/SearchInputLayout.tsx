@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import SearchStyle from "../../../styles/rooms/_Search.module.scss";
 
  const SearchInputLayout = ({value,onChange,elm}:any) => {
