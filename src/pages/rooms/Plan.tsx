@@ -23,7 +23,7 @@ import RoomStyle from "../../styles/rooms/_Gestroom.module.scss";
 import PlanSearchSoart from "../../components/Organisms/rooms/PlanSearchSoart";
 import Pageing from "../../components/Organisms/rooms/Pageing";
 
-//プラン
+
 const Plan = () => {
   //card
   const [plans, SetPlans] = useState<any>([]);

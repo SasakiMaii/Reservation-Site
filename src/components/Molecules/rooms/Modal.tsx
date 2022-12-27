@@ -10,7 +10,6 @@ const Modal = ({
   setShowModal,
   setShowBtn,
   setDatetext,
-  setChecked,
   inputDate,
   setInputDate,
 }: any) => {

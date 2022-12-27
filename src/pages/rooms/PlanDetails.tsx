@@ -1,4 +1,4 @@
-import { useState, useEffect, SetStateAction, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   collection,
   getDocs,
@@ -32,6 +32,7 @@ const PlanDetails = () => {
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
   const cookieList: any = [];
+
   useEffect(() => {
     // 以下、cookie取り出し処理
     const splitCookie = document.cookie.split(";");
@@ -62,6 +63,19 @@ const PlanDetails = () => {
     getDocs(PlanData).then((SnapShot) => {
       setPlans(SnapShot.docs.map((doc) => ({ ...doc.data() })));
     });
+
+const matchRoom=()=>{
+  for(let i=1;i<=4;i++){
+    const detailRoom = query(
+      RoomData,
+      limit(1),
+      where(`plan${i}`, "==", roomtype)
+    );
+    getDocs(detailRoom).then((snapShot) => {
+      setRooms(snapShot.docs.map((doc) => ({ ...doc.data() })));
+    });
+  }
+}
 
     if (roomstype) {
       if (roomtype) {

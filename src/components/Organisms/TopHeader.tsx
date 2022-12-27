@@ -1,7 +1,5 @@
-import React from 'react'
 import style from "../../styles/top/_Top.module.scss"
 import { Link as Scroll } from "react-scroll";
-import scrollImage from "../../topMaterial/scroll3.png";
 
 export const TopHeader = () => {
   return (
